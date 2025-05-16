@@ -6,13 +6,8 @@
     android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=""
+    tools:context=".Login"
     android:background="@drawable/my_gradiant_drawable">
-    <!--CONTEXT: adicionar a página cujo esse layout está associado.
-     Ou seja, quando fizer uma Activity pra programar o login,
-     adicionar context aqui no layout, ou não vai funcionar, provavelmente.
-     LEMBRETE!!!!                                                           -->
-
 
     <!--"título" da página, Login-->
     <TextView
@@ -36,7 +31,7 @@
         android:layout_height="63dp"
         android:layout_marginTop="204dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/container1"
+        android:background="@drawable/container_dr"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,7 +57,7 @@
         android:layout_height="63dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/container1"
+        android:background="@drawable/container_dr"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/container1" />
 
@@ -194,5 +189,7 @@
         app:cornerRadius="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_login1" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

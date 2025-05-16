@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUp"
+    android:background="@drawable/my_gradiant_drawable">
+
+    <!--Titulo da página: Sign-up-->
+    <TextView
+        android:id="@+id/titulo2"
+        android:layout_width="317dp"
+        android:layout_height="111dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="76dp"
+        android:fontFamily="@font/hammersmith_one"
+        android:text="Sign-up"
+        android:textAlignment="viewStart"
+        android:textColor="#C9FD4F0A"
+        android:textSize="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--Container 03 (primeiro da página) (nome de usuario)-->
+    <View
+        android:id="@+id/container3"
+        android:layout_width="377dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="196dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/container_dr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--EditText (nome de usuário) >>>> container03-->
+
+    <!--Container 04 (segundo da pagina) (e-mail)-->
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="341dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="4dp"
+        android:ems="10"
+        android:hint=" Nome de usuário"
+        android:inputType="text"
+        android:textColorHint="#AEAEAE"
+        app:layout_constraintEnd_toEndOf="@+id/container3"
+        app:layout_constraintHorizontal_bias="0.888"
+        app:layout_constraintStart_toStartOf="@+id/container3"
+        app:layout_constraintTop_toTopOf="@+id/container3" />
+
+    <View
+        android:id="@+id/container4"
+        android:layout_width="377dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="268dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/container_dr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--EditText (e-mail) >>>>>  container04 -->
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="330dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="4dp"
+        android:ems="10"
+        android:hint=" E-mail"
+        android:inputType="text"
+        android:textColorHint="#AEAEAE"
+        app:layout_constraintEnd_toEndOf="@+id/container4"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintStart_toStartOf="@+id/container4"
+        app:layout_constraintTop_toTopOf="@+id/container4" />
+
+    <!--Container 05 (terceiro da pagina) (senha1)-->
+    <View
+        android:id="@+id/container5"
+        android:layout_width="377dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="340dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/container_dr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--EditText (senha1> >>>> container05 -->
+    <EditText
+        android:id="@+id/senha1"
+        android:layout_width="330dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="4dp"
+        android:ems="10"
+        android:hint=" Senha"
+        android:inputType="text"
+        android:textColorHint="#AEAEAE"
+        app:layout_constraintEnd_toEndOf="@+id/container5"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintStart_toStartOf="@+id/container5"
+        app:layout_constraintTop_toTopOf="@+id/container5" />
+
+    <!--Container 06 (quarto da página) (senha2) -->
+    <View
+        android:id="@+id/container6"
+        android:layout_width="377dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="412dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/container_dr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--EditText (senha2) >>>>>> container06-->
+    <EditText
+        android:id="@+id/senha2"
+        android:layout_width="330dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="4dp"
+        android:ems="10"
+        android:hint="Confirme sua senha"
+        android:inputType="text"
+        android:textColorHint="#AEAEAE"
+        app:layout_constraintEnd_toEndOf="@+id/container6"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintStart_toStartOf="@+id/container6"
+        app:layout_constraintTop_toTopOf="@+id/container6" />
+
+    <!--Botão criar conta-->
+    <Button
+        android:id="@+id/btn_login1"
+        android:layout_width="377dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#C9FD4F0A"
+        android:backgroundTintMode="add"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Entrar"
+        android:textAlignment="center"
+        android:textSize="16dp"
+        app:cornerRadius="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/container6" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
