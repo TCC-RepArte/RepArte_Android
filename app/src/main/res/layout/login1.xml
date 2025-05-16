@@ -14,6 +14,7 @@
         android:id="@+id/titulo"
         android:layout_width="317dp"
         android:layout_height="111dp"
+        android:layout_marginStart="34dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="60dp"
         android:fontFamily="@font/hammersmith_one"
@@ -22,6 +23,8 @@
         android:textColor="#C9FD4F0A"
         android:textSize="80dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--container degradê pra armazenar o EditText "nome de usuário"-->
@@ -75,10 +78,6 @@
         app:srcCompat="@drawable/avatar" />
 
     <!--inserir senha-->
-
-
-    <!--imagenzinha do cadeado que fica ao lado da senha-->
-
     <EditText
         android:id="@+id/senha1"
         android:layout_width="301dp"
@@ -94,8 +93,8 @@
         app:layout_constraintStart_toStartOf="@+id/container2"
         app:layout_constraintTop_toTopOf="@+id/container2" />
 
-    <!--botão "entrar", primeiro botão da página-->
 
+    <!--imagenzinha do cadeado que fica ao lado da senha-->
     <ImageView
         android:id="@+id/imageView15"
         android:layout_width="31dp"
@@ -108,12 +107,15 @@
         app:layout_constraintTop_toTopOf="@+id/container2"
         app:srcCompat="@drawable/lock" />
 
+
+    <!--botão "entrar", primeiro botão da página-->
     <Button
         android:id="@+id/btn_login1"
-        android:layout_width="391dp"
-        android:layout_height="54dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="354dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="28dp"
         android:backgroundTint="#C9FD4F0A"
         android:backgroundTintMode="add"
         android:fontFamily="@font/poppins_bold"
@@ -122,6 +124,7 @@
         android:textSize="16dp"
         app:cornerRadius="2dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/container2" />
 
     <!--linhas que ficam ao lado do TextView "ou" (sim, eu tive q PROGRAMAR isso.)-->
@@ -129,20 +132,24 @@
         android:id="@+id/linha1"
         android:layout_width="170dp"
         android:layout_height="1dp"
+        android:layout_marginStart="13dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="228dp"
         android:background="@color/linhas"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login1" />
 
     <View
         android:id="@+id/linha2"
         android:layout_width="170dp"
         android:layout_height="1dp"
+        android:layout_marginStart="226dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
         android:background="@color/linhas"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login1" />
 
     <!--"Ou". TextView simples-->
@@ -150,37 +157,45 @@
         android:id="@+id/text_ou"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="196dp"
+        android:layout_marginBottom="9dp"
         android:text="Ou"
+        app:layout_constraintBottom_toTopOf="@+id/button5"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/linha1"
         app:layout_constraintTop_toBottomOf="@+id/btn_login1" />
 
-    <!--LEMBRETE: esse é um futuro botão.
-    explorar a opção de transformar o texto em "clickable";
-    (desvantagem: tem que redimensionar. pode acabar ficando grande demais.)
-    + como formatar certinho? texto cinzza e sublinhado, com fonte própria?
-    pesquisar mais.
-    !!!!!!!!!!!!!!!!!!!                                                     -->
 
-    <TextView
-        android:id="@+id/text_esq"
-        android:layout_width="206dp"
-        android:layout_height="29dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="168dp"
-        android:fontFamily="@font/poppins_italic"
-        android:text="@string/text_esq1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container2" />
+    <!--LEMBRETE: esse é um futuro botão.
+     explorar a opção de transformar o texto em "clickable";
+     (desvantagem: tem que redimensionar. pode acabar ficando grande demais.)
+     + como formatar certinho? texto cinzza e sublinhado, com fonte própria?
+     pesquisar mais.
+     !!!!!!!!!!!!!!!!!!!     -->
+
+     <TextView
+         android:id="@+id/text_esq"
+         android:layout_width="341dp"
+         android:layout_height="50dp"
+         android:layout_marginTop="16dp"
+         android:layout_marginEnd="40dp"
+         android:clickable="true"
+         android:fontFamily="@font/poppins_italic"
+         android:text="@string/text_esq1"
+         android:textSize="16sp"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/container2" />
 
     <!--botão "registrar-se", segundo botão da página-->
     <Button
         android:id="@+id/button5"
-        android:layout_width="396dp"
-        android:layout_height="59dp"
+        android:layout_width="354dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="28dp"
         android:backgroundTint="@color/btn2"
         android:fontFamily="@font/poppins_bold"
         android:text="Registrar-se"
@@ -188,8 +203,8 @@
         android:textSize="16dp"
         app:cornerRadius="2dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_login1" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

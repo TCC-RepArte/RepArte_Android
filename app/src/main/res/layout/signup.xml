@@ -12,14 +12,16 @@
         android:id="@+id/titulo2"
         android:layout_width="317dp"
         android:layout_height="111dp"
+        android:layout_marginStart="34dp"
         android:layout_marginTop="52dp"
-        android:layout_marginEnd="76dp"
+        android:layout_marginEnd="60dp"
         android:fontFamily="@font/hammersmith_one"
         android:text="Sign-up"
         android:textAlignment="viewStart"
         android:textColor="#C9FD4F0A"
         android:textSize="80dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--Container 03 (primeiro da página) (nome de usuario)-->
@@ -139,8 +141,8 @@
     <!--Botão criar conta-->
     <Button
         android:id="@+id/btn_login1"
-        android:layout_width="377dp"
-        android:layout_height="56dp"
+        android:layout_width="354dp"
+        android:layout_height="62dp"
         android:layout_marginStart="17dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="17dp"

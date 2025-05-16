@@ -90,10 +90,11 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="54dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="88dp"
+        android:layout_width="79dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="80dp"
+        android:clickable="true"
         android:text="Pular"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
@@ -102,10 +103,14 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <ImageView
-        android:layout_width="113dp"
-        android:layout_height="103dp"
-        android:layout_marginStart="212dp"
-        android:layout_marginTop="48dp"
+        android:id="@+id/img_btn"
+        android:layout_width="127dp"
+        android:layout_height="98dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="56dp"
+        android:clickable="true"
+        android:contentDescription="Clique aqui para avançar."
+        android:focusable="true"
         android:src="@drawable/foto1"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
