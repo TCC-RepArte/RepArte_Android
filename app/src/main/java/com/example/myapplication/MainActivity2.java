@@ -7,7 +7,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity2 extends AppCompatActivity {
+public class
+MainActivity2 extends AppCompatActivity {
 
     //declarando os elementos (ia fazer tds mas fiquei com preguiça
     //entao coloquei so os que ia usar na programação...

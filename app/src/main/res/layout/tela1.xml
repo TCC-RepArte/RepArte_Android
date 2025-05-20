@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--inicio padrão do android studio-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Login"
+    android:background="@color/background01">
+
+<!--menu superior-->
+            <!--view/container-->
+    <View
+        android:id="@+id/menu_superior"
+        android:layout_width="410dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="678dp"
+        android:background="@color/background01"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--linear-layout da logo (menu superior) -->
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="230dp"
+        android:layout_height="96dp"
+        android:layout_marginEnd="180dp"
+        android:orientation="horizontal"
+        android:padding="28dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_superior"
+        app:layout_constraintEnd_toEndOf="@+id/menu_superior"
+        app:layout_constraintTop_toTopOf="@+id/menu_superior"
+        app:layout_constraintVertical_bias="0.441">
+        <!--textview rep-->
+        <TextView
+            android:id="@+id/TextViewRepArte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hammersmith_one"
+            android:text="Rep"
+            android:textColor="#FF5722"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+        <!--textview arte-->
+        <TextView
+            android:id="@+id/TextView2RepArte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hammersmith_one"
+            android:text="Arte"
+            android:textColor="#FFFFFF"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+        <!--imagem da logo-->
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="35dp"
+            android:layout_height="36dp"
+            android:src="@drawable/foto2" />
+
+    </LinearLayout>  <!--fim do linear-layout (logo do menu superior)-->
+
+    <!--imagem/botão pra acessar seu perfil-->
+    <!--ALTERAR DEPOIS!!!!!!!!!!!!!-->
+    <!--a cor ta errada!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+    <ImageView
+        android:id="@+id/perfil"
+        android:layout_width="50dp"
+        android:layout_height="64dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_superior"
+        app:layout_constraintEnd_toEndOf="@+id/menu_superior"
+        app:layout_constraintHorizontal_bias="0.928"
+        app:layout_constraintStart_toStartOf="@+id/menu_superior"
+        app:layout_constraintTop_toTopOf="@+id/menu_superior"
+        app:layout_constraintVertical_bias="0.578"
+        app:srcCompat="@drawable/perfil" />
+
+
+    <!--barra de pesquisa-->
+    <!--PROGRAMAR DEPOIS!!!!!!!!!!!-->
+    <SearchView
+        android:id="@+id/pesquisar"
+        android:layout_width="266dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="73dp"
+        android:background="@drawable/search_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/perfil" />
+
+    <!--view/container postagem 01-->
+    <View
+        android:id="@+id/post1"
+        android:layout_width="414dp"
+        android:layout_height="171dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text1" />
+
+    <!--texto "postagens recentes"-->
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="369dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="21dp"
+        android:fontFamily="@font/league_spartan_bold"
+        android:text="Postagens recentes"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/post1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pesquisar" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,4 +11,6 @@
     <color name="field3">#784e50</color>
     <color name="linhas">#8a8788</color>
     <color name="btn2">#424980</color>
+    <color name="background01">#101010</color>
+    <color name="barra1">#c4c4c4</color>
 </resources>

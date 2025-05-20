@@ -3,6 +3,7 @@
     <array name="preloaded_fonts" translatable="false">
         <item>@font/abeezee</item>
         <item>@font/hammersmith_one</item>
+        <item>@font/league_spartan_bold</item>
         <item>@font/poppins_bold</item>
         <item>@font/poppins_italic</item>
     </array>
