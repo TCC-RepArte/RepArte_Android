@@ -6,11 +6,11 @@
     android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login"
-    android:background="@color/background01">
+    android:background="@color/background01"
+    tools:context=".Login">
 
-<!--menu superior-->
-            <!--view/container-->
+    <!--menu superior-->
+    <!--view/container-->
     <View
         android:id="@+id/menu_superior"
         android:layout_width="410dp"
@@ -76,7 +76,7 @@
         app:layout_constraintStart_toStartOf="@+id/menu_superior"
         app:layout_constraintTop_toTopOf="@+id/menu_superior"
         app:layout_constraintVertical_bias="0.578"
-        app:srcCompat="@drawable/perfil" />
+        app:srcCompat="@drawable/user_white" />
 
 
     <!--barra de pesquisa-->
@@ -93,7 +93,7 @@
 
     <!--view/container postagem 01-->
     <View
-        android:id="@+id/post1"
+        android:id="@+id/cont1"
         android:layout_width="414dp"
         android:layout_height="171dp"
         android:layout_marginTop="20dp"
@@ -114,10 +114,27 @@
         android:text="Postagens recentes"
         android:textColor="@color/white"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/post1"
+        app:layout_constraintBottom_toTopOf="@+id/cont1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pesquisar" />
+
+    <!--btn add uma obra? nao sei se vamos manter isso mas enfim...-->
+    <Button
+        android:id="@+id/btn_adc"
+        android:layout_width="106dp"
+        android:layout_height="146dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#3d3d3d"
+        android:text="+"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:cornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="@id/cont1"
+        app:layout_constraintHorizontal_bias="0.037"
+        app:layout_constraintStart_toStartOf="@+id/cont1"
+        app:layout_constraintTop_toTopOf="@+id/cont1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

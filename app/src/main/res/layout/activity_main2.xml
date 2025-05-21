@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity3">
+    tools:context=".MainActivity2">
 
     <View
         android:id="@+id/view2"
@@ -103,14 +103,13 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <ImageView
-        android:id="@+id/img_btn"
+        android:id="@+id/imgBtn"
         android:layout_width="127dp"
         android:layout_height="98dp"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginStart="164dp"
+        android:layout_marginTop="52dp"
         android:clickable="true"
-        android:contentDescription="Clique aqui para avançar."
-        android:focusable="true"
+        android:contentDescription="Avançar;"
         android:src="@drawable/foto1"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />

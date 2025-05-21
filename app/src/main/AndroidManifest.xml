@@ -12,32 +12,39 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
-        <activity
-            android:name=".MainActivity4"
-            android:exported="false" />
         <!-- splash screen, página 01, 'reparte' -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- pág02, texto explicativo + pular/avançar -->
+        </activity>
+
+        <!-- pág02, texto explicativo + pular/avançar -->
         <activity
             android:name=".MainActivity2"
-            android:exported="true" /> <!-- tbd -->
+            android:exported="true" />
+
+        <!-- pag03, com animação -->
         <activity
             android:name=".MainActivity3"
-            android:exported="true" /> <!-- pag login -->
+            android:exported="true" />
+
+        <!-- pag login -->
         <activity
             android:name=".Login"
-            android:exported="true"></activity> <!-- pag sign-up -->
+            android:exported="true">
+        </activity>
+
+        <!-- pag sign-up -->
         <activity
             android:name=".SignUp"
-            android:exported="true"></activity>
+            android:exported="true">
+        </activity>
 
+        <!--código padrao-->
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

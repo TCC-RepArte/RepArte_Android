@@ -13,4 +13,6 @@
     <color name="btn2">#424980</color>
     <color name="background01">#101010</color>
     <color name="barra1">#c4c4c4</color>
+    <color name="btn_add">#3d3d3d</color>
+    <color name="cont_tela">#1e1e1e</color>
 </resources>
