@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity3">
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/my_gradiant2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <!-- bolinhas de fundo -->
+
+
+    <View
+        android:id="@+id/circle0"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="328dp"
+        android:layout_marginEnd="52dp"
+        android:background="@drawable/bolinha_roxa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- texto -->
+
+    <View
+        android:id="@+id/circle1"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="164dp"
+        android:background="@drawable/bolinha_roxa"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/circle2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="264dp"
+        android:background="@drawable/bolinha_roxa"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- barrinha de progresso de baixo -->
+
+    <View
+        android:id="@+id/circle3"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="264dp"
+        android:layout_marginEnd="52dp"
+        android:background="@drawable/bolinha_roxa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/circle4"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="336dp"
+        android:background="@drawable/bolinha_roxa"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/circle5"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="224dp"
+        android:layout_marginEnd="68dp"
+        android:background="@drawable/bolinha_roxa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottiePessoas"
+        android:layout_width="251dp"
+        android:layout_height="258dp"
+        android:layout_marginTop="132dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="pessoas_conversando.json"
+        app:lottie_loop="true"
+        />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="392dp"
+        android:layout_height="129dp"
+        android:layout_marginTop="44dp"
+        android:fontFamily="@font/hammersmith_one"
+        android:text="Leia o que outros pensam e acompanhe conversas sobre milhares de obras"
+        android:textColor="#FF5722"
+        android:textSize="27sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lottiePessoas" />
+
+    <LinearLayout
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="8dp"
+        android:layout_marginTop="192dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lottiePessoas">
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/progresso00" />
+
+        <View
+            android:layout_width="36dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/progresso" />
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:background="@drawable/progresso00" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="79dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="232dp"
+        android:clickable="true"
+        android:text="Pular"
+        android:textColor="#FF5722"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lottiePessoas" />
+
+    <ImageView
+        android:id="@+id/img_btn"
+        android:layout_width="129dp"
+        android:layout_height="107dp"
+        android:layout_marginStart="184dp"
+        android:layout_marginTop="200dp"
+        android:clickable="true"
+        android:contentDescription="Clique aqui para avançar."
+        android:focusable="true"
+        android:src="@drawable/foto1"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/lottiePessoas" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
