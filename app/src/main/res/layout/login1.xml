@@ -93,7 +93,6 @@
         app:layout_constraintStart_toStartOf="@+id/container2"
         app:layout_constraintTop_toTopOf="@+id/container2" />
 
-
     <!--imagenzinha do cadeado que fica ao lado da senha-->
     <ImageView
         android:id="@+id/imageView15"
@@ -107,11 +106,7 @@
         app:layout_constraintTop_toTopOf="@+id/container2"
         app:srcCompat="@drawable/lock" />
 
-
     <!--botão "entrar", primeiro botão da página-->
-
-
-
     <Button
         android:id="@+id/btn_login1"
         android:layout_width="354dp"
@@ -171,13 +166,6 @@
         app:layout_constraintStart_toEndOf="@+id/linha1"
         app:layout_constraintTop_toBottomOf="@+id/btn_login1" />
 
-
-    <!--LEMBRETE: esse é um futuro botão.
-     explorar a opção de transformar o texto em "clickable";
-     (desvantagem: tem que redimensionar. pode acabar ficando grande demais.)
-     + como formatar certinho? texto cinzza e sublinhado, com fonte própria?
-     pesquisar mais.
-     !!!!!!!!!!!!!!!!!!!     -->
 
     <!--botão "registrar-se", segundo botão da página-->
     <Button
