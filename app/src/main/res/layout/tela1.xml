@@ -92,49 +92,126 @@
         app:layout_constraintTop_toBottomOf="@+id/perfil" />
 
     <!--view/container postagem 01-->
+
+
+
     <View
         android:id="@+id/cont1"
-        android:layout_width="414dp"
-        android:layout_height="171dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="391dp"
+        android:layout_height="139dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="22dp"
+        android:background="@drawable/div_tela"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text1" />
 
-    <!--texto "postagens recentes"-->
+
+    <!--texto "página incial"-->
     <TextView
         android:id="@+id/text1"
-        android:layout_width="369dp"
-        android:layout_height="45dp"
+        android:layout_width="362dp"
+        android:layout_height="36dp"
         android:layout_marginStart="26dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="21dp"
         android:fontFamily="@font/league_spartan_bold"
-        android:text="Postagens recentes"
+        android:text="Página inicial"
         android:textColor="@color/white"
-        android:textSize="30sp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/cont1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pesquisar" />
-
     <!--btn add uma obra? nao sei se vamos manter isso mas enfim...-->
     <Button
         android:id="@+id/btn_adc"
-        android:layout_width="106dp"
-        android:layout_height="146dp"
+        android:layout_width="91dp"
+        android:layout_height="117dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="12dp"
         android:backgroundTint="#3d3d3d"
+        android:fontFamily="@font/hammersmith_one"
         android:text="+"
         android:textAlignment="center"
         android:textSize="30sp"
         app:cornerRadius="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cont1"
         app:layout_constraintEnd_toEndOf="@id/cont1"
-        app:layout_constraintHorizontal_bias="0.037"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/cont1"
+        app:layout_constraintTop_toTopOf="@+id/cont1"
+        app:layout_constraintVertical_bias="0.0"
+        app:strokeColor="@color/border"
+        app:strokeWidth="3dp" />
+
+    <!--edittext pra escrever sua analise/postagem-->
+    <EditText
+        android:id="@+id/post"
+        android:layout_width="270dp"
+        android:layout_height="74dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Clique aqui para escrever sua análise..."
+        android:inputType="textMultiLine"
+        android:textAlignment="viewStart"
+        android:textColorHint="#B9B0B0"
+        app:layout_constraintEnd_toEndOf="@+id/cont1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/btn_adc"
         app:layout_constraintTop_toTopOf="@+id/cont1" />
 
+    <!--imagem/futuro botão pra enviar a postagem-->
+    <ImageView
+        android:id="@+id/send_post"
+        android:layout_width="62dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="296dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintStart_toStartOf="@id/cont1"
+        app:layout_constraintTop_toTopOf="@+id/cont1"
+        app:srcCompat="@drawable/foto1" />
+
+    <!--imagem/futuro botão para anexar arquivos-->
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="34dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="168dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@id/btn_adc"
+        app:layout_constraintTop_toBottomOf="@+id/post"
+        app:srcCompat="@drawable/anexo" />
+
+    <!--linha que separa o layout-->
+    <View
+        android:id="@+id/linha_view"
+        android:layout_width="360dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="35dp"
+        android:background="@color/linhas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/send_post" />
+
+    <!--div/container/view da primeira postagem-->
+    <View
+        android:id="@+id/post1"
+        android:layout_width="391dp"
+        android:layout_height="139dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linha_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

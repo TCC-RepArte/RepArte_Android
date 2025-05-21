@@ -109,12 +109,15 @@
 
 
     <!--botão "entrar", primeiro botão da página-->
+
+
+
     <Button
         android:id="@+id/btn_login1"
         android:layout_width="354dp"
         android:layout_height="62dp"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="28dp"
         android:backgroundTint="#C9FD4F0A"
         android:backgroundTintMode="add"
@@ -124,6 +127,7 @@
         android:textSize="16dp"
         app:cornerRadius="2dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/container2" />
 
@@ -174,19 +178,6 @@
      + como formatar certinho? texto cinzza e sublinhado, com fonte própria?
      pesquisar mais.
      !!!!!!!!!!!!!!!!!!!     -->
-
-     <TextView
-         android:id="@+id/text_esq"
-         android:layout_width="341dp"
-         android:layout_height="50dp"
-         android:layout_marginTop="16dp"
-         android:layout_marginEnd="40dp"
-         android:clickable="true"
-         android:fontFamily="@font/poppins_italic"
-         android:text="@string/text_esq1"
-         android:textSize="16sp"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/container2" />
 
     <!--botão "registrar-se", segundo botão da página-->
     <Button
