@@ -109,12 +109,14 @@
 
 
     <!--texto "página incial"-->
+    <!--btn add uma obra? nao sei se vamos manter isso mas enfim...-->
+
     <TextView
         android:id="@+id/text1"
         android:layout_width="362dp"
         android:layout_height="36dp"
         android:layout_marginStart="26dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="14dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="21dp"
         android:fontFamily="@font/league_spartan_bold"
@@ -126,7 +128,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pesquisar" />
-    <!--btn add uma obra? nao sei se vamos manter isso mas enfim...-->
+
     <Button
         android:id="@+id/btn_adc"
         android:layout_width="91dp"
@@ -169,25 +171,13 @@
     <!--imagem/futuro botão pra enviar a postagem-->
     <ImageView
         android:id="@+id/send_post"
-        android:layout_width="62dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="296dp"
+        android:layout_width="56dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="312dp"
         android:layout_marginTop="80dp"
         app:layout_constraintStart_toStartOf="@id/cont1"
         app:layout_constraintTop_toTopOf="@+id/cont1"
         app:srcCompat="@drawable/foto1" />
-
-    <!--imagem/futuro botão para anexar arquivos-->
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="34dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="168dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@id/btn_adc"
-        app:layout_constraintTop_toBottomOf="@+id/post"
-        app:srcCompat="@drawable/anexo" />
-
     <!--linha que separa o layout-->
     <View
         android:id="@+id/linha_view"
@@ -205,13 +195,92 @@
     <!--div/container/view da primeira postagem-->
     <View
         android:id="@+id/post1"
-        android:layout_width="391dp"
-        android:layout_height="139dp"
+        android:layout_width="399dp"
+        android:layout_height="190dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linha_view" />
+    <!--imagem do perfil na primeira postagem-->
+    <ImageView
+        android:id="@+id/perfil2"
+        android:layout_width="50dp"
+        android:layout_height="64dp"
+        app:layout_constraintBottom_toBottomOf="@+id/post1"
+        app:layout_constraintEnd_toEndOf="@+id/post1"
+        app:layout_constraintHorizontal_bias="0.017"
+        app:layout_constraintStart_toStartOf="@+id/post1"
+        app:layout_constraintTop_toTopOf="@+id/post1"
+        app:layout_constraintVertical_bias="0.015"
+        app:srcCompat="@drawable/user_white" />
+
+    <!--nome do usuário na primeira postagem-->
+    <TextView
+        android:id="@+id/fulano"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Fulano"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/post1" />
+
+    <!--texto postado pelo fulano na primeira postagem-->
+    <TextView
+        android:id="@+id/texto_sin"
+        android:layout_width="216dp"
+        android:layout_height="117dp"
+        android:layout_marginStart="68dp"
+        android:text="No plano puramente conceptual, Sinners apresenta-se como uma proposta inovadora e diferente: ao evocar a América profunda de Flannery O’Connor, Coogler procura fazer casar um drama criminal e familiar com o realismo mágico próprio da arte gótica sulista. Ainda assim, Coogler retém a moldura mental e a "
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/post1"
+        app:layout_constraintStart_toStartOf="@+id/post1"
+        app:layout_constraintTop_toTopOf="@+id/post1"
+        app:layout_constraintVertical_bias="0.328" />
+
+    <!--botão ver mais na primeira postagem-->
+    <Button
+        android:id="@+id/vermais1"
+        android:layout_width="169dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="120dp"
+        android:backgroundTint="@android:color/transparent"
+        android:text="Ver mais..."
+        android:textColor="#FF5722"
+        app:layout_constraintEnd_toEndOf="@+id/post1"
+        app:layout_constraintHorizontal_bias="0.709"
+        app:layout_constraintStart_toStartOf="@+id/post1"
+        app:layout_constraintTop_toTopOf="@+id/post1" />
+
+    <!--POSTER SINNERS-->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="92dp"
+        android:layout_height="159dp"
+        android:layout_marginStart="296dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="@id/post1"
+        app:layout_constraintTop_toTopOf="@+id/post1"
+        app:srcCompat="@drawable/sinners1" />
+
+    <!--menu inferior. tbd-->
+    <View
+        android:id="@+id/view"
+        android:layout_width="414dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="118dp"
+        android:background="@color/cont_tela"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/menu_superior"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

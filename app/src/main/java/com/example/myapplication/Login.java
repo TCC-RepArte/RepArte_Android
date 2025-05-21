@@ -16,7 +16,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.login1);
 
         //declarando elementos
-        TextView titulo, text_ou, text_esq;
+        TextView titulo, text_ou;
         EditText username, senha1;
         Button btn_login1, button5;
         ImageView avatar, lock;
@@ -24,7 +24,6 @@ public class Login extends AppCompatActivity {
         // iniciando elementos pela id
         titulo = findViewById(R.id.titulo);
         text_ou = findViewById(R.id.text_ou);
-        text_esq = findViewById(R.id.text_esq);
         username = findViewById(R.id.username);
         senha1 = findViewById(R.id.senha1);
         btn_login1 = findViewById(R.id.btn_login1);
@@ -35,6 +34,14 @@ public class Login extends AppCompatActivity {
         //evento do botão de registrar (ir pra página de sign-up)
         button5.setOnClickListener(view -> {
             Intent intent = new Intent(Login.this, SignUp.class);
+            startActivity(intent);
+        });
+        //evento do botão de login (ir pra página inicial/tela1)
+        //tem que programar isso aqui pra pessoa so conseguir entrar se os dados dela
+        //estiverem no banco de dados. talvez precise aparecer um aviso, parecido com
+        //o required do html. vamos ver!
+        btn_login1.setOnClickListener(view -> {
+            Intent intent = new Intent(Login.this, Tela.class);
             startActivity(intent);
         });
     }

@@ -43,6 +43,12 @@
             android:name=".SignUp"
             android:exported="true">
         </activity>
+        <!--página inicial/tela-->
+        <activity
+            android:name=".Tela"
+            android:exported="true">
+        </activity>
+
 
         <!--código padrao-->
         <meta-data
