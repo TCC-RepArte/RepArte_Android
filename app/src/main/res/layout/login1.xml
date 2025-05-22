@@ -32,10 +32,12 @@
         android:id="@+id/cont1"
         android:layout_width="371dp"
         android:layout_height="63dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="204dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/container_dr"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--inserir nome de usuário-->
@@ -58,10 +60,12 @@
         android:id="@+id/container2"
         android:layout_width="371dp"
         android:layout_height="63dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/container_dr"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cont1" />
 
     <!--imagenzinha do avatar que fica ao lado do username-->
@@ -122,7 +126,6 @@
         android:textSize="16dp"
         app:cornerRadius="2dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/container2" />
 
