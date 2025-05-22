@@ -8,12 +8,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class
-MainActivity2 extends AppCompatActivity {
+public class MainActivity2 extends AppCompatActivity {
 
     //declarando os elementos
     //coloquei so os que ia usar na programação
-    ImageView imgBtn;
+    ImageView ImgBtn;
     TextView textView3;
 
     @Override
@@ -22,16 +21,14 @@ MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         //iniciando elementos pela id
-        imgBtn = findViewById(R.id.imgBtn);
-        textView3 = findViewById(R.id.textView3);
+        ImgBtn = findViewById(R.id.btnProximo);
+        textView3 = findViewById(R.id.btnPular);
 
         //fiz a imagem de botão. quando clicar, vai pra tela seguinte.
-        //no caso, a tela com a animação!
-        imgBtn.setOnClickListener(v -> {
-            Toast.makeText(MainActivity2.this, "Botão clicado!", Toast.LENGTH_SHORT).show();
-
+        ImgBtn.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity2.this, MainActivity3.class);
             startActivity(intent);
+            finish();
         });
 
 

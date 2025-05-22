@@ -2,22 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity3">
-
-    <View
-        android:id="@+id/view2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/my_gradiant2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+    android:background="@drawable/gradiente_roxo"
+    tools:context=".MainActivity4">
 
     <!-- bolinhas de fundo -->
 
@@ -71,8 +59,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Lottie -->
+
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieMensagem"
+        android:id="@+id/lottieAnimacao4"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_marginTop="92dp"
@@ -81,23 +71,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
-        app:lottie_rawRes="@raw/mensagem"
-        app:lottie_loop="true"
-        />
+        app:lottie_rawRes="@raw/pessoas"
+        app:lottie_loop="true" />
 
     <!-- texto -->
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="373dp"
-        android:layout_height="wrap_content"
+        android:layout_height="111dp"
         android:layout_marginStart="23dp"
         android:layout_marginTop="456dp"
         android:fontFamily="@font/hammersmith_one"
         android:gravity="start"
-        android:text="Compartilhe suas impressões, leia o que outros pensam e acompanhe conversas sobre milhares de obras"
+        android:text="Quer tudo isso e muito mais? Descubra um lugar onde arte vira conversa"
         android:textColor="#FF5722"
-        android:textSize="24sp"
+        android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -121,15 +110,15 @@
             android:background="@drawable/progresso00" />
 
         <View
-            android:layout_width="36dp"
-            android:layout_height="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/progresso" />
-
-        <View
             android:layout_width="16dp"
             android:layout_height="8dp"
-            android:background="@drawable/progresso00" />
+            android:background="@drawable/progresso00"
+            android:layout_marginEnd="8dp"/>
+
+        <View
+            android:layout_width="32dp"
+            android:layout_height="8dp"
+            android:background="@drawable/progresso"/>
     </LinearLayout>
 
     <!-- pular -->
@@ -148,7 +137,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Botão de imagem (Próximo) -->
-    <ImageView
+    <ImageButton
         android:id="@+id/btnProximo"
         android:layout_width="87dp"
         android:layout_height="90dp"
@@ -160,5 +149,6 @@
         android:src="@drawable/foto1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
