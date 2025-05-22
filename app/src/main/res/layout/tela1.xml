@@ -263,7 +263,51 @@
         app:layout_constraintTop_toTopOf="@+id/post1"
         app:srcCompat="@drawable/sinners1" />
 
+    <!-- barra de cometários e curtidas -->
+
+    <View
+        android:id="@+id/view0"
+        android:layout_width="369dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="118dp"
+        android:background="@color/cont_tela"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.619"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/menu_superior"
+        app:layout_constraintVertical_bias="0.666" />
+
+
     <!--menu inferior. tbd-->
+
+    <ImageView
+        android:id="@+id/setadown"
+        android:layout_width="32dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="06dp"
+        app:layout_constraintBottom_toBottomOf="@id/view0"
+        app:layout_constraintEnd_toEndOf="@+id/view0"
+        app:layout_constraintHorizontal_bias="0.949"
+        app:layout_constraintStart_toStartOf="@+id/view0"
+        app:srcCompat="@drawable/seta_down" />
+
+    <TextView
+        android:id="@+id/downvote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="14"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/view0"
+        app:layout_constraintHorizontal_bias="0.971"
+        app:layout_constraintStart_toStartOf="@+id/view0"
+        app:layout_constraintTop_toTopOf="@+id/view0" />
+
+ <!-- menu inferior -->
+
     <View
         android:id="@+id/view"
         android:layout_width="414dp"
