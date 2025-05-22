@@ -277,4 +277,104 @@
         app:layout_constraintTop_toBottomOf="@id/menu_superior"
         app:layout_constraintVertical_bias="1.0" />
 
+
+    <!--primeiro botão-->
+
+    <!--segundo botão-->
+
+    <View
+        android:id="@+id/cont2"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/div_tela2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.917"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view" />
+
+    <ImageView
+        android:id="@+id/balao_txt"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cont2"
+        app:layout_constraintEnd_toEndOf="@+id/cont2"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="@+id/cont2"
+        app:layout_constraintTop_toTopOf="@+id/cont2"
+        app:layout_constraintVertical_bias="0.92"
+        app:srcCompat="@drawable/balao_texto" />
+
+    <View
+        android:id="@+id/cont3"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="06dp"
+        android:background="@drawable/div_tela2"
+        app:layout_constraintEnd_toStartOf="@+id/cont2"
+        app:layout_constraintHorizontal_bias="0.891"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view" />
+
+    <!-- terceiro botão-->
+
+    <ImageView
+        android:id="@+id/sino_txt"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cont3"
+        app:layout_constraintEnd_toEndOf="@+id/cont3"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="@+id/cont3"
+        app:layout_constraintTop_toTopOf="@+id/cont3"
+        app:layout_constraintVertical_bias="0.6"
+        app:srcCompat="@drawable/sino" />
+
+    <View
+        android:id="@+id/cont4"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="17dp"
+        android:background="@drawable/div_tela2"
+        app:layout_constraintEnd_toStartOf="@+id/cont3"
+        app:layout_constraintHorizontal_bias="0.904"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view" />
+
+    <!-- Quarto botão-->
+
+    <ImageView
+        android:id="@+id/lapis_img"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cont4"
+        app:layout_constraintEnd_toEndOf="@+id/cont4"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toStartOf="@+id/cont4"
+        app:srcCompat="@drawable/lapis_img" />
+
+    <View
+        android:id="@+id/cont5"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="17dp"
+        android:background="@drawable/div_tela3"
+        app:layout_constraintEnd_toStartOf="@+id/cont4"
+        app:layout_constraintHorizontal_bias="0.649"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view" />
+
+    <ImageView
+        android:id="@+id/home_img"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cont5"
+        app:layout_constraintEnd_toEndOf="@+id/cont5"
+        app:layout_constraintStart_toStartOf="@+id/cont5"
+        app:srcCompat="@drawable/home_img" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
