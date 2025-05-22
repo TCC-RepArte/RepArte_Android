@@ -27,7 +27,7 @@
             android:name=".MainActivity2"
             android:exported="true" />
 
-        <!-- pag03, com animação -->
+        <!-- pag03 -->
         <activity
             android:name=".MainActivity3"
             android:exported="true" />
@@ -43,12 +43,17 @@
             android:name=".SignUp"
             android:exported="true">
         </activity>
+
         <!--página inicial/tela-->
         <activity
             android:name=".Tela"
             android:exported="true">
         </activity>
 
+        <!-- pág perfil-->
+        <activity
+            android:name=".Perfil"
+            android:exported="true" />
 
         <!--código padrao-->
         <meta-data
