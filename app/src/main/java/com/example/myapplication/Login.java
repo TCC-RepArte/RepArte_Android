@@ -61,17 +61,27 @@ public class Login extends AppCompatActivity {
             // Tenta fazer login usando a API
             apiService.realizarLogin(user, pass, (e, result) -> {
                 if (e != null) {
-                    Toast.makeText(Login.this, "Erro ao fazer login: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    System.out.println("Erro de conexão: " + e.getMessage());
+                    String mensagemErro = "Erro ao fazer login: ";
+                    if (e.getMessage().contains("Failed to connect")) {
+                        mensagemErro += "Não foi possível conectar ao servidor";
+                    } else {
+                        mensagemErro += e.getMessage();
+                    }
+                    Toast.makeText(Login.this, mensagemErro, Toast.LENGTH_LONG).show();
                     return;
                 }
 
+                System.out.println("Resposta do servidor: " + (result != null ? result.toString() : "null"));
+
                 if (result != null && result.has("status") && result.get("status").getAsString().equals("ok")) {
                     Toast.makeText(Login.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
-                    // caso tudo esteja certinho, procede pra tela inicial
                     Intent intent = new Intent(Login.this, Tela.class);
                     startActivity(intent);
                     finish(); // fecha a activity de login
                 } else {
+                    String erro = result != null ? result.toString() : "resposta nula do servidor";
+                    System.out.println("Erro no login: " + erro);
                     Toast.makeText(Login.this, "Usuário ou senha incorretos", Toast.LENGTH_LONG).show();
                     password.setText(""); // limpa o campo de senha
                 }

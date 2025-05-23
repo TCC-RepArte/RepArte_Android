@@ -96,7 +96,6 @@
         android:background="@drawable/search_bar"
         app:layout_constraintBottom_toTopOf="@+id/text1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toEndof="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menu_superior" />
 
@@ -241,7 +240,7 @@
         android:layout_width="216dp"
         android:layout_height="117dp"
         android:layout_marginStart="68dp"
-        android:text="No plano puramente conceptual, Sinners apresenta-se como uma proposta inovadora e diferente: ao evocar a América profunda de Flannery O’Connor, Coogler procura fazer casar um drama criminal e familiar com o realismo mágico próprio da arte gótica sulista. Ainda assim, Coogler retém a moldura mental e a "
+        android:text="No plano puramente conceptual, Sinners apresenta-se como uma proposta inovadora e diferente: ao evocar a América profunda de Flannery O'Connor, Coogler procura fazer casar um drama criminal e familiar com o realismo mágico próprio da arte gótica sulista. Ainda assim, Coogler retém a moldura mental e a "
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/post1"
         app:layout_constraintStart_toStartOf="@+id/post1"

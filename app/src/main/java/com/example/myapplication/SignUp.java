@@ -54,9 +54,19 @@ public class SignUp extends AppCompatActivity {
                 nome.setError("Campo obrigatório.");
                 hasError = true;
             }
+
+            // Verifica se tem espaço no nome de usuário
+            if (username.contains(" ")) {
+                nome.setError("O nome de usuário não pode conter espaços.");
+                hasError = true;
+            }
+
             // caso o campo de email esteja vazio
             if (email.isEmpty()) {
                 mail.setError("Campo obrigatório.");
+                hasError = true;
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                mail.setError("Digite um email válido.");
                 hasError = true;
             }
             // caso o campo de senha1 esteja vazio
@@ -79,12 +89,27 @@ public class SignUp extends AppCompatActivity {
                 return;
             }
 
+            // Remove espaços do nome de usuário
+            username = username.replace(" ", "");
+
             // Se passou por todas as validações, tenta cadastrar
+            System.out.println("Tentando cadastrar usuário: " + username);
+            System.out.println("Email informado: " + email);
+            
             apiService.cadastrarUsuario(username, senha1, (e, result) -> {
                 if (e != null) {
-                    Toast.makeText(SignUp.this, "Erro ao cadastrar: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    System.out.println("Erro de conexão: " + e.getMessage());
+                    String mensagemErro = "Erro ao cadastrar: ";
+                    if (e.getMessage().contains("Failed to connect")) {
+                        mensagemErro += "Não foi possível conectar ao servidor";
+                    } else {
+                        mensagemErro += e.getMessage();
+                    }
+                    Toast.makeText(SignUp.this, mensagemErro, Toast.LENGTH_LONG).show();
                     return;
                 }
+
+                System.out.println("Resposta do servidor: " + (result != null ? result.toString() : "null"));
 
                 if (result != null && result.has("status") && result.get("status").getAsString().equals("ok")) {
                     Toast.makeText(SignUp.this, "Cadastro realizado com sucesso!", Toast.LENGTH_LONG).show();
@@ -93,7 +118,9 @@ public class SignUp extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(SignUp.this, "Erro ao cadastrar usuário", Toast.LENGTH_LONG).show();
+                    String erro = result != null ? result.toString() : "resposta nula do servidor";
+                    System.out.println("Erro no cadastro: " + erro);
+                    Toast.makeText(SignUp.this, "Erro ao cadastrar usuário: " + erro, Toast.LENGTH_LONG).show();
                 }
             });
         });
