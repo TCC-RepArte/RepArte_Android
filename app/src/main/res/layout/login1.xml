@@ -114,10 +114,12 @@
         app:srcCompat="@drawable/lock" />
 
     <!--botão "entrar", primeiro botão da página-->
+
     <Button
         android:id="@+id/btn_login1"
         android:layout_width="354dp"
         android:layout_height="62dp"
+        android:layout_marginTop="12dp"
         android:backgroundTint="#C9FD4F0A"
         android:backgroundTintMode="add"
         android:fontFamily="@font/poppins_bold"
@@ -127,55 +129,58 @@
         app:cornerRadius="2dp"
         app:layout_constraintBottom_toTopOf="@+id/linha1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/container2" />
+
     <!--"Ou". TextView simples-->
+
+
     <TextView
         android:id="@+id/text_ou"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="21dp"
         android:text="Ou"
         app:layout_constraintBottom_toTopOf="@+id/button5"
-        app:layout_constraintEnd_toStartOf="@id/linha2"
-        app:layout_constraintHorizontal_bias="0.56"
-        app:layout_constraintStart_toEndOf="@+id/linha1"
+        app:layout_constraintEnd_toStartOf="@+id/linha1"
+        app:layout_constraintStart_toEndOf="@id/linha2"
         app:layout_constraintTop_toBottomOf="@+id/btn_login1"
-        app:layout_constraintVertical_bias="0.421" />
-
+        app:layout_constraintVertical_bias="0.521" />
     <!--linhas que ficam ao lado do TextView "ou" -->
-
     <View
         android:id="@+id/linha1"
         android:layout_width="170dp"
         android:layout_height="1dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="228dp"
-        android:layout_marginBottom="57dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
         android:background="@color/linhas"
         app:layout_constraintBottom_toTopOf="@+id/button5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toEndOf="@id/text_ou"
         app:layout_constraintTop_toBottomOf="@+id/btn_login1" />
 
     <View
     android:id="@+id/linha2"
     android:layout_width="170dp"
     android:layout_height="1dp"
+    android:layout_marginStart="2dp"
+    android:layout_marginEnd="2dp"
     android:background="@color/linhas"
     app:layout_constraintBottom_toTopOf="@+id/button5"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.933"
+    app:layout_constraintEnd_toStartOf="@id/text_ou"
+    app:layout_constraintHorizontal_bias="0.085"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/btn_login1"
-    app:layout_constraintVertical_bias="0.445" />
+    app:layout_constraintVertical_bias="0.515" />
 
     <!--botão "registrar-se", segundo botão da página-->
+
     <Button
         android:id="@+id/button5"
         android:layout_width="354dp"
         android:layout_height="62dp"
+        android:layout_marginBottom="50dp"
         android:backgroundTint="@color/btn2"
         android:fontFamily="@font/poppins_bold"
         android:text="Registrar-se"
@@ -184,12 +189,10 @@
         app:cornerRadius="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintHorizontal_bias="0.578"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_login1"
-        app:layout_constraintVertical_bias="0.36" />
-
-
+        app:layout_constraintVertical_bias="0.448" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout> <!--fim do codigo-->

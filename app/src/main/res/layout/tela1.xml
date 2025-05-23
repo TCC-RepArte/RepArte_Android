@@ -181,21 +181,23 @@
         app:layout_constraintTop_toTopOf="@+id/cont1"
         app:srcCompat="@drawable/foto1" />
     <!--linha que separa o layout-->
+
+    <!--div/container/view da primeira postagem-->
+    <!--imagem do perfil na primeira postagem-->
+
     <View
         android:id="@+id/linha_view"
         android:layout_width="360dp"
         android:layout_height="1dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="35dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/linhas"
+        app:layout_constraintBottom_toTopOf="@+id/post1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/send_post" />
 
-    <!--div/container/view da primeira postagem-->
-    <!--imagem do perfil na primeira postagem-->
     <View
         android:id="@+id/post1"
         android:layout_width="399dp"
