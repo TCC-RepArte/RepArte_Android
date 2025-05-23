@@ -64,21 +64,24 @@
     </LinearLayout>  <!--fim do linear-layout (logo do menu superior)-->
 
     <!--imagem/botão pra acessar seu perfil-->
-    <ImageView
-        android:id="@+id/perfil"
-        android:layout_width="50dp"
-        android:layout_height="64dp"
-        app:layout_constraintBottom_toBottomOf="@+id/menu_superior"
-        app:layout_constraintEnd_toEndOf="@+id/menu_superior"
-        app:layout_constraintHorizontal_bias="0.928"
-        app:layout_constraintStart_toStartOf="@+id/menu_superior"
-        app:layout_constraintTop_toTopOf="@+id/menu_superior"
-        app:layout_constraintVertical_bias="0.578"
-        app:srcCompat="@drawable/user_white" />
 
 
     <!--barra de pesquisa-->
     <!--PROGRAMAR DEPOIS!!!!!!!!!!!-->
+    <ImageView
+        android:id="@+id/perfil"
+        android:layout_width="50dp"
+        android:layout_height="64dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_superior"
+        app:layout_constraintEnd_toEndOf="@+id/menu_superior"
+        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintStart_toStartOf="@+id/menu_superior"
+        app:layout_constraintTop_toTopOf="@+id/menu_superior"
+        app:layout_constraintVertical_bias="1.0"
+        android:contentDescription="Tela de perfil"
+        app:srcCompat="@drawable/user_white" />
+
     <SearchView
         android:id="@+id/pesquisar"
         android:layout_width="266dp"
@@ -190,10 +193,11 @@
     <View
         android:id="@+id/post1"
         android:layout_width="399dp"
-        android:layout_height="190dp"
+        android:layout_height="169dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="10dp"
+        android:background="@drawable/postagem"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
@@ -265,21 +269,22 @@
 
     <!-- barra de cometários e curtidas -->
 
+
+    <!--menu inferior. tbd-->
+
     <View
         android:id="@+id/view0"
-        android:layout_width="369dp"
-        android:layout_height="36dp"
+        android:layout_width="399dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="6dp"
         android:layout_marginTop="118dp"
+        android:layout_marginEnd="6dp"
         android:background="@color/cont_tela"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.619"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/menu_superior"
         app:layout_constraintVertical_bias="0.666" />
-
-
-    <!--menu inferior. tbd-->
 
     <ImageView
         android:id="@+id/setadown"

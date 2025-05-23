@@ -14,5 +14,17 @@ public class Tela extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tela1);
+
+        //declarar
+        ImageView perfil;
+
+        //id
+        perfil = findViewById(R.id.perfil);
+
+        //evento do botao
+        perfil.setOnClickListener(view -> {
+            Intent intent = new Intent(Tela.this, Perfil.class);
+            startActivity(intent);
+        });
     }
 }

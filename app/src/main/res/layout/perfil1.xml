@@ -73,12 +73,11 @@
         android:layout_height="176dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="448dp"
         android:background="@color/cont_tela"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
@@ -105,6 +104,8 @@
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/btn_add"
         android:text="Alterar foto de perfil"
+        android:textColor="#FDFCFC"
+        android:textColorLink="#FDFCFC"
         app:cornerRadius="15dp"
         app:layout_constraintStart_toStartOf="@id/cont_perfil"
         app:layout_constraintTop_toBottomOf="@+id/nome" />
@@ -148,9 +149,10 @@
         android:layout_marginStart="14dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="14dp"
+        android:layout_marginBottom="158dp"
         android:background="@color/cont_tela"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linha_view" />
 
@@ -175,6 +177,8 @@
         android:layout_marginTop="3dp"
         android:backgroundTint="@color/btn_add"
         android:text="Salvar..."
+        android:textColor="#FDFCFC"
+        android:textColorLink="#FDFCFC"
         app:cornerRadius="15dp"
         app:layout_constraintStart_toStartOf="@id/bio"
         app:layout_constraintTop_toBottomOf="@+id/desc" />
