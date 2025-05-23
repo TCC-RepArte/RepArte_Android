@@ -269,22 +269,21 @@
         android:id="@+id/view0"
         android:layout_width="399dp"
         android:layout_height="39dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="118dp"
-        android:layout_marginEnd="6dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginEnd="08dp"
         android:background="@color/cont_tela"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.989"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/menu_superior"
-        app:layout_constraintVertical_bias="0.665" />
+        app:layout_constraintTop_toBottomOf="@+id/post1"
+        app:layout_constraintVertical_bias="0.019" />
 
     <ImageView
         android:id="@+id/downvote"
         android:layout_width="32dp"
         android:layout_height="38dp"
-        android:layout_marginEnd="06dp"
+        android:layout_marginEnd="07dp"
         app:layout_constraintBottom_toBottomOf="@id/view0"
         app:layout_constraintEnd_toEndOf="@+id/view0"
         app:layout_constraintHorizontal_bias="0.949"
@@ -309,13 +308,13 @@
         android:layout_width="1dp"
         android:layout_height="22dp"
         android:layout_marginStart="290dp"
-        android:layout_marginTop="231dp"
-        android:layout_marginEnd="06dp"
+        android:layout_marginTop="08dp"
+        android:layout_marginEnd="08dp"
         android:background="@color/linhas"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/send_post" />
+        app:layout_constraintTop_toTopOf="@+id/view0" />
 
     <TextView
         android:id="@+id/upvote_num"
@@ -361,8 +360,6 @@
         app:layout_constraintTop_toTopOf="@+id/view0"
         tools:layout_editor_absoluteY="487dp" />
 
-
-    <!--menu inferior. tbd-->
     <ImageView
         android:id="@+id/coment"
         android:layout_width="32dp"
@@ -371,6 +368,10 @@
         app:layout_constraintBottom_toBottomOf="@id/view0"
         app:layout_constraintEnd_toEndOf="@+id/view0"
         app:srcCompat="@drawable/comentarios" />
+
+
+
+    <!--menu inferior. tbd-->
 
     <View
         android:id="@+id/view"
