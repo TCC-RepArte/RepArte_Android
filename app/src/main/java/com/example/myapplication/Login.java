@@ -7,19 +7,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.example.myapplication.api.ApiService;
 
 public class Login extends AppCompatActivity {
+    private ApiService apiService;
+    private EditText nome, password;
+    private Button btn_login1, button5;
+    private TextView titulo, text_ou;
+    private ImageView avatar, lock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login1);
 
-        //declarando elementos
-        TextView titulo, text_ou;
-        EditText nome, password;
-        Button btn_login1, button5;
-        ImageView avatar, lock;
+        apiService = new ApiService(this);
 
         // iniciando elementos pela id
         titulo = findViewById(R.id.titulo);
@@ -36,12 +39,11 @@ public class Login extends AppCompatActivity {
             Intent intent = new Intent(Login.this, SignUp.class);
             startActivity(intent);
         });
+
         // evento do botão 'entrar'
-        //a pessoa só pode fazer login se tiver preenchido todos os campos:
         btn_login1.setOnClickListener(view -> {
             String user = nome.getText().toString().trim();
             String pass = password.getText().toString().trim();
-            //isso acima é basico pra pegar os valores digitados nos campos.
 
             // verifica se o campo do username foi preenchido e avisa se nao foi
             if (user.isEmpty()) {
@@ -55,14 +57,25 @@ public class Login extends AppCompatActivity {
                 password.requestFocus();
                 return;
             }
-            // caso tudo esteja certinho, procede pra tela inicial
-            Intent intent = new Intent(Login.this, Tela.class);
-            startActivity(intent);
+
+            // Tenta fazer login usando a API
+            apiService.realizarLogin(user, pass, (e, result) -> {
+                if (e != null) {
+                    Toast.makeText(Login.this, "Erro ao fazer login: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (result != null && result.has("status") && result.get("status").getAsString().equals("ok")) {
+                    Toast.makeText(Login.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
+                    // caso tudo esteja certinho, procede pra tela inicial
+                    Intent intent = new Intent(Login.this, Tela.class);
+                    startActivity(intent);
+                    finish(); // fecha a activity de login
+                } else {
+                    Toast.makeText(Login.this, "Usuário ou senha incorretos", Toast.LENGTH_LONG).show();
+                    password.setText(""); // limpa o campo de senha
+                }
+            });
         });
-    //fim do evento do botão. ainda falta uma parte pra programar:
-    //caso os dados que a pessoa colocou não estejam no bd,
-    //ela não pode entrar.
-    //lembrete!
     }
 }
-
