@@ -11,18 +11,20 @@
 
     <!--menu superior-->
     <!--view/container-->
+
+    <!--linear-layout da logo (menu superior) -->
     <View
         android:id="@+id/menu_superior"
         android:layout_width="410dp"
         android:layout_height="53dp"
-        android:layout_marginBottom="678dp"
         android:background="@color/background01"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.045" />
 
-    <!--linear-layout da logo (menu superior) -->
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="230dp"
@@ -82,31 +84,32 @@
         android:contentDescription="Tela de perfil"
         app:srcCompat="@drawable/user_white" />
 
+    <!--view/container postagem 01-->
+
+
+    <!--texto "página incial"-->
+
     <SearchView
         android:id="@+id/pesquisar"
         android:layout_width="266dp"
         android:layout_height="28dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="73dp"
         android:background="@drawable/search_bar"
+        app:layout_constraintBottom_toTopOf="@+id/text1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/perfil" />
+        app:layout_constraintEnd_toEndof="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menu_superior" />
 
-    <!--view/container postagem 01-->
     <View
         android:id="@+id/cont1"
         android:layout_width="391dp"
         android:layout_height="139dp"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="22dp"
         android:background="@drawable/div_tela"
+        app:layout_constraintBottom_toTopOf="@+id/linha_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text1" />
 
-
-    <!--texto "página incial"-->
     <TextView
         android:id="@+id/text1"
         android:layout_width="362dp"
@@ -137,6 +140,8 @@
         android:fontFamily="@font/hammersmith_one"
         android:text="+"
         android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textColorLink="@color/white"
         android:textSize="30sp"
         app:cornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/cont1"
@@ -190,19 +195,18 @@
         app:layout_constraintTop_toBottomOf="@+id/send_post" />
 
     <!--div/container/view da primeira postagem-->
+    <!--imagem do perfil na primeira postagem-->
     <View
         android:id="@+id/post1"
         android:layout_width="399dp"
         android:layout_height="169dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="10dp"
         android:background="@drawable/postagem"
+        app:layout_constraintBottom_toTopOf="@+id/view0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linha_view" />
-    <!--imagem do perfil na primeira postagem-->
+        app:layout_constraintTop_toBottomOf="@+id/linha_view"
+        app:layout_constraintVertical_bias="1.0" />
+
     <ImageView
         android:id="@+id/perfil2"
         android:layout_width="50dp"

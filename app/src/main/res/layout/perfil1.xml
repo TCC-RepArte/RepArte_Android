@@ -12,17 +12,15 @@
     <View
         android:id="@+id/menu1"
         android:layout_width="409dp"
-        android:layout_height="83dp"
+        android:layout_height="118dp"
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="36dp"
         app:layout_constraintBottom_toTopOf="@+id/cont_perfil"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <!--linear-layout da logo (menu superior) -->
-    <!--fim do linear-layout (logo do menu superior)-->
 
-
+    <!--linear layout dentro do menu-superior = logo-->
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="230dp"
@@ -64,23 +62,25 @@
             android:layout_height="36dp"
             android:src="@drawable/foto2" />
 
-    </LinearLayout>
+    </LinearLayout> <!--fim do linear layout-->
 
-
+<!--container 01 >>>> onde alterar foto e nome de exibição -->
     <View
         android:id="@+id/cont_perfil"
         android:layout_width="383dp"
         android:layout_height="176dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="448dp"
         android:background="@color/cont_tela"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.125" />
 
+<!--precisa ser programado/editado!!!!-->
+<!--aqui precisa estar linkado com o banco de dados pra aparecer o nome q a pessoa escolheu-->
+<!--talvez editar pra virar input/edittext mas ficar salvo depois q terminar de digitar?-->
+<!--oq for mais facil/pratico.-->
     <TextView
         android:id="@+id/nome"
         android:layout_width="220dp"
@@ -94,8 +94,8 @@
         app:layout_constraintStart_toEndOf="@+id/profile"
         app:layout_constraintTop_toTopOf="@id/cont_perfil" />
 
-    <!--linha que separa o layout-->
-
+<!--botão pra selecionar/tirar foto.-->
+<!--depois de selecionar aqui, a foto deve aparecer na imageview ao lado!-->
     <Button
         android:id="@+id/btn_foto"
         android:layout_width="220dp"
@@ -110,25 +110,31 @@
         app:layout_constraintStart_toStartOf="@id/cont_perfil"
         app:layout_constraintTop_toBottomOf="@+id/nome" />
 
+<!--transformar em clickable?-->
+<!--tambem precisa, de algum jeito, estar ligado com o bd. é como um input/edittext-->
+<!--talvez alterar pra edittext se nao tiver outro jeito?-->
+<!--ou alterar o textview anterior pra ser editavel + salvar quando terminar de escrever -->
     <TextView
         android:id="@+id/texto_nome"
         android:layout_width="214dp"
         android:layout_height="21dp"
         android:layout_marginStart="152dp"
         android:layout_marginTop="56dp"
-        android:text="Clique acima para alterar o nome."
+        android:text="Clique aqui para alterar o nome."
         app:layout_constraintStart_toStartOf="@id/cont_perfil"
         app:layout_constraintTop_toTopOf="@id/cont_perfil" />
 
+<!--aqui deve ser substituido pela imagem que o usuario escolher.-->
     <ImageView
         android:id="@+id/profile"
         android:layout_width="118dp"
         android:layout_height="134dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/cont_perfil"
+        app:layout_constraintEnd_toStartOf="@+id/btn_foto"
         app:layout_constraintStart_toStartOf="@id/cont_perfil"
-        app:layout_constraintTop_toTopOf="@id/cont_perfil"
+        app:layout_constraintTop_toBottomOf="@id/cont_perfil"
         app:srcCompat="@drawable/user_white" />
+
 
     <View
         android:id="@+id/linha_view"
@@ -142,20 +148,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cont_perfil" />
 
+    <!--container 02 >>>> armazena a descrição/bio do usuario-->
     <View
         android:id="@+id/bio"
         android:layout_width="383dp"
         android:layout_height="219dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginBottom="158dp"
         android:background="@color/cont_tela"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linha_view" />
+        app:layout_constraintTop_toBottomOf="@+id/linha_view"
+        app:layout_constraintVertical_bias="0.188" />
 
+    <!--editText/input pra pessoa digitar a descrição;-->
+    <!--talvez também dê pra fazer funcionar >>> salvar oq ta escrito
+    dps que a pessoa terminar de digitar,
+    sem que ela tenha que apertar o botão... oq fizer mais sentido.-->
     <EditText
         android:id="@+id/desc"
         android:layout_width="361dp"
@@ -169,6 +177,8 @@
         app:layout_constraintStart_toStartOf="@id/bio"
         app:layout_constraintTop_toTopOf="@id/bio" />
 
+    <!--botão pra salvar oq ta escrito na descrição-->
+    <!--provavelmente deve sumir se a pessoa nao fez alteração nenhuma na descrição/editText-->
     <Button
         android:id="@+id/salvar"
         android:layout_width="163dp"
