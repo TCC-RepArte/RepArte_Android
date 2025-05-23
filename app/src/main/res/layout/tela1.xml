@@ -11,20 +11,18 @@
 
     <!--menu superior-->
     <!--view/container-->
-
-    <!--linear-layout da logo (menu superior) -->
     <View
         android:id="@+id/menu_superior"
         android:layout_width="410dp"
         android:layout_height="53dp"
+        android:layout_marginBottom="678dp"
         android:background="@color/background01"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.045" />
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <!--linear-layout da logo (menu superior) -->
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="230dp"
@@ -66,50 +64,46 @@
     </LinearLayout>  <!--fim do linear-layout (logo do menu superior)-->
 
     <!--imagem/botão pra acessar seu perfil-->
-
-
-    <!--barra de pesquisa-->
-    <!--PROGRAMAR DEPOIS!!!!!!!!!!!-->
     <ImageView
         android:id="@+id/perfil"
         android:layout_width="50dp"
         android:layout_height="64dp"
-        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@+id/menu_superior"
         app:layout_constraintEnd_toEndOf="@+id/menu_superior"
-        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintHorizontal_bias="0.928"
         app:layout_constraintStart_toStartOf="@+id/menu_superior"
         app:layout_constraintTop_toTopOf="@+id/menu_superior"
-        app:layout_constraintVertical_bias="1.0"
-        android:contentDescription="Tela de perfil"
+        app:layout_constraintVertical_bias="0.578"
         app:srcCompat="@drawable/user_white" />
 
-    <!--view/container postagem 01-->
 
-
-    <!--texto "página incial"-->
-
+    <!--barra de pesquisa-->
+    <!--PROGRAMAR DEPOIS!!!!!!!!!!!-->
     <SearchView
         android:id="@+id/pesquisar"
         android:layout_width="266dp"
         android:layout_height="28dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="73dp"
         android:background="@drawable/search_bar"
-        app:layout_constraintBottom_toTopOf="@+id/text1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toEndof="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menu_superior" />
+        app:layout_constraintTop_toBottomOf="@+id/perfil" />
 
+    <!--view/container postagem 01-->
     <View
         android:id="@+id/cont1"
         android:layout_width="391dp"
         android:layout_height="139dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="22dp"
         android:background="@drawable/div_tela"
-        app:layout_constraintBottom_toTopOf="@+id/linha_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text1" />
 
+
+    <!--texto "página incial"-->
     <TextView
         android:id="@+id/text1"
         android:layout_width="362dp"
@@ -140,8 +134,6 @@
         android:fontFamily="@font/hammersmith_one"
         android:text="+"
         android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textColorLink="@color/white"
         android:textSize="30sp"
         app:cornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/cont1"
@@ -181,34 +173,32 @@
         app:layout_constraintTop_toTopOf="@+id/cont1"
         app:srcCompat="@drawable/foto1" />
     <!--linha que separa o layout-->
-
-    <!--div/container/view da primeira postagem-->
-    <!--imagem do perfil na primeira postagem-->
-
     <View
         android:id="@+id/linha_view"
         android:layout_width="360dp"
         android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="35dp"
         android:background="@color/linhas"
-        app:layout_constraintBottom_toTopOf="@+id/post1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/send_post" />
 
+    <!--div/container/view da primeira postagem-->
     <View
         android:id="@+id/post1"
         android:layout_width="399dp"
-        android:layout_height="169dp"
-        android:background="@drawable/postagem"
-        app:layout_constraintBottom_toTopOf="@+id/view0"
+        android:layout_height="190dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linha_view"
-        app:layout_constraintVertical_bias="1.0" />
-
+        app:layout_constraintTop_toBottomOf="@+id/linha_view" />
+    <!--imagem do perfil na primeira postagem-->
     <ImageView
         android:id="@+id/perfil2"
         android:layout_width="50dp"
@@ -273,10 +263,7 @@
         app:layout_constraintTop_toTopOf="@+id/post1"
         app:srcCompat="@drawable/sinners1" />
 
-    <!-- barra de cometários e curtidas -->
-
-
-    <!--menu inferior. tbd-->
+    <!-- BARRA DE COMENTÁRIOS E CURTIDAS-->
 
     <View
         android:id="@+id/view0"
@@ -288,12 +275,13 @@
         android:background="@color/cont_tela"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/menu_superior"
-        app:layout_constraintVertical_bias="0.666" />
+        app:layout_constraintVertical_bias="0.665" />
 
     <ImageView
-        android:id="@+id/setadown"
+        android:id="@+id/downvote"
         android:layout_width="32dp"
         android:layout_height="38dp"
         android:layout_marginEnd="06dp"
@@ -301,23 +289,88 @@
         app:layout_constraintEnd_toEndOf="@+id/view0"
         app:layout_constraintHorizontal_bias="0.949"
         app:layout_constraintStart_toStartOf="@+id/view0"
-        app:srcCompat="@drawable/seta_down" />
+        app:srcCompat="@drawable/down_vote" />
 
     <TextView
-        android:id="@+id/downvote"
+        android:id="@+id/downvote_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins_bold"
         android:text="14"
-        android:textAllCaps="true"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/view0"
         app:layout_constraintHorizontal_bias="0.971"
         app:layout_constraintStart_toStartOf="@+id/view0"
         app:layout_constraintTop_toTopOf="@+id/view0" />
 
- <!-- menu inferior -->
+    <View
+        android:id="@+id/linha_view01"
+        android:layout_width="1dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="290dp"
+        android:layout_marginTop="231dp"
+        android:layout_marginEnd="06dp"
+        android:background="@color/linhas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/send_post" />
+
+    <TextView
+        android:id="@+id/upvote_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="08dp"
+        android:layout_marginEnd="060dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="48"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/view0"
+        app:layout_constraintHorizontal_bias="0.971"
+        app:layout_constraintStart_toStartOf="@+id/view0"
+        app:layout_constraintTop_toTopOf="@+id/view0" />
+
+    <ImageView
+        android:id="@+id/upvote"
+        android:layout_width="32dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="08dp"
+        android:layout_marginEnd="076dp"
+        app:layout_constraintBottom_toBottomOf="@id/view0"
+        app:layout_constraintEnd_toEndOf="@+id/view0"
+        app:layout_constraintHorizontal_bias="0.949"
+        app:layout_constraintStart_toStartOf="@+id/view0"
+        app:srcCompat="@drawable/up_vote" />
+
+    <!-- comentários -->
+
+    <TextView
+        android:id="@+id/coment_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="236dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="8"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/upvote"
+        app:layout_constraintTop_toTopOf="@+id/view0"
+        tools:layout_editor_absoluteY="487dp" />
+
+
+    <!--menu inferior. tbd-->
+    <ImageView
+        android:id="@+id/coment"
+        android:layout_width="32dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="355dp"
+        app:layout_constraintBottom_toBottomOf="@id/view0"
+        app:layout_constraintEnd_toEndOf="@+id/view0"
+        app:srcCompat="@drawable/comentarios" />
 
     <View
         android:id="@+id/view"
@@ -335,7 +388,6 @@
 
     <!--primeiro botão-->
 
-    <!--segundo botão-->
 
     <View
         android:id="@+id/cont2"
@@ -360,6 +412,8 @@
         app:layout_constraintVertical_bias="0.92"
         app:srcCompat="@drawable/balao_texto" />
 
+    <!--segundo botão-->
+
     <View
         android:id="@+id/cont3"
         android:layout_width="60dp"
@@ -372,7 +426,6 @@
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toTopOf="@+id/view" />
 
-    <!-- terceiro botão-->
 
     <ImageView
         android:id="@+id/sino_txt"
@@ -386,6 +439,8 @@
         app:layout_constraintVertical_bias="0.6"
         app:srcCompat="@drawable/sino" />
 
+    <!-- terceiro botão-->
+
     <View
         android:id="@+id/cont4"
         android:layout_width="60dp"
@@ -398,8 +453,6 @@
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toTopOf="@+id/view" />
 
-    <!-- Quarto botão-->
-
     <ImageView
         android:id="@+id/lapis_img"
         android:layout_width="45dp"
@@ -410,6 +463,8 @@
         app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="@+id/cont4"
         app:srcCompat="@drawable/lapis_img" />
+
+    <!-- Quarto botão-->
 
     <View
         android:id="@+id/cont5"
