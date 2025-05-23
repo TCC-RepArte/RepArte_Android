@@ -1,0 +1,132 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity3">
+
+    <!-- botão de login -->
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/my_gradiant2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="298dp"
+        android:layout_height="112dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="204dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/TextViewRepArte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hammersmith_one"
+            android:text="Rep"
+            android:textColor="#FF5722"
+            android:textSize="48dp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/TextView2RepArte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hammersmith_one"
+            android:text="Arte"
+            android:textColor="#FAFAFA"
+            android:textSize="48dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="62dp"
+            android:layout_height="64dp"
+            android:src="@drawable/foto2" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="333dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#ef4e0c"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Entrar"
+        android:textSize="17dp"
+        app:layout_constraintStart_toStartOf="@+id/view2"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="333dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Registrar-se"
+        android:textSize="17dp"
+        app:layout_constraintStart_toStartOf="@+id/view2"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
+
+    <!--linhas que ficam ao lado do TextView "ou" (sim, eu tive q PROGRAMAR isso.)-->
+
+    <!--"Ou". TextView simples-->
+
+    <View
+        android:id="@+id/linha1"
+        android:layout_width="133dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:background="@color/linhas"
+        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintEnd_toStartOf="@+id/text_ou"
+        app:layout_constraintHorizontal_bias="0.733"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintVertical_bias="0.512" />
+
+    <View
+        android:id="@+id/linha2"
+        android:layout_width="133dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/linhas"
+        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.325"
+        app:layout_constraintStart_toEndOf="@+id/text_ou"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintVertical_bias="0.677" />
+
+    <TextView
+        android:id="@+id/text_ou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ou"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintVertical_bias="0.523" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
