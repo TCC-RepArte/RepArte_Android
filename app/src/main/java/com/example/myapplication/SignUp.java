@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication.api.ApiService;
+import com.koushikdutta.async.future.FutureCallback;
 
 public class SignUp extends AppCompatActivity {
     private ApiService apiService;
@@ -96,33 +97,46 @@ public class SignUp extends AppCompatActivity {
             System.out.println("Tentando cadastrar usuário: " + username);
             System.out.println("Email informado: " + email);
             
-            apiService.cadastrarUsuario(username, senha1, (e, result) -> {
-                if (e != null) {
-                    System.out.println("Erro de conexão: " + e.getMessage());
-                    String mensagemErro = "Erro ao cadastrar: ";
-                    if (e.getMessage().contains("Failed to connect")) {
-                        mensagemErro += "Não foi possível conectar ao servidor";
-                    } else {
-                        mensagemErro += e.getMessage();
-                    }
-                    Toast.makeText(SignUp.this, mensagemErro, Toast.LENGTH_LONG).show();
-                    return;
-                }
+            FutureCallback<String> callback = new FutureCallback<String>() {
+                @Override
+                public void onCompleted(Exception e, String result) {
+                    runOnUiThread(() -> {
+                        if (e != null) {
+                            System.out.println("Erro de conexão: " + e.toString());
+                            String mensagemErro = "Erro ao cadastrar: ";
+                            if (e.toString().indexOf("Failed to connect") >= 0) {
+                                mensagemErro += "Não foi possível conectar ao servidor";
+                            } else {
+                                mensagemErro += e.toString();
+                            }
+                            Toast.makeText(SignUp.this, mensagemErro, Toast.LENGTH_LONG).show();
+                            return;
+                        }
 
-                System.out.println("Resposta do servidor: " + (result != null ? result.toString() : "null"));
-
-                if (result != null && result.has("status") && result.get("status").getAsString().equals("ok")) {
-                    Toast.makeText(SignUp.this, "Cadastro realizado com sucesso!", Toast.LENGTH_LONG).show();
-                    // Redireciona para tela de login
-                    Intent intent = new Intent(SignUp.this, Login.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    String erro = result != null ? result.toString() : "resposta nula do servidor";
-                    System.out.println("Erro no cadastro: " + erro);
-                    Toast.makeText(SignUp.this, "Erro ao cadastrar usuário: " + erro, Toast.LENGTH_LONG).show();
+                        try {
+                            System.out.println("Resposta do servidor: " + result);
+                            
+                            if (result != null && result.contains("success")) {
+                                Toast.makeText(SignUp.this, "Cadastro realizado com sucesso!", Toast.LENGTH_LONG).show();
+                                // Redireciona para tela de login
+                                Intent intent = new Intent(SignUp.this, Login.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                String erro = result != null ? result : "resposta nula do servidor";
+                                System.out.println("Erro no cadastro: " + erro);
+                                Toast.makeText(SignUp.this, "Erro ao cadastrar usuário: " + erro, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception ex) {
+                            String erro = "Erro ao processar resposta do servidor: " + ex.toString();
+                            System.out.println(erro);
+                            Toast.makeText(SignUp.this, erro, Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
-            });
+            };
+            
+            apiService.cadastrarUsuario(username, email, senha1, callback);
         });
     }
 }

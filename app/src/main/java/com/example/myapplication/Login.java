@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.myapplication.api.ApiService;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class Login extends AppCompatActivity {
     private ApiService apiService;
@@ -61,29 +63,34 @@ public class Login extends AppCompatActivity {
             // Tenta fazer login usando a API
             apiService.realizarLogin(user, pass, (e, result) -> {
                 if (e != null) {
-                    System.out.println("Erro de conexão: " + e.getMessage());
+                    System.out.println("Erro de conexão: " + e.toString());
                     String mensagemErro = "Erro ao fazer login: ";
-                    if (e.getMessage().contains("Failed to connect")) {
+                    if (e.toString().indexOf("Failed to connect") >= 0) {
                         mensagemErro += "Não foi possível conectar ao servidor";
                     } else {
-                        mensagemErro += e.getMessage();
+                        mensagemErro += e.toString();
                     }
                     Toast.makeText(Login.this, mensagemErro, Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                System.out.println("Resposta do servidor: " + (result != null ? result.toString() : "null"));
-
-                if (result != null && result.has("status") && result.get("status").getAsString().equals("ok")) {
-                    Toast.makeText(Login.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Login.this, Tela.class);
-                    startActivity(intent);
-                    finish(); // fecha a activity de login
-                } else {
-                    String erro = result != null ? result.toString() : "resposta nula do servidor";
-                    System.out.println("Erro no login: " + erro);
-                    Toast.makeText(Login.this, "Usuário ou senha incorretos", Toast.LENGTH_LONG).show();
-                    password.setText(""); // limpa o campo de senha
+                try {
+                    System.out.println("Resposta do servidor: " + result);
+                    
+                    if (result != null && result.contains("success")) {
+                        Toast.makeText(Login.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Login.this, Tela.class);
+                        startActivity(intent);
+                        finish(); // fecha a activity de login
+                    } else {
+                        String erro = result != null ? result : "resposta nula do servidor";
+                        System.out.println("Erro no login: " + erro);
+                        Toast.makeText(Login.this, "Usuário ou senha incorretos", Toast.LENGTH_LONG).show();
+                        password.setText(""); // limpa o campo de senha
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Erro ao processar resposta: " + ex.toString());
+                    Toast.makeText(Login.this, "Erro ao processar resposta do servidor", Toast.LENGTH_LONG).show();
                 }
             });
         });
