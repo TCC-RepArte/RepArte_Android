@@ -40,6 +40,7 @@ public class Login extends AppCompatActivity {
         button5.setOnClickListener(view -> {
             Intent intent = new Intent(Login.this, SignUp.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
 
         // evento do botão 'entrar'

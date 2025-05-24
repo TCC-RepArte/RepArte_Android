@@ -7,7 +7,7 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-//pesquisei como fazer uma splash screen (tela q some depois de uns segundos)
+//basicamente uma splash screen (tela q some depois de uns segundos)
 
     private static final int SPLASH_DELAY = 3000; //comando pra ficar por 3 segundos
 
@@ -17,9 +17,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         new Handler().postDelayed(() -> {
+            //destino da pagina
             Intent intent = new Intent(MainActivity.this, MainActivity2.class);
             startActivity(intent);
-            finish(); // esse comando remove a tela, pra nao ter como voltar
+            finish(); // esse comando remove a tela, pra nao ter como voltar. importante!!!
         }, SPLASH_DELAY);
     }
 }

@@ -28,6 +28,7 @@ public class MainActivity2 extends AppCompatActivity {
         ImgBtn.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity2.this, MainActivity3.class);
             startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
         });
 
@@ -37,6 +38,7 @@ public class MainActivity2 extends AppCompatActivity {
         textView3.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity2.this, Login.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
     }
 }

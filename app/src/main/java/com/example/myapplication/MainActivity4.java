@@ -29,6 +29,7 @@ public class MainActivity4 extends AppCompatActivity {
         btnPular.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity4.this, Login.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             // finish(); // Opcional: remove MainActivity4 da pilha
         });
     }

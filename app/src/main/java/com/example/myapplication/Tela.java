@@ -21,7 +21,7 @@ public class Tela extends AppCompatActivity {
         //id
         perfil = findViewById(R.id.perfil);
 
-        //evento do botao
+        //evento do botao de perfil > ir pra pag perfil
         perfil.setOnClickListener(view -> {
             Intent intent = new Intent(Tela.this, Perfil.class);
             startActivity(intent);

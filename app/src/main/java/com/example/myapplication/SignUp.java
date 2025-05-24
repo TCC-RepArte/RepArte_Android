@@ -38,6 +38,7 @@ public class SignUp extends AppCompatActivity {
         click01.setOnClickListener(v -> {
             Intent intent = new Intent(SignUp.this, Login.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         });
 
         //evento do botão entrar
@@ -47,7 +48,7 @@ public class SignUp extends AppCompatActivity {
             String senha1 = password1.getText().toString();
             String senha2 = password2.getText().toString();
 
-            //possiveis erros na hora de criar conta
+//possiveis erros na hora de criar conta
             boolean hasError = false;
 
             // caso o campo de nome de usuário esteja vazio
