@@ -9,7 +9,7 @@ import com.koushikdutta.async.future.FutureCallback;
 
 public class ApiService {
     private static final String TAG = "ApiService";
-    private static final String BASE_URL = "http://tcc3yetecgrupo3t2.hospedagemdesites.ws/ARQUIVOS/ARQUIVOS/";
+    private static final String BASE_URL = "http://10.0.2.2/reparte/web/back-end/php/";
     private Context context;
 
     public ApiService(Context context) {
@@ -21,12 +21,15 @@ public class ApiService {
         usuario = usuario.replace(" ", "");
         email = email.replace(" ", "");
         
-        String url = BASE_URL + "inserirt.php";
+        // Gera um ID único para o usuário
+        String id = generateUniqueId();
+        
+        String url = BASE_URL + "signup.php";
         Log.d(TAG, "=== INÍCIO DO CADASTRO ===");
         Log.d(TAG, "URL completa: " + url);
         Log.d(TAG, "Dados enviados - Usuário: " + usuario);
         Log.d(TAG, "Dados enviados - Email: " + email);
-        Log.d(TAG, "Dados enviados - Senha: " + senha);
+        Log.d(TAG, "Dados enviados - ID: " + id);
         
         Ion.with(context)
                 .load("POST", url)
@@ -35,8 +38,14 @@ public class ApiService {
                 .setBodyParameter("usuario", usuario)
                 .setBodyParameter("email", email)
                 .setBodyParameter("senha", senha)
+                .setBodyParameter("id", id)
                 .asString()
                 .setCallback(callback);
+    }
+
+    // Método para gerar um ID único
+    private String generateUniqueId() {
+        return "U" + System.currentTimeMillis() + "-" + Math.random() * 1000;
     }
 
     public void realizarLogin(String usuario, String senha, FutureCallback<String> callback) {
