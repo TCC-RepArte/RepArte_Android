@@ -8,6 +8,18 @@
     tools:context=".Perfil"
     android:background="@color/background01">
 
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/my_gradiant3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
 
     <View
         android:id="@+id/menu1"
@@ -64,7 +76,7 @@
 
     </LinearLayout> <!--fim do linear layout-->
 
-<!--container 01 >>>> onde alterar foto e nome de exibição -->
+    <!--container 01 >>>> onde alterar foto e nome de exibição -->
     <View
         android:id="@+id/cont_perfil"
         android:layout_width="383dp"
@@ -77,10 +89,10 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         app:layout_constraintVertical_bias="0.125" />
 
-<!--precisa ser programado/editado!!!!-->
-<!--aqui precisa estar linkado com o banco de dados pra aparecer o nome q a pessoa escolheu-->
-<!--talvez editar pra virar input/edittext mas ficar salvo depois q terminar de digitar?-->
-<!--oq for mais facil/pratico.-->
+    <!--precisa ser programado/editado!!!!-->
+    <!--aqui precisa estar linkado com o banco de dados pra aparecer o nome q a pessoa escolheu-->
+    <!--talvez editar pra virar input/edittext mas ficar salvo depois q terminar de digitar?-->
+    <!--oq for mais facil/pratico.-->
     <TextView
         android:id="@+id/nome"
         android:layout_width="220dp"
@@ -94,15 +106,15 @@
         app:layout_constraintStart_toEndOf="@+id/profile"
         app:layout_constraintTop_toTopOf="@id/cont_perfil" />
 
-<!--botão pra selecionar/tirar foto.-->
-<!--depois de selecionar aqui, a foto deve aparecer na imageview ao lado!-->
+    <!--botão pra selecionar/tirar foto.-->
+    <!--depois de selecionar aqui, a foto deve aparecer na imageview ao lado!-->
     <Button
         android:id="@+id/btn_foto"
         android:layout_width="220dp"
         android:layout_height="52dp"
         android:layout_marginStart="152dp"
         android:layout_marginTop="8dp"
-        android:backgroundTint="#FF5722"
+        android:backgroundTint="@color/btn_add"
         android:text="Alterar foto de perfil"
         android:textColor="#FDFCFC"
         android:textColorLink="#FDFCFC"
@@ -110,10 +122,10 @@
         app:layout_constraintStart_toStartOf="@id/cont_perfil"
         app:layout_constraintTop_toBottomOf="@+id/nome" />
 
-<!--transformar em clickable?-->
-<!--tambem precisa, de algum jeito, estar ligado com o bd. é como um input/edittext-->
-<!--talvez alterar pra edittext se nao tiver outro jeito?-->
-<!--ou alterar o textview anterior pra ser editavel + salvar quando terminar de escrever -->
+    <!--transformar em clickable?-->
+    <!--tambem precisa, de algum jeito, estar ligado com o bd. é como um input/edittext-->
+    <!--talvez alterar pra edittext se nao tiver outro jeito?-->
+    <!--ou alterar o textview anterior pra ser editavel + salvar quando terminar de escrever -->
     <TextView
         android:id="@+id/texto_nome"
         android:layout_width="214dp"
@@ -124,7 +136,7 @@
         app:layout_constraintStart_toStartOf="@id/cont_perfil"
         app:layout_constraintTop_toTopOf="@id/cont_perfil" />
 
-<!--aqui deve ser substituido pela imagem que o usuario escolher.-->
+    <!--aqui deve ser substituido pela imagem que o usuario escolher.-->
     <ImageView
         android:id="@+id/profile"
         android:layout_width="118dp"
@@ -166,18 +178,24 @@
     <!--talvez também dê pra fazer funcionar >>> salvar oq ta escrito
     dps que a pessoa terminar de digitar,
     sem que ela tenha que apertar o botão... oq fizer mais sentido.-->
+
     <EditText
-        android:id="@+id/desc"
         android:layout_width="361dp"
         android:layout_height="157dp"
+        android:id="@+id/desc"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
+        android:padding="24dp"
         android:ems="10"
+        android:background="@drawable/border"
         android:hint="Clique aqui para adicionar uma descrição sobre você!"
         android:inputType="textMultiLine"
-        android:textColorHint="#D4D2D2"
+        android:gravity="start|center_vertical"
+        android:textColorHint="@color/border"
         app:layout_constraintStart_toStartOf="@id/bio"
         app:layout_constraintTop_toTopOf="@id/bio" />
+
+
 
     <!--botão pra salvar oq ta escrito na descrição-->
     <!--provavelmente deve sumir se a pessoa nao fez alteração nenhuma na descrição/editText-->
@@ -187,7 +205,7 @@
         android:layout_height="48dp"
         android:layout_marginStart="204dp"
         android:layout_marginTop="3dp"
-        android:backgroundTint="#FF5722"
+        android:backgroundTint="@color/btn_add"
         android:text="Salvar..."
         android:textColor="#FDFCFC"
         android:textColorLink="#FDFCFC"

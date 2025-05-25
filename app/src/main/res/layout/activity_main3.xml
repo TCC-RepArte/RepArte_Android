@@ -92,14 +92,14 @@
         android:layout_width="373dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="23dp"
-        android:layout_marginTop="456dp"
+        android:layout_marginTop="122dp"
         android:fontFamily="@font/hammersmith_one"
         android:gravity="start"
         android:text="Compartilhe suas impressões, leia o que outros pensam e acompanhe conversas sobre milhares de obras"
         android:textColor="#FF5722"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/lottieMensagem" />
 
     <!-- barrinha de progresso de baixo -->
     <LinearLayout
@@ -159,6 +159,8 @@
         android:scaleType="centerCrop"
         android:src="@drawable/foto1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/btnPular" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

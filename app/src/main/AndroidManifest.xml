@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,9 +15,11 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".login_singup"
+            android:name=".perfil01"
             android:exported="false" />
-        <!-- splash screen, página 01, 'reparte' -->
+        <activity
+            android:name=".login_singup"
+            android:exported="false" /> <!-- splash screen, página 01, 'reparte' -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -36,13 +40,13 @@
             android:exported="true" /> <!-- pag login -->
         <activity
             android:name=".Login"
-            android:exported="true"></activity> <!-- pag sign-up -->
+            android:exported="true" /> <!-- pag sign-up -->
         <activity
             android:name=".SignUp"
-            android:exported="true"></activity> <!-- página inicial/tela -->
+            android:exported="true" /> <!-- página inicial/tela -->
         <activity
             android:name=".Tela"
-            android:exported="true"></activity> <!-- pág perfil -->
+            android:exported="true" /> <!-- pág perfil -->
         <activity
             android:name=".Perfil"
             android:exported="true" /> <!-- código padrao -->
