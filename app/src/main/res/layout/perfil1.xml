@@ -81,14 +81,14 @@
 <!--aqui precisa estar linkado com o banco de dados pra aparecer o nome q a pessoa escolheu-->
 <!--talvez editar pra virar input/edittext mas ficar salvo depois q terminar de digitar?-->
 <!--oq for mais facil/pratico.-->
-    <TextView
+    <EditText
         android:id="@+id/nome"
         android:layout_width="220dp"
         android:layout_height="57dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:clickable="true"
-        android:text="Bruna Maria"
+        android:hint="Digite seu nome de exibição"
+        android:textColorHint="#D4D2D2"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/profile"
@@ -175,6 +175,7 @@
         android:ems="10"
         android:hint="Clique aqui para adicionar uma descrição sobre você!"
         android:inputType="textMultiLine"
+        android:textColor="@color/white"
         android:textColorHint="#D4D2D2"
         app:layout_constraintStart_toStartOf="@id/bio"
         app:layout_constraintTop_toTopOf="@id/bio" />
@@ -185,16 +186,15 @@
         android:id="@+id/salvar"
         android:layout_width="163dp"
         android:layout_height="48dp"
-        android:layout_marginStart="204dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="76dp"
         android:backgroundTint="#FF5722"
-        android:text="Salvar..."
+        android:text="Concluir Cadastro"
         android:textColor="#FDFCFC"
         android:textColorLink="#FDFCFC"
         app:cornerRadius="15dp"
         app:layout_constraintStart_toStartOf="@id/bio"
         app:layout_constraintTop_toBottomOf="@+id/desc" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

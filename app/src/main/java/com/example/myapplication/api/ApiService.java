@@ -2,8 +2,6 @@ package com.example.myapplication.api;
 
 import android.content.Context;
 import android.util.Log;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.async.future.FutureCallback;
 import java.io.File;
@@ -18,11 +16,9 @@ public class ApiService {
     }
 
     public void cadastrarUsuario(String usuario, String email, String senha, FutureCallback<String> callback) {
-        // Remove espaços do nome de usuário e email
         usuario = usuario.replace(" ", "");
         email = email.replace(" ", "");
         
-        // Gera um ID único para o usuário
         String id = generateUniqueId();
         
         String url = BASE_URL + "signup.php";
@@ -45,17 +41,19 @@ public class ApiService {
                 .setCallback(new FutureCallback<String>() {
                     @Override
                     public void onCompleted(Exception e, String result) {
-                        if (e == null && result != null && result.contains("success")) {
-                            // Se deu sucesso, salva o ID para usar na próxima etapa
-                            // Você pode salvar em SharedPreferences ou passar via Intent
-                            saveUserId(id);
+                        if (e != null) {
+                            Log.e(TAG, "Erro na requisição: " + e.getMessage(), e);
+                            callback.onCompleted(e, null);
+                            return;
                         }
-                        callback.onCompleted(e, result);
+
+                        Log.d(TAG, "Cadastro realizado com sucesso!");
+                        saveUserId(id);
+                        callback.onCompleted(null, "success");
                     }
                 });
     }
 
-    // Método para salvar o ID do usuário para usar na próxima etapa
     private void saveUserId(String id) {
         context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
                .edit()
@@ -63,9 +61,7 @@ public class ApiService {
                .apply();
     }
 
-    // Método para a segunda etapa do cadastro
     public void completarCadastro(String nomeExibicao, String descricao, File foto, FutureCallback<String> callback) {
-        // Recupera o ID salvo da primeira etapa
         String id = context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
                           .getString("user_id", null);
 
@@ -88,24 +84,40 @@ public class ApiService {
                 .setMultipartParameter("id", id)
                 .setMultipartFile("envft", foto)
                 .asString()
-                .setCallback(callback);
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        if (e != null) {
+                            Log.e(TAG, "Erro na requisição: " + e.getMessage(), e);
+                            callback.onCompleted(e, null);
+                            return;
+                        }
+
+                        Log.d(TAG, "Resposta do servidor: " + (result != null ? result : "null"));
+                        Log.d(TAG, "Tamanho da resposta: " + (result != null ? result.length() : 0));
+
+                        if (result != null && result.contains("success")) {
+                            Log.d(TAG, "Perfil atualizado com sucesso!");
+                        } else {
+                            Log.e(TAG, "Erro ao atualizar perfil. Resposta: " + result);
+                        }
+                        callback.onCompleted(e, result);
+                    }
+                });
     }
 
-    // id unico
     private String generateUniqueId() {
         return "U" + System.currentTimeMillis() + "-" + Math.random() * 1000;
     }
 
     public void realizarLogin(String usuario, String senha, FutureCallback<String> callback) {
-        // Remove espaços do nome de usuário
         usuario = usuario.replace(" ", "");
         
         String url = BASE_URL + "login.php";
         Log.d(TAG, "=== INÍCIO DO LOGIN ===");
         Log.d(TAG, "URL completa: " + url);
         Log.d(TAG, "Dados enviados - Usuário: " + usuario);
-        Log.d(TAG, "Dados enviados - Senha: " + senha);
-
+        
         Ion.with(context)
                 .load("POST", url)
                 .setHeader("Content-Type", "application/x-www-form-urlencoded")
@@ -113,6 +125,25 @@ public class ApiService {
                 .setBodyParameter("usuario", usuario)
                 .setBodyParameter("senha", senha)
                 .asString()
-                .setCallback(callback);
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        if (e != null) {
+                            Log.e(TAG, "Erro na requisição: " + e.getMessage(), e);
+                            callback.onCompleted(e, null);
+                            return;
+                        }
+
+                        Log.d(TAG, "Resposta do servidor: " + (result != null ? result : "null"));
+                        Log.d(TAG, "Tamanho da resposta: " + (result != null ? result.length() : 0));
+
+                        if (result != null && result.contains("success")) {
+                            Log.d(TAG, "Login realizado com sucesso!");
+                        } else {
+                            Log.e(TAG, "Erro no login. Resposta: " + result);
+                        }
+                        callback.onCompleted(e, result);
+                    }
+                });
     }
 }

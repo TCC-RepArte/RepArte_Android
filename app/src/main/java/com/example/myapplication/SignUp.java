@@ -118,9 +118,9 @@ public class SignUp extends AppCompatActivity {
                             System.out.println("Resposta do servidor: " + result);
                             
                             if (result != null && result.contains("success")) {
-                                Toast.makeText(SignUp.this, "Cadastro realizado com sucesso!", Toast.LENGTH_LONG).show();
-                                // Redireciona para tela de login
-                                Intent intent = new Intent(SignUp.this, Login.class);
+                                Toast.makeText(SignUp.this, "Primeira etapa concluída! Complete seu perfil.", Toast.LENGTH_LONG).show();
+                                // Redireciona para tela de completar perfil
+                                Intent intent = new Intent(SignUp.this, Perfil.class);
                                 startActivity(intent);
                                 finish();
                             } else {
