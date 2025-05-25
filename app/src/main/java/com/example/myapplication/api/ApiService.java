@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.async.future.FutureCallback;
+import java.io.File;
 
 public class ApiService {
     private static final String TAG = "ApiService";
@@ -38,12 +39,59 @@ public class ApiService {
                 .setBodyParameter("usuario", usuario)
                 .setBodyParameter("email", email)
                 .setBodyParameter("senha", senha)
+                .setBodyParameter("confsenha", senha)
                 .setBodyParameter("id", id)
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        if (e == null && result != null && result.contains("success")) {
+                            // Se deu sucesso, salva o ID para usar na próxima etapa
+                            // Você pode salvar em SharedPreferences ou passar via Intent
+                            saveUserId(id);
+                        }
+                        callback.onCompleted(e, result);
+                    }
+                });
+    }
+
+    // Método para salvar o ID do usuário para usar na próxima etapa
+    private void saveUserId(String id) {
+        context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
+               .edit()
+               .putString("user_id", id)
+               .apply();
+    }
+
+    // Método para a segunda etapa do cadastro
+    public void completarCadastro(String nomeExibicao, String descricao, File foto, FutureCallback<String> callback) {
+        // Recupera o ID salvo da primeira etapa
+        String id = context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
+                          .getString("user_id", null);
+
+        if (id == null) {
+            callback.onCompleted(new Exception("ID do usuário não encontrado"), null);
+            return;
+        }
+
+        String url = BASE_URL + "signup2.php";
+        Log.d(TAG, "=== COMPLETANDO CADASTRO ===");
+        Log.d(TAG, "URL completa: " + url);
+        Log.d(TAG, "Dados enviados - Nome: " + nomeExibicao);
+        Log.d(TAG, "Dados enviados - ID: " + id);
+        
+        Ion.with(context)
+                .load("POST", url)
+                .setHeader("Accept", "*/*")
+                .setMultipartParameter("nomeexi", nomeExibicao)
+                .setMultipartParameter("desc", descricao)
+                .setMultipartParameter("id", id)
+                .setMultipartFile("envft", foto)
                 .asString()
                 .setCallback(callback);
     }
 
-    // Método para gerar um ID único
+    // id unico
     private String generateUniqueId() {
         return "U" + System.currentTimeMillis() + "-" + Math.random() * 1000;
     }
