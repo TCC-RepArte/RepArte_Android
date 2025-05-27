@@ -97,7 +97,7 @@ public class SignUp extends AppCompatActivity {
             // Se passou por todas as validações, tenta cadastrar
             System.out.println("Tentando cadastrar usuário: " + username);
             System.out.println("Email informado: " + email);
-            
+
             FutureCallback<String> callback = new FutureCallback<String>() {
                 @Override
                 public void onCompleted(Exception e, String result) {
@@ -116,11 +116,13 @@ public class SignUp extends AppCompatActivity {
 
                         try {
                             System.out.println("Resposta do servidor: " + result);
-                            
+
                             if (result != null && result.contains("success")) {
                                 Toast.makeText(SignUp.this, "Primeira etapa concluída! Complete seu perfil.", Toast.LENGTH_LONG).show();
                                 // Redireciona para tela de completar perfil
                                 Intent intent = new Intent(SignUp.this, Perfil.class);
+                                intent.putExtra("novo_cadastro", true);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 finish();
                             } else {
@@ -136,7 +138,7 @@ public class SignUp extends AppCompatActivity {
                     });
                 }
             };
-            
+
             apiService.cadastrarUsuario(username, email, senha1, callback);
         });
     }

@@ -83,13 +83,13 @@
 <!--oq for mais facil/pratico.-->
     <EditText
         android:id="@+id/nome"
-        android:layout_width="220dp"
-        android:layout_height="57dp"
+        android:layout_width="195dp"
+        android:layout_height="77dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:hint="Digite seu nome de exibição"
-        android:textColorHint="#D4D2D2"
         android:textColor="@color/white"
+        android:textColorHint="#D4D2D2"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/profile"
         app:layout_constraintTop_toTopOf="@id/cont_perfil" />
@@ -114,15 +114,6 @@
 <!--tambem precisa, de algum jeito, estar ligado com o bd. é como um input/edittext-->
 <!--talvez alterar pra edittext se nao tiver outro jeito?-->
 <!--ou alterar o textview anterior pra ser editavel + salvar quando terminar de escrever -->
-    <TextView
-        android:id="@+id/texto_nome"
-        android:layout_width="214dp"
-        android:layout_height="21dp"
-        android:layout_marginStart="152dp"
-        android:layout_marginTop="56dp"
-        android:text="Clique aqui para alterar o nome."
-        app:layout_constraintStart_toStartOf="@id/cont_perfil"
-        app:layout_constraintTop_toTopOf="@id/cont_perfil" />
 
 <!--aqui deve ser substituido pela imagem que o usuario escolher.-->
     <ImageView
