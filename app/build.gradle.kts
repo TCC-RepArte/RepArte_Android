@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.example.myapplication"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.myapplication"
@@ -63,7 +63,8 @@ dependencies {
     
     // Ion para requisições HTTP
     implementation("com.koushikdutta.ion:ion:3.1.0")
-    
+    implementation("androidx.activity:activity:1.10.1")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

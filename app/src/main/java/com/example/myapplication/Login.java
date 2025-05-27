@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class Login extends AppCompatActivity {
+    private static final String TAG = "Login";
     private ApiService apiService;
     private EditText nome, password;
     private Button btn_login1, button5;
@@ -36,6 +38,14 @@ public class Login extends AppCompatActivity {
         avatar = findViewById(R.id.imageView14);
         lock = findViewById(R.id.imageView15);
 
+        // Tenta preencher o último usuário cadastrado
+        String ultimoUsuario = getSharedPreferences("RepArte", MODE_PRIVATE)
+                .getString("ultimo_usuario", "");
+        if (!ultimoUsuario.isEmpty()) {
+            nome.setText(ultimoUsuario);
+            Log.d(TAG, "Preenchendo último usuário cadastrado: " + ultimoUsuario);
+        }
+
         //evento do botão de registrar (ir pra página de sign-up)
         button5.setOnClickListener(view -> {
             Intent intent = new Intent(Login.this, SignUp.class);
@@ -47,6 +57,8 @@ public class Login extends AppCompatActivity {
         btn_login1.setOnClickListener(view -> {
             String user = nome.getText().toString().trim();
             String pass = password.getText().toString().trim();
+
+            Log.d(TAG, "Tentando fazer login com usuário: " + user);
 
             // verifica se o campo do username foi preenchido e avisa se nao foi
             if (user.isEmpty()) {
@@ -61,38 +73,40 @@ public class Login extends AppCompatActivity {
                 return;
             }
 
+            // Mostra progresso
+            Toast.makeText(Login.this, "Fazendo login...", Toast.LENGTH_SHORT).show();
+
             // Tenta fazer login usando a API
             apiService.realizarLogin(user, pass, (e, result) -> {
-                if (e != null) {
-                    System.out.println("Erro de conexão: " + e.toString());
-                    String mensagemErro = "Erro ao fazer login: ";
-                    if (e.toString().indexOf("Failed to connect") >= 0) {
-                        mensagemErro += "Não foi possível conectar ao servidor";
-                    } else {
-                        mensagemErro += e.toString();
+                runOnUiThread(() -> {
+                    if (e != null) {
+                        Log.e(TAG, "Erro no login", e);
+                        Toast.makeText(Login.this, 
+                            "Erro ao fazer login: " + e.getMessage(), 
+                            Toast.LENGTH_LONG).show();
+                        return;
                     }
-                    Toast.makeText(Login.this, mensagemErro, Toast.LENGTH_LONG).show();
-                    return;
-                }
 
-                try {
-                    System.out.println("Resposta do servidor: " + result);
-                    
                     if (result != null && result.contains("success")) {
-                        Toast.makeText(Login.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Login.this, Tela.class);
-                        startActivity(intent);
-                        finish(); // fecha a activity de login
+                        Log.d(TAG, "Login bem-sucedido!");
+                        Toast.makeText(Login.this, 
+                            "Bem-vindo(a) de volta!", 
+                            Toast.LENGTH_SHORT).show();
+
+                        // Pequeno delay para mostrar a mensagem de boas-vindas
+                        new android.os.Handler().postDelayed(() -> {
+                            Intent intent = new Intent(Login.this, Tela.class);
+                            startActivity(intent);
+                            finish();
+                        }, 1000);
                     } else {
-                        String erro = result != null ? result : "resposta nula do servidor";
-                        System.out.println("Erro no login: " + erro);
-                        Toast.makeText(Login.this, "Usuário ou senha incorretos", Toast.LENGTH_LONG).show();
-                        password.setText(""); // limpa o campo de senha
+                        Log.e(TAG, "Login falhou. Resposta: " + result);
+                        Toast.makeText(Login.this, 
+                            "Usuário ou senha incorretos", 
+                            Toast.LENGTH_LONG).show();
+                        password.setText(""); // Limpa a senha
                     }
-                } catch (Exception ex) {
-                    System.out.println("Erro ao processar resposta: " + ex.toString());
-                    Toast.makeText(Login.this, "Erro ao processar resposta do servidor", Toast.LENGTH_LONG).show();
-                }
+                });
             });
         });
     }
