@@ -8,7 +8,7 @@ import java.io.File;
 
 public class ApiService {
     private static final String TAG = "ApiService";
-    private static final String BASE_URL = "http://10.0.2.2/reparte/web/back-end/php/";
+    private static final String BASE_URL = "http://192.168.137.1/reparte/web/back-end/php/";
     private Context context;
 
     public ApiService(Context context) {
@@ -158,10 +158,10 @@ public class ApiService {
         // Gera um ID alfanumérico de 12 caracteres
         String timestamp = String.valueOf(System.currentTimeMillis());
         String random = String.valueOf(Math.random());
-        
+
         // Pega os últimos 6 dígitos do timestamp
         String timestampPart = timestamp.substring(Math.max(0, timestamp.length() - 6));
-        
+
         // Pega 6 dígitos do número aleatório (após o ponto decimal)
         String randomPart = random.substring(2); // Remove "0."
         if (randomPart.length() > 6) {
@@ -172,7 +172,7 @@ public class ApiService {
                 randomPart += "0";
             }
         }
-        
+
         // Combina as duas partes para formar um ID de 12 caracteres
         return timestampPart + randomPart;
     }
@@ -185,14 +185,12 @@ public class ApiService {
         Log.d(TAG, "Usuário original: " + usuarioOriginal);
         Log.d(TAG, "Usuário após limpar espaços: " + usuarioTemp);
 
-        // Se o usuário parece ser um email, extrair apenas o nome antes do @
         if (usuarioTemp.contains("@")) {
             String antigousuario = usuarioTemp;
             usuarioTemp = usuarioTemp.split("@")[0];
             Log.d(TAG, "Usuário continha @, convertendo de '" + antigousuario + "' para '" + usuarioTemp + "'");
         }
 
-        // Adiciona @ se não começar com @
         if (!usuarioTemp.startsWith("@")) {
             String antigousuario = usuarioTemp;
             usuarioTemp = "@" + usuarioTemp;
@@ -200,10 +198,8 @@ public class ApiService {
         }
 
         final String usuario = usuarioTemp;
-        Log.d(TAG, "Usuário final que será enviado: '" + usuario + "'");
-
-        // Usar o mesmo caminho que funcionou no cadastro
-        String url = BASE_URL + "login.php";
+        // 🛠️ URL corrigida:
+        String url = BASE_URL + "login_android.php";
         Log.d(TAG, "=== INÍCIO DO LOGIN ===");
         Log.d(TAG, "URL completa: " + url);
         Log.d(TAG, "Dados enviados - Usuário: " + usuario);
@@ -232,14 +228,13 @@ public class ApiService {
                             callback.onCompleted(null, "success");
                         } else {
                             Log.e(TAG, "Erro no login. Resposta detalhada: " + result);
-                            // Se falhou com @, tentar sem @
                             if (usuario.startsWith("@")) {
                                 String usuarioSemArroba = usuario.substring(1);
                                 Log.d(TAG, "Tentando login novamente sem @: " + usuarioSemArroba);
                                 realizarLogin(usuarioSemArroba, senha, callback);
-                                return;
+                            } else {
+                                callback.onCompleted(new Exception("Usuário ou senha incorretos"), null);
                             }
-                            callback.onCompleted(null, result);
                         }
                     }
                 });
