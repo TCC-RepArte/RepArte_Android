@@ -16,27 +16,67 @@ public class ApiService {
     }
 
     public void cadastrarUsuario(String usuarioOriginal, String email, String senha, FutureCallback<String> callback) {
-        String url = BASE_URL + "teste.php";
-        Log.d(TAG, "=== TESTE DE CONEXÃO ===");
+        String usuarioTemp = usuarioOriginal.replace(" ", "").toLowerCase();
+        if (usuarioTemp.startsWith("@")) {
+            usuarioTemp = usuarioTemp.substring(1);
+        }
+        final String usuario = usuarioTemp;
+        email = email.replace(" ", "");
+
+        String id = generateUniqueId();
+        if (id.length() > 12) {
+            id = id.substring(0, 12);
+        }
+
+        final String finalId = id;
+        String url = BASE_URL + "signup.php";
+        Log.d(TAG, "=== INÍCIO DO CADASTRO ===");
         Log.d(TAG, "URL completa: " + url);
+        Log.d(TAG, "Dados enviados - Usuário: " + usuario);
+        Log.d(TAG, "Dados enviados - Email: " + email);
+        Log.d(TAG, "Dados enviados - ID: " + finalId);
+        Log.d(TAG, "Dados enviados - Senha (comprimento): " + senha.length());
+
+        // Configuração do Ion com mais opções de rede
+        Ion.getDefault(context)
+           .configure()
+           .setLogging("IonLog", Log.DEBUG)
+           .connectTimeout(20000)
+           .followRedirects(true)
+           .maxRedirects(5);
 
         Ion.with(context)
-                .load("GET", url)
-                .setHeader("Content-Type", "application/json")
+                .load("POST", url)
+                .setHeader("Content-Type", "application/x-www-form-urlencoded")
+                .setHeader("Connection", "close")
+                .setTimeout(20000)
+                .setBodyParameter("usuario", usuario)
+                .setBodyParameter("email", email)
+                .setBodyParameter("senha", senha)
+                .setBodyParameter("confsenha", senha)
+                .setBodyParameter("id", finalId)
                 .asString()
                 .setCallback(new FutureCallback<String>() {
                     @Override
                     public void onCompleted(Exception e, String result) {
                         if (e != null) {
-                            Log.e(TAG, "Erro no teste: ", e);
+                            Log.e(TAG, "Erro detalhado na requisição de cadastro: ", e);
                             Log.e(TAG, "Tipo de erro: " + e.getClass().getSimpleName());
                             Log.e(TAG, "Mensagem de erro: " + e.getMessage());
                             callback.onCompleted(e, null);
                             return;
                         }
 
-                        Log.d(TAG, "Resposta do teste: " + result);
-                        callback.onCompleted(null, "success");
+                        Log.d(TAG, "Resposta do cadastro: " + result);
+                        if (result != null && !result.toLowerCase().contains("erro")) {
+                            Log.d(TAG, "Cadastro realizado com sucesso!");
+                            saveUserId(finalId);
+                            saveUserCredentials("@" + usuario, senha);
+                            callback.onCompleted(null, "success");
+                        } else {
+                            Log.e(TAG, "Erro no cadastro. Resposta: " + result);
+                            callback.onCompleted(new Exception("Erro no cadastro: " + result), null);
+                        }
                     }
                 });
     }
