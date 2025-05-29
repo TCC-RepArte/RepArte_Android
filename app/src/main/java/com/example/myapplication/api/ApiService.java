@@ -5,6 +5,8 @@ import android.util.Log;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.async.future.FutureCallback;
 import java.io.File;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class ApiService {
     private static final String TAG = "ApiService";
@@ -186,31 +188,40 @@ public class ApiService {
         Log.d(TAG, "Usuário original: " + usuarioOriginal);
         Log.d(TAG, "Usuário após limpar espaços: " + usuarioTemp);
 
-        if (usuarioTemp.contains("@")) {
-            String antigousuario = usuarioTemp;
-            usuarioTemp = usuarioTemp.split("@")[0];
-            Log.d(TAG, "Usuário continha @, convertendo de '" + antigousuario + "' para '" + usuarioTemp + "'");
-        }
+        // Prepara as duas versões do usuário (com e sem @)
+        final String usuarioSemArroba = usuarioTemp.startsWith("@") ? usuarioTemp.substring(1) : usuarioTemp;
+        final String usuarioComArroba = usuarioTemp.startsWith("@") ? usuarioTemp : "@" + usuarioTemp;
 
-        if (!usuarioTemp.startsWith("@")) {
-            String antigousuario = usuarioTemp;
-            usuarioTemp = "@" + usuarioTemp;
-            Log.d(TAG, "Adicionando @ ao usuário, convertendo de '" + antigousuario + "' para '" + usuarioTemp + "'");
-        }
-
-        final String usuario = usuarioTemp;
-        // 🛠️ URL corrigida:
         String url = BASE_URL + "login_android.php";
         Log.d(TAG, "=== INÍCIO DO LOGIN ===");
         Log.d(TAG, "URL completa: " + url);
-        Log.d(TAG, "Dados enviados - Usuário: " + usuario);
-        Log.d(TAG, "Dados enviados - Senha (tamanho): " + senha.length());
+        Log.d(TAG, "Tentando primeiro com usuário: " + usuarioSemArroba);
+
+        // Primeira tentativa - sem @
+        tentarLogin(usuarioSemArroba, senha, new FutureCallback<String>() {
+            @Override
+            public void onCompleted(Exception e, String result) {
+                if (e != null || (result != null && !result.contains("success"))) {
+                    // Se falhou, tenta com @
+                    Log.d(TAG, "Primeira tentativa falhou, tentando com @: " + usuarioComArroba);
+                    tentarLogin(usuarioComArroba, senha, callback);
+                } else {
+                    // Se deu certo, retorna o sucesso
+                    callback.onCompleted(null, result);
+                }
+            }
+        });
+    }
+
+    private void tentarLogin(String usuario, String senha, FutureCallback<String> callback) {
+        Log.d(TAG, "Tentando login com usuário: " + usuario);
+        Log.d(TAG, "Senha (tamanho): " + senha.length());
 
         Ion.with(context)
-                .load("POST", url)
+                .load("POST", BASE_URL + "login_android.php")
                 .setHeader("Content-Type", "application/x-www-form-urlencoded")
                 .setHeader("Accept", "*/*")
-                .setTimeout(30000) // 30 segundos de timeout
+                .setTimeout(30000)
                 .setBodyParameter("usuario", usuario)
                 .setBodyParameter("senha", senha)
                 .asString()
@@ -218,30 +229,33 @@ public class ApiService {
                     @Override
                     public void onCompleted(Exception e, String result) {
                         if (e != null) {
-                            Log.e(TAG, "Erro detalhado na requisição de login: ", e);
-                            Log.e(TAG, "Tipo de erro: " + e.getClass().getSimpleName());
-                            Log.e(TAG, "Mensagem de erro: " + e.getMessage());
-                            if (e.getCause() != null) {
-                                Log.e(TAG, "Causa do erro: " + e.getCause().getMessage());
-                            }
+                            Log.e(TAG, "Erro na requisição: ", e);
                             callback.onCompleted(e, null);
                             return;
                         }
 
                         Log.d(TAG, "Resposta do login: " + result);
 
-                        if (result != null && (result.contains("success") || result.contains("\"status\":\"success\""))) {
-                            Log.d(TAG, "Login realizado com sucesso!");
-                            callback.onCompleted(null, "success");
-                        } else {
-                            Log.e(TAG, "Erro no login. Resposta detalhada: " + result);
-                            if (usuario.startsWith("@")) {
-                                String usuarioSemArroba = usuario.substring(1);
-                                Log.d(TAG, "Tentando login novamente sem @: " + usuarioSemArroba);
-                                realizarLogin(usuarioSemArroba, senha, callback);
-                            } else {
-                                callback.onCompleted(new Exception("Usuário ou senha incorretos"), null);
+                        if (result != null) {
+                            try {
+                                JsonObject jsonResponse = JsonParser.parseString(result).getAsJsonObject();
+                                if (jsonResponse.has("sucesso") && jsonResponse.get("sucesso").getAsBoolean()) {
+                                    Log.d(TAG, "Login realizado com sucesso!");
+                                    callback.onCompleted(null, "success");
+                                    return;
+                                }
+                            } catch (Exception jsonEx) {
+                                Log.d(TAG, "Resposta não é JSON válido, verificando string");
                             }
+
+                            if (result.contains("success")) {
+                                Log.d(TAG, "Login realizado com sucesso via string!");
+                                callback.onCompleted(null, "success");
+                            } else {
+                                callback.onCompleted(new Exception("Login falhou"), null);
+                            }
+                        } else {
+                            callback.onCompleted(new Exception("Resposta nula do servidor"), null);
                         }
                     }
                 });

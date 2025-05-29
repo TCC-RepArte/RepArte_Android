@@ -85,21 +85,53 @@ public class Perfil extends AppCompatActivity {
                 Log.e(TAG, "Erro ao processar imagem: " + e.getMessage(), e);
                 Toast.makeText(this, "Erro ao processar imagem: " + e.getMessage(),
                         Toast.LENGTH_LONG).show();
+                return;
             }
         }
 
-        // Navega diretamente para o Login
-        Toast.makeText(this, "Cadastro concluído com sucesso! Por favor, faça login.", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(Perfil.this, Login.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finishAffinity();
+        // Desabilita o botão para evitar cliques duplos
+        salvarButton.setEnabled(false);
+        
+        // Mostra um progresso para o usuário
+        Toast.makeText(this, "Salvando perfil...", Toast.LENGTH_SHORT).show();
 
-        // Tenta salvar o perfil em background
+        // Tenta salvar o perfil
         apiService.completarCadastro(nomeExibicao, descricao, photoFile, new FutureCallback<String>() {
             @Override
             public void onCompleted(Exception e, String result) {
-                // Não fazemos nada com o resultado, pois já navegamos para a próxima tela
+                runOnUiThread(() -> {
+                    if (e != null) {
+                        Log.e(TAG, "Erro ao salvar perfil: " + e.getMessage(), e);
+                        Toast.makeText(Perfil.this, 
+                            "Erro ao salvar perfil: " + e.getMessage(), 
+                            Toast.LENGTH_LONG).show();
+                        salvarButton.setEnabled(true);
+                        return;
+                    }
+
+                    Log.d(TAG, "Resposta do servidor: " + result);
+                    
+                    if (result != null) {
+                        Log.d(TAG, "Perfil salvo com sucesso!");
+                        Toast.makeText(Perfil.this, 
+                            "Cadastro concluído com sucesso! Por favor, faça login.", 
+                            Toast.LENGTH_LONG).show();
+
+                        // Navega para o Login após confirmar que salvou
+                        Intent intent = new Intent(Perfil.this, Login.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | 
+                                     Intent.FLAG_ACTIVITY_NEW_TASK | 
+                                     Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finishAffinity();
+                    } else {
+                        Log.e(TAG, "Erro ao salvar perfil: resposta nula");
+                        Toast.makeText(Perfil.this, 
+                            "Erro ao salvar perfil. Tente novamente.", 
+                            Toast.LENGTH_LONG).show();
+                        salvarButton.setEnabled(true);
+                    }
+                });
             }
         });
     }
