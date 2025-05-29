@@ -38,13 +38,9 @@ public class Login extends AppCompatActivity {
         avatar = findViewById(R.id.imageView14);
         lock = findViewById(R.id.imageView15);
 
-        // Tenta preencher o último usuário cadastrado
-        String ultimoUsuario = getSharedPreferences("RepArte", MODE_PRIVATE)
-                .getString("ultimo_usuario", "");
-        if (!ultimoUsuario.isEmpty()) {
-            nome.setText(ultimoUsuario);
-            Log.d(TAG, "Preenchendo último usuário cadastrado: " + ultimoUsuario);
-        }
+        // Limpa os campos ao iniciar
+        nome.setText("");
+        password.setText("");
 
         //evento do botão de registrar (ir pra página de sign-up)
         button5.setOnClickListener(view -> {
@@ -66,6 +62,14 @@ public class Login extends AppCompatActivity {
                 nome.requestFocus();
                 return;
             }
+
+            // Verifica se o usuário começa com @
+            if (!user.startsWith("@")) {
+                nome.setError("O nome de usuário deve começar com @");
+                nome.requestFocus();
+                return;
+            }
+
             // verifica se o campo da senha foi preenchido e avisa se nao foi
             if (pass.isEmpty()) {
                 password.setError("Preencha a senha.");
@@ -82,7 +86,7 @@ public class Login extends AppCompatActivity {
                     if (e != null) {
                         Log.e(TAG, "Erro no login", e);
                         Toast.makeText(Login.this, 
-                            "Erro ao fazer login: " + e.getMessage(), 
+                            e.getMessage(), 
                             Toast.LENGTH_LONG).show();
                         return;
                     }
@@ -109,5 +113,13 @@ public class Login extends AppCompatActivity {
                 });
             });
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Limpa os campos quando a tela é retomada
+        nome.setText("");
+        password.setText("");
     }
 }
