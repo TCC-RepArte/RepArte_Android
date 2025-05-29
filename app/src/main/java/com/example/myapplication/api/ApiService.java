@@ -8,7 +8,7 @@ import java.io.File;
 
 public class ApiService {
     private static final String TAG = "ApiService";
-    private static final String BASE_URL = "http://192.168.137.1/reparte/web/back-end/php/";
+    private static final String BASE_URL = "http://192.168.0.110/reparte/web/back-end/php/";
     private Context context;
 
     public ApiService(Context context) {
@@ -16,63 +16,27 @@ public class ApiService {
     }
 
     public void cadastrarUsuario(String usuarioOriginal, String email, String senha, FutureCallback<String> callback) {
-        String usuarioTemp = usuarioOriginal.replace(" ", "").toLowerCase(); // Converter para minúsculas
-        // Remove o @ se já existir
-        if (usuarioTemp.startsWith("@")) {
-            usuarioTemp = usuarioTemp.substring(1);
-        }
-        final String usuario = usuarioTemp;
-        email = email.replace(" ", "");
-
-        // Gerar ID com tamanho correto (12 caracteres)
-        String id = generateUniqueId();
-        if (id.length() > 12) {
-            id = id.substring(0, 12);
-        }
-
-        final String finalId = id;
-        String url = BASE_URL + "signup.php";
-        Log.d(TAG, "=== INÍCIO DO CADASTRO ===");
+        String url = BASE_URL + "teste.php";
+        Log.d(TAG, "=== TESTE DE CONEXÃO ===");
         Log.d(TAG, "URL completa: " + url);
-        Log.d(TAG, "Dados enviados - Usuário: " + usuario);
-        Log.d(TAG, "Dados enviados - Email: " + email);
-        Log.d(TAG, "Dados enviados - ID: " + finalId);
-        Log.d(TAG, "Dados enviados - Senha (comprimento): " + senha.length());
 
         Ion.with(context)
-                .load("POST", url)
-                .setHeader("Content-Type", "application/x-www-form-urlencoded")
-                .setHeader("Accept", "*/*")
-                .setBodyParameter("usuario", usuario)
-                .setBodyParameter("email", email)
-                .setBodyParameter("senha", senha)
-                .setBodyParameter("confsenha", senha) // Adiciona confirmação de senha
-                .setBodyParameter("id", finalId)
+                .load("GET", url)
+                .setHeader("Content-Type", "application/json")
                 .asString()
                 .setCallback(new FutureCallback<String>() {
                     @Override
                     public void onCompleted(Exception e, String result) {
                         if (e != null) {
-                            Log.e(TAG, "Erro na requisição de cadastro: " + e.getMessage(), e);
+                            Log.e(TAG, "Erro no teste: ", e);
+                            Log.e(TAG, "Tipo de erro: " + e.getClass().getSimpleName());
+                            Log.e(TAG, "Mensagem de erro: " + e.getMessage());
                             callback.onCompleted(e, null);
                             return;
                         }
 
-                        Log.d(TAG, "Resposta do cadastro (length: " + (result != null ? result.length() : 0) + "): " + result);
-
-                        // Considera sucesso se não houver erros na resposta
-                        if (result != null && !result.toLowerCase().contains("erro")) {
-                            Log.d(TAG, "Cadastro realizado com sucesso!");
-                            // Salvar credenciais para uso posterior no login
-                            saveUserId(finalId);
-                            saveUserCredentials("@" + usuario, senha);
-                            Log.d(TAG, "Credenciais salvas - Usuário: @" + usuario);
-                            Log.d(TAG, "Credenciais salvas - ID: " + finalId);
-                            callback.onCompleted(null, "success");
-                        } else {
-                            Log.e(TAG, "Erro no cadastro. Resposta: " + result);
-                            callback.onCompleted(new Exception("Erro no cadastro: " + result), null);
-                        }
+                        Log.d(TAG, "Resposta do teste: " + result);
+                        callback.onCompleted(null, "success");
                     }
                 });
     }
@@ -209,6 +173,7 @@ public class ApiService {
                 .load("POST", url)
                 .setHeader("Content-Type", "application/x-www-form-urlencoded")
                 .setHeader("Accept", "*/*")
+                .setTimeout(30000) // 30 segundos de timeout
                 .setBodyParameter("usuario", usuario)
                 .setBodyParameter("senha", senha)
                 .asString()
@@ -216,7 +181,12 @@ public class ApiService {
                     @Override
                     public void onCompleted(Exception e, String result) {
                         if (e != null) {
-                            Log.e(TAG, "Erro na requisição de login: " + e.getMessage(), e);
+                            Log.e(TAG, "Erro detalhado na requisição de login: ", e);
+                            Log.e(TAG, "Tipo de erro: " + e.getClass().getSimpleName());
+                            Log.e(TAG, "Mensagem de erro: " + e.getMessage());
+                            if (e.getCause() != null) {
+                                Log.e(TAG, "Causa do erro: " + e.getCause().getMessage());
+                            }
                             callback.onCompleted(e, null);
                             return;
                         }

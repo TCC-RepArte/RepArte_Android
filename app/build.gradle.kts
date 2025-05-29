@@ -63,6 +63,10 @@ dependencies {
     
     // Ion para requisições HTTP
     implementation("com.koushikdutta.ion:ion:3.1.0")
+    
+    // OkHttp para requisições HTTP
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    
     implementation("androidx.activity:activity:1.10.1")
 
     testImplementation("junit:junit:4.13.2")
