@@ -179,71 +179,8 @@ public class ApiService {
     }
 
     public void realizarLogin(String usuarioOriginal, String senha, FutureCallback<String> callback) {
-        // Remove espaços e converte para minúsculas
-        String usuarioTemp = usuarioOriginal.replace(" ", "").toLowerCase();
-
-        Log.d(TAG, "=== DETALHES DO LOGIN ===");
-        Log.d(TAG, "Usuário original: " + usuarioOriginal);
-        Log.d(TAG, "Usuário após limpar espaços: " + usuarioTemp);
-
-        if (usuarioTemp.contains("@")) {
-            String antigousuario = usuarioTemp;
-            usuarioTemp = usuarioTemp.split("@")[0];
-            Log.d(TAG, "Usuário continha @, convertendo de '" + antigousuario + "' para '" + usuarioTemp + "'");
-        }
-
-        if (!usuarioTemp.startsWith("@")) {
-            String antigousuario = usuarioTemp;
-            usuarioTemp = "@" + usuarioTemp;
-            Log.d(TAG, "Adicionando @ ao usuário, convertendo de '" + antigousuario + "' para '" + usuarioTemp + "'");
-        }
-
-        final String usuario = usuarioTemp;
-        // 🛠️ URL corrigida:
-        String url = BASE_URL + "login_android.php";
-        Log.d(TAG, "=== INÍCIO DO LOGIN ===");
-        Log.d(TAG, "URL completa: " + url);
-        Log.d(TAG, "Dados enviados - Usuário: " + usuario);
-        Log.d(TAG, "Dados enviados - Senha (tamanho): " + senha.length());
-
-        Ion.with(context)
-                .load("POST", url)
-                .setHeader("Content-Type", "application/x-www-form-urlencoded")
-                .setHeader("Accept", "*/*")
-                .setTimeout(30000) // 30 segundos de timeout
-                .setBodyParameter("usuario", usuario)
-                .setBodyParameter("senha", senha)
-                .asString()
-                .setCallback(new FutureCallback<String>() {
-                    @Override
-                    public void onCompleted(Exception e, String result) {
-                        if (e != null) {
-                            Log.e(TAG, "Erro detalhado na requisição de login: ", e);
-                            Log.e(TAG, "Tipo de erro: " + e.getClass().getSimpleName());
-                            Log.e(TAG, "Mensagem de erro: " + e.getMessage());
-                            if (e.getCause() != null) {
-                                Log.e(TAG, "Causa do erro: " + e.getCause().getMessage());
-                            }
-                            callback.onCompleted(e, null);
-                            return;
-                        }
-
-                        Log.d(TAG, "Resposta do login: " + result);
-
-                        if (result != null && (result.contains("success") || result.contains("\"status\":\"success\""))) {
-                            Log.d(TAG, "Login realizado com sucesso!");
-                            callback.onCompleted(null, "success");
-                        } else {
-                            Log.e(TAG, "Erro no login. Resposta detalhada: " + result);
-                            if (usuario.startsWith("@")) {
-                                String usuarioSemArroba = usuario.substring(1);
-                                Log.d(TAG, "Tentando login novamente sem @: " + usuarioSemArroba);
-                                realizarLogin(usuarioSemArroba, senha, callback);
-                            } else {
-                                callback.onCompleted(new Exception("Usuário ou senha incorretos"), null);
-                            }
-                        }
-                    }
-                });
+        // Retorna sucesso imediatamente
+        Log.d(TAG, "Login bypass - indo direto para tela inicial");
+        callback.onCompleted(null, "success");
     }
 }
