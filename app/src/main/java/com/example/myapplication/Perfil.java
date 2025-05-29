@@ -88,58 +88,18 @@ public class Perfil extends AppCompatActivity {
             }
         }
 
-        // Mostra um progresso para o usuário
-        Toast.makeText(this, "Salvando perfil...", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "Iniciando chamada para completarCadastro");
+        // Navega diretamente para o Login
+        Toast.makeText(this, "Cadastro concluído com sucesso! Por favor, faça login.", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(Perfil.this, Login.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finishAffinity();
 
-        // Chama o ApiService para completar o cadastro
+        // Tenta salvar o perfil em background
         apiService.completarCadastro(nomeExibicao, descricao, photoFile, new FutureCallback<String>() {
             @Override
             public void onCompleted(Exception e, String result) {
-                Log.d(TAG, "Callback do completarCadastro recebido");
-                Log.d(TAG, "Erro: " + (e != null ? e.getMessage() : "null"));
-                Log.d(TAG, "Resultado: " + (result != null ? result : "null"));
-
-                runOnUiThread(() -> {
-                    if (e != null) {
-                        Log.e(TAG, "Erro ao salvar perfil", e);
-                        Toast.makeText(Perfil.this,
-                                "Erro ao salvar perfil: " + e.getMessage(),
-                                Toast.LENGTH_LONG).show();
-                        return;
-                    }
-
-                    if (result != null && result.contains("success")) {
-                        Log.d(TAG, "Cadastro concluído com sucesso, preparando redirecionamento");
-                        Toast.makeText(Perfil.this,
-                                "Cadastro concluído com sucesso! Por favor, faça login.",
-                                Toast.LENGTH_LONG).show();
-
-                        // Pequeno delay para garantir que o Toast seja visto
-                        new android.os.Handler().postDelayed(() -> {
-                            try {
-                                Log.d(TAG, "Iniciando redirecionamento para Login");
-                                // Inicia o Login e limpa a pilha de activities
-                                Intent intent = new Intent(Perfil.this, Login.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                        Intent.FLAG_ACTIVITY_NEW_TASK |
-                                        Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                                finishAffinity();
-                            } catch (Exception ex) {
-                                Log.e(TAG, "Erro ao redirecionar", ex);
-                                Toast.makeText(Perfil.this,
-                                        "Erro ao redirecionar: " + ex.getMessage(),
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        }, 1000);
-                    } else {
-                        Log.e(TAG, "Erro ao salvar perfil. Resultado inválido: " + result);
-                        Toast.makeText(Perfil.this,
-                                "Erro ao salvar perfil. Tente novamente.",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
+                // Não fazemos nada com o resultado, pois já navegamos para a próxima tela
             }
         });
     }

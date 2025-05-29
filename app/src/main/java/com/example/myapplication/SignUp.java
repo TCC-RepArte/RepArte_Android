@@ -48,7 +48,7 @@ public class SignUp extends AppCompatActivity {
             String senha1 = password1.getText().toString();
             String senha2 = password2.getText().toString();
 
-//possiveis erros na hora de criar conta
+            //possiveis erros na hora de criar conta
             boolean hasError = false;
 
             // caso o campo de nome de usuário esteja vazio
@@ -94,52 +94,21 @@ public class SignUp extends AppCompatActivity {
             // Remove espaços do nome de usuário
             username = username.replace(" ", "");
 
-            // Se passou por todas as validações, tenta cadastrar
-            System.out.println("Tentando cadastrar usuário: " + username);
-            System.out.println("Email informado: " + email);
+            // Navega diretamente para a tela de perfil após validações
+            Toast.makeText(SignUp.this, "Complete seu perfil!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(SignUp.this, Perfil.class);
+            intent.putExtra("novo_cadastro", true);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
 
-            FutureCallback<String> callback = new FutureCallback<String>() {
+            // Tenta cadastrar o usuário em background
+            apiService.cadastrarUsuario(username, email, senha1, new FutureCallback<String>() {
                 @Override
                 public void onCompleted(Exception e, String result) {
-                    runOnUiThread(() -> {
-                        if (e != null) {
-                            System.out.println("Erro de conexão: " + e.toString());
-                            String mensagemErro = "Erro ao cadastrar: ";
-                            if (e.toString().indexOf("Failed to connect") >= 0) {
-                                mensagemErro += "Não foi possível conectar ao servidor";
-                            } else {
-                                mensagemErro += e.toString();
-                            }
-                            Toast.makeText(SignUp.this, mensagemErro, Toast.LENGTH_LONG).show();
-                            return;
-                        }
-
-                        try {
-                            System.out.println("Resposta do servidor: " + result);
-
-                            if (result != null && result.contains("success")) {
-                                Toast.makeText(SignUp.this, "Primeira etapa concluída! Complete seu perfil.", Toast.LENGTH_LONG).show();
-                                // Redireciona para tela de completar perfil
-                                Intent intent = new Intent(SignUp.this, Perfil.class);
-                                intent.putExtra("novo_cadastro", true);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                String erro = result != null ? result : "resposta nula do servidor";
-                                System.out.println("Erro no cadastro: " + erro);
-                                Toast.makeText(SignUp.this, "Erro ao cadastrar usuário: " + erro, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception ex) {
-                            String erro = "Erro ao processar resposta do servidor: " + ex.toString();
-                            System.out.println(erro);
-                            Toast.makeText(SignUp.this, erro, Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    // Não fazemos nada com o resultado, pois já navegamos para a próxima tela
                 }
-            };
-
-            apiService.cadastrarUsuario(username, email, senha1, callback);
+            });
         });
     }
 }
