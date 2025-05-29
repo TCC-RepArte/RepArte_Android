@@ -37,13 +37,10 @@ public class ApiService {
         Log.d(TAG, "Dados enviados - ID: " + finalId);
         Log.d(TAG, "Dados enviados - Senha (comprimento): " + senha.length());
 
-        // Configuração do Ion com mais opções de rede
+        // Configuração básica do Ion
         Ion.getDefault(context)
            .configure()
-           .setLogging("IonLog", Log.DEBUG)
-           .connectTimeout(20000)
-           .followRedirects(true)
-           .maxRedirects(5);
+           .setLogging("IonLog", Log.DEBUG);
 
         Ion.with(context)
                 .load("POST", url)
