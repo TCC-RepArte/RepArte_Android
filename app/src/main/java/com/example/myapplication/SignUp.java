@@ -94,19 +94,35 @@ public class SignUp extends AppCompatActivity {
             // Remove espaços do nome de usuário
             username = username.replace(" ", "");
 
-            // Navega diretamente para a tela de perfil após validações
-            Toast.makeText(SignUp.this, "Complete seu perfil!", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(SignUp.this, Perfil.class);
-            intent.putExtra("novo_cadastro", true);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
+            // Desabilita o botão para evitar duplo clique
+            btn_login1.setEnabled(false);
 
-            // Tenta cadastrar o usuário em background
+            // Mostra progresso para o usuário
+            Toast.makeText(SignUp.this, "Criando sua conta...", Toast.LENGTH_SHORT).show();
+
+            // Tenta cadastrar o usuário
             apiService.cadastrarUsuario(username, email, senha1, new FutureCallback<String>() {
                 @Override
                 public void onCompleted(Exception e, String result) {
-                    // Não fazemos nada com o resultado, pois já navegamos para a próxima tela
+                    runOnUiThread(() -> {
+                        btn_login1.setEnabled(true);
+                        
+                        if (e != null) {
+                            Toast.makeText(SignUp.this, "Erro ao criar conta: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        if (result != null && result.equals("success")) {
+                            Toast.makeText(SignUp.this, "Complete seu perfil!", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(SignUp.this, Perfil.class);
+                            intent.putExtra("novo_cadastro", true);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(SignUp.this, "Erro ao criar conta. Tente novamente.", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
             });
         });

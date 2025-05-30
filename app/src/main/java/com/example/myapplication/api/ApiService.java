@@ -91,15 +91,24 @@ public class ApiService {
     }
 
     private void saveUserId(String id) {
+        Log.d(TAG, "Salvando ID do usuário nas SharedPreferences: " + id);
         context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
                 .edit()
                 .putString("user_id", id)
                 .apply();
+        
+        // Verifica se o ID foi salvo corretamente
+        String savedId = context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
+                .getString("user_id", null);
+        Log.d(TAG, "ID salvo com sucesso? " + (savedId != null && savedId.equals(id)));
     }
 
     public void completarCadastro(String nomeExibicao, String descricao, File foto, FutureCallback<String> callback) {
+        Log.d(TAG, "Iniciando completarCadastro...");
         String id = context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
                 .getString("user_id", null);
+
+        Log.d(TAG, "ID recuperado das SharedPreferences: " + id);
 
         if (id == null) {
             Log.e(TAG, "ID do usuário não encontrado nas SharedPreferences");
@@ -107,20 +116,28 @@ public class ApiService {
             return;
         }
 
-        String url = BASE_URL + "signup2.php";
+        String url = BASE_URL + "signup02.php";
         Log.d(TAG, "=== COMPLETANDO CADASTRO ===");
         Log.d(TAG, "URL completa: " + url);
         Log.d(TAG, "Dados enviados - Nome: " + nomeExibicao);
         Log.d(TAG, "Dados enviados - Descrição: " + descricao);
         Log.d(TAG, "Dados enviados - ID: " + id);
         Log.d(TAG, "Foto presente: " + (foto != null ? "Sim" : "Não"));
+        if (foto != null) {
+            Log.d(TAG, "Detalhes da foto - Tamanho: " + foto.length() + " bytes");
+            Log.d(TAG, "Detalhes da foto - Caminho: " + foto.getAbsolutePath());
+        }
 
         Ion.with(context)
                 .load("POST", url)
                 .setHeader("Accept", "*/*")
+                .setHeader("Content-Type", "multipart/form-data")
+                // Desabilita redirecionamentos automáticos
+                .followRedirect(false)
                 .setMultipartParameter("nomeexi", nomeExibicao)
                 .setMultipartParameter("desc", descricao)
                 .setMultipartParameter("id", id)
+                .setMultipartParameter("tipo", "android") // Identifica que é uma requisição do app
                 .setMultipartFile("envft", foto)
                 .asString()
                 .setCallback(new FutureCallback<String>() {
@@ -128,25 +145,57 @@ public class ApiService {
                     public void onCompleted(Exception e, String result) {
                         if (e != null) {
                             Log.e(TAG, "Erro na requisição: " + e.getMessage(), e);
-                            callback.onCompleted(e, null);
+                            callback.onCompleted(new Exception("Erro ao conectar com o servidor: " + e.getMessage()), null);
                             return;
                         }
 
-                        Log.d(TAG, "Resposta do servidor: " + (result != null ? result : "null"));
+                        Log.d(TAG, "=== RESPOSTA DO SERVIDOR (signup2.php) ===");
+                        Log.d(TAG, "Resposta completa: " + (result != null ? result : "null"));
 
-                        // Garante que a resposta seja tratada como sucesso
-                        if (result != null) {
+                        // Se a resposta contiver "403 Forbidden"
+                        if (result != null && result.contains("403 Forbidden")) {
+                            Log.e(TAG, "Erro de permissão no servidor");
+                            callback.onCompleted(new Exception("Erro de permissão no servidor. Por favor, contate o suporte."), null);
+                            return;
+                        }
+                        
+                        try {
+                            JsonObject jsonResponse = JsonParser.parseString(result).getAsJsonObject();
+                            Log.d(TAG, "Resposta em JSON: " + jsonResponse.toString());
+                            
+                            if (jsonResponse.has("erro")) {
+                                String erro = jsonResponse.get("erro").getAsString();
+                                Log.e(TAG, "Erro retornado pelo servidor: " + erro);
+                                callback.onCompleted(new Exception(erro), null);
+                                return;
+                            }
+                            
+                            if (jsonResponse.has("sucesso") && jsonResponse.get("sucesso").getAsBoolean()) {
+                                Log.d(TAG, "Servidor confirmou sucesso no JSON");
+                                // Salva o status de cadastro completo
+                                context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
+                                        .edit()
+                                        .putBoolean("cadastro_completo", true)
+                                        .apply();
+                                callback.onCompleted(null, "success");
+                                return;
+                            }
+                        } catch (Exception jsonEx) {
+                            Log.d(TAG, "Resposta não é JSON válido, verificando string");
+                        }
+
+                        // Se chegou aqui, verifica se a string contém sucesso
+                        if (result != null && result.toLowerCase().contains("sucesso")) {
+                            Log.d(TAG, "Servidor retornou sucesso via string");
                             // Salva o status de cadastro completo
                             context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
                                     .edit()
                                     .putBoolean("cadastro_completo", true)
                                     .apply();
-
-                            Log.d(TAG, "Perfil atualizado com sucesso! Salvou status nas preferências.");
                             callback.onCompleted(null, "success");
                         } else {
-                            Log.e(TAG, "Erro ao atualizar perfil. Resposta nula do servidor");
-                            callback.onCompleted(new Exception("Resposta nula do servidor"), null);
+                            Log.e(TAG, "Resposta do servidor não indica sucesso");
+                            callback.onCompleted(new Exception("Erro ao salvar perfil no servidor. Resposta inesperada."), null);
                         }
                     }
                 });

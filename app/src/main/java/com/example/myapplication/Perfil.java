@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -95,41 +96,89 @@ public class Perfil extends AppCompatActivity {
         // Mostra um progresso para o usuário
         Toast.makeText(this, "Salvando perfil...", Toast.LENGTH_SHORT).show();
 
+        Log.d(TAG, "=== ENVIANDO DADOS PARA O SERVIDOR ===");
+        Log.d(TAG, "Nome de exibição: " + nomeExibicao);
+        Log.d(TAG, "Descrição: " + descricao);
+        Log.d(TAG, "Foto: " + (photoFile != null ? photoFile.getAbsolutePath() : "Não selecionada"));
+
         // Tenta salvar o perfil
         apiService.completarCadastro(nomeExibicao, descricao, photoFile, new FutureCallback<String>() {
             @Override
             public void onCompleted(Exception e, String result) {
                 runOnUiThread(() -> {
+                    salvarButton.setEnabled(true);
+                    
                     if (e != null) {
                         Log.e(TAG, "Erro ao salvar perfil: " + e.getMessage(), e);
-                        Toast.makeText(Perfil.this, 
-                            "Erro ao salvar perfil: " + e.getMessage(), 
-                            Toast.LENGTH_LONG).show();
-                        salvarButton.setEnabled(true);
+                        
+                        // Se o erro for de ID não encontrado, mostra uma mensagem específica
+                        if (e.getMessage() != null && e.getMessage().contains("ID do usuário não encontrado")) {
+                            new androidx.appcompat.app.AlertDialog.Builder(Perfil.this)
+                                .setTitle("Erro ao Salvar Perfil")
+                                .setMessage("Houve um problema com seu cadastro. Por favor, tente criar sua conta novamente.")
+                                .setPositiveButton("Voltar para Cadastro", (dialog, which) -> {
+                                    Intent intent = new Intent(Perfil.this, SignUp.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    finish();
+                                })
+                                .setCancelable(false)
+                                .show();
+                        } else {
+                            // Mostra um diálogo com mais detalhes do erro
+                            new androidx.appcompat.app.AlertDialog.Builder(Perfil.this)
+                                .setTitle("Erro ao Salvar Perfil")
+                                .setMessage("Ocorreu um erro ao salvar seu perfil:\n\n" + e.getMessage() + 
+                                          "\n\nDeseja tentar novamente?")
+                                .setPositiveButton("Tentar Novamente", (dialog, which) -> {
+                                    salvarPerfil(); // Tenta salvar novamente
+                                })
+                                .setNegativeButton("Voltar para Cadastro", (dialog, which) -> {
+                                    Intent intent = new Intent(Perfil.this, SignUp.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    finish();
+                                })
+                                .setCancelable(false)
+                                .show();
+                        }
                         return;
                     }
 
                     Log.d(TAG, "Resposta do servidor: " + result);
                     
-                    if (result != null) {
+                    if (result != null && result.equals("success")) {
                         Log.d(TAG, "Perfil salvo com sucesso!");
                         Toast.makeText(Perfil.this, 
                             "Cadastro concluído com sucesso! Por favor, faça login.", 
                             Toast.LENGTH_LONG).show();
 
-                        // Navega para o Login após confirmar que salvou
-                        Intent intent = new Intent(Perfil.this, Login.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | 
-                                     Intent.FLAG_ACTIVITY_NEW_TASK | 
-                                     Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finishAffinity();
+                        // Pequeno delay para garantir que o usuário veja a mensagem
+                        new Handler().postDelayed(() -> {
+                            // Navega para o Login após confirmar que salvou
+                            Intent intent = new Intent(Perfil.this, Login.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | 
+                                         Intent.FLAG_ACTIVITY_NEW_TASK | 
+                                         Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finishAffinity();
+                        }, 1500); // 1.5 segundos de delay
                     } else {
-                        Log.e(TAG, "Erro ao salvar perfil: resposta nula");
-                        Toast.makeText(Perfil.this, 
-                            "Erro ao salvar perfil. Tente novamente.", 
-                            Toast.LENGTH_LONG).show();
-                        salvarButton.setEnabled(true);
+                        Log.e(TAG, "Erro ao salvar perfil: resposta inesperada do servidor");
+                        new androidx.appcompat.app.AlertDialog.Builder(Perfil.this)
+                            .setTitle("Erro ao Salvar Perfil")
+                            .setMessage("O servidor retornou uma resposta inesperada. Deseja tentar novamente?")
+                            .setPositiveButton("Tentar Novamente", (dialog, which) -> {
+                                salvarPerfil(); // Tenta salvar novamente
+                            })
+                            .setNegativeButton("Voltar para Cadastro", (dialog, which) -> {
+                                Intent intent = new Intent(Perfil.this, SignUp.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+                            })
+                            .setCancelable(false)
+                            .show();
                     }
                 });
             }
