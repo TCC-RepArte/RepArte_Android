@@ -10,7 +10,7 @@ import com.google.gson.JsonParser;
 
 public class ApiService {
     private static final String TAG = "ApiService";
-    private static final String BASE_URL = "http://192.168.0.110/reparte/web/back-end/php/";
+    private static final String BASE_URL = "http://192.168.1.180/reparte/web/back-end/php/";
     private Context context;
 
     public ApiService(Context context) {
