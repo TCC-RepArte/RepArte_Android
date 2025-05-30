@@ -130,14 +130,14 @@ public class ApiService {
 
         Ion.with(context)
                 .load("POST", url)
-                .setHeader("Accept", "*/*")
+                .setHeader("Accept", "application/json")
                 .setHeader("Content-Type", "multipart/form-data")
-                // Desabilita redirecionamentos automáticos
                 .followRedirect(false)
+                .setTimeout(30000) // 30 segundos de timeout
                 .setMultipartParameter("nomeexi", nomeExibicao)
                 .setMultipartParameter("desc", descricao)
                 .setMultipartParameter("id", id)
-                .setMultipartParameter("tipo", "android") // Identifica que é uma requisição do app
+                .setMultipartParameter("tipo", "android")
                 .setMultipartFile("envft", foto)
                 .asString()
                 .setCallback(new FutureCallback<String>() {
@@ -149,53 +149,28 @@ public class ApiService {
                             return;
                         }
 
-                        Log.d(TAG, "=== RESPOSTA DO SERVIDOR (signup2.php) ===");
+                        Log.d(TAG, "=== RESPOSTA DO SERVIDOR (signup02.php) ===");
                         Log.d(TAG, "Resposta completa: " + (result != null ? result : "null"));
 
-                        // Se a resposta contiver "403 Forbidden"
-                        if (result != null && result.contains("403 Forbidden")) {
-                            Log.e(TAG, "Erro de permissão no servidor");
-                            callback.onCompleted(new Exception("Erro de permissão no servidor. Por favor, contate o suporte."), null);
-                            return;
-                        }
-                        
                         try {
                             JsonObject jsonResponse = JsonParser.parseString(result).getAsJsonObject();
                             Log.d(TAG, "Resposta em JSON: " + jsonResponse.toString());
-                            
-                            if (jsonResponse.has("erro")) {
-                                String erro = jsonResponse.get("erro").getAsString();
-                                Log.e(TAG, "Erro retornado pelo servidor: " + erro);
-                                callback.onCompleted(new Exception(erro), null);
-                                return;
-                            }
-                            
-                            if (jsonResponse.has("sucesso") && jsonResponse.get("sucesso").getAsBoolean()) {
-                                Log.d(TAG, "Servidor confirmou sucesso no JSON");
-                                // Salva o status de cadastro completo
+
+                            if (jsonResponse.has("success") && jsonResponse.get("success").getAsBoolean()) {
+                                Log.d(TAG, "Servidor confirmou sucesso");
                                 context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
                                         .edit()
                                         .putBoolean("cadastro_completo", true)
                                         .apply();
                                 callback.onCompleted(null, "success");
-                                return;
+                            } else {
+                                String message = jsonResponse.has("message") ? jsonResponse.get("message").getAsString() : "Erro desconhecido";
+                                Log.e(TAG, "Erro retornado pelo servidor: " + message);
+                                callback.onCompleted(new Exception(message), null);
                             }
                         } catch (Exception jsonEx) {
-                            Log.d(TAG, "Resposta não é JSON válido, verificando string");
-                        }
-
-                        // Se chegou aqui, verifica se a string contém sucesso
-                        if (result != null && result.toLowerCase().contains("sucesso")) {
-                            Log.d(TAG, "Servidor retornou sucesso via string");
-                            // Salva o status de cadastro completo
-                            context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
-                                    .edit()
-                                    .putBoolean("cadastro_completo", true)
-                                    .apply();
-                            callback.onCompleted(null, "success");
-                        } else {
-                            Log.e(TAG, "Resposta do servidor não indica sucesso");
-                            callback.onCompleted(new Exception("Erro ao salvar perfil no servidor. Resposta inesperada."), null);
+                            Log.e(TAG, "Erro ao parsear JSON: " + jsonEx.getMessage(), jsonEx);
+                            callback.onCompleted(new Exception("Resposta inválida do servidor"), null);
                         }
                     }
                 });
