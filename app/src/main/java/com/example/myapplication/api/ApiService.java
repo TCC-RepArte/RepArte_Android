@@ -132,7 +132,7 @@ public class ApiService {
         Ion.getDefault(context).configure().setLogging("IonMultipart", Log.DEBUG);
 
         // Criação da requisição
-        com.koushikdutta.ion.builder.Builders.Any.B requestBuilder = Ion.with(context)
+        com.koushikdutta.ion.builder.Builders.Any.M requestBuilder = Ion.with(context)
                 .load("POST", url)
                 .setLogging(TAG, Log.DEBUG)
                 .setMultipartParameter("nomeexi", nomeExibicao)
