@@ -10,7 +10,7 @@ import com.google.gson.JsonParser;
 
 public class ApiService {
     private static final String TAG = "ApiService";
-    private static final String BASE_URL = "http://192.168.0.110/reparte/web/back-end/php/";
+    private static final String BASE_URL = "@http://192.168.1.180/reparte/web/back-end/php/";
     private Context context;
 
     public ApiService(Context context) {
@@ -128,18 +128,24 @@ public class ApiService {
             Log.d(TAG, "Detalhes da foto - Caminho: " + foto.getAbsolutePath());
         }
 
-        Ion.with(context)
+        // Configuração do Ion para debug
+        Ion.getDefault(context).configure().setLogging("IonMultipart", Log.DEBUG);
+
+        // Criação da requisição
+        com.koushikdutta.ion.builder.Builders.Any.B requestBuilder = Ion.with(context)
                 .load("POST", url)
-                .setHeader("Accept", "application/json")
-                .setHeader("Content-Type", "multipart/form-data")
-                .followRedirect(false)
-                .setTimeout(30000) // 30 segundos de timeout
+                .setLogging(TAG, Log.DEBUG)
                 .setMultipartParameter("nomeexi", nomeExibicao)
                 .setMultipartParameter("desc", descricao)
-                .setMultipartParameter("id", id)
-                .setMultipartParameter("tipo", "android")
-                .setMultipartFile("envft", foto)
-                .asString()
+                .setMultipartParameter("id", id);
+
+        // Adiciona a foto se existir
+        if (foto != null && foto.exists()) {
+            requestBuilder.setMultipartFile("envft", foto);
+        }
+
+        // Executa a requisição
+        requestBuilder.asString()
                 .setCallback(new FutureCallback<String>() {
                     @Override
                     public void onCompleted(Exception e, String result) {
@@ -169,8 +175,8 @@ public class ApiService {
                                 callback.onCompleted(new Exception(message), null);
                             }
                         } catch (Exception jsonEx) {
-                            Log.e(TAG, "Erro ao parsear JSON: " + jsonEx.getMessage(), jsonEx);
-                            callback.onCompleted(new Exception("Resposta inválida do servidor"), null);
+                            Log.e(TAG, "Erro ao parsear JSON. Resposta bruta: " + result, jsonEx);
+                            callback.onCompleted(new Exception("Resposta inválida do servidor: " + result), null);
                         }
                     }
                 });
