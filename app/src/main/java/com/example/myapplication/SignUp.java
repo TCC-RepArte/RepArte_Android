@@ -106,7 +106,7 @@ public class SignUp extends AppCompatActivity {
                 public void onCompleted(Exception e, String result) {
                     runOnUiThread(() -> {
                         btn_login1.setEnabled(true);
-                        
+
                         if (e != null) {
                             Toast.makeText(SignUp.this, "Erro ao criar conta: " + e.getMessage(), Toast.LENGTH_LONG).show();
                             return;
