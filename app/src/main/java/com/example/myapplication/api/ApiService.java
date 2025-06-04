@@ -39,7 +39,6 @@ public class ApiService {
         Log.d(TAG, "Dados enviados - ID: " + finalId);
         Log.d(TAG, "Dados enviados - Senha (comprimento): " + senha.length());
 
-        // Configuração básica do Ion
         Ion.getDefault(context)
                 .configure()
                 .setLogging("IonLog", Log.DEBUG);
@@ -97,79 +96,115 @@ public class ApiService {
                 .putString("user_id", id)
                 .apply();
 
-        // Verifica se o ID foi salvo corretamente
         String savedId = context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
                 .getString("user_id", null);
         Log.d(TAG, "ID salvo com sucesso? " + (savedId != null && savedId.equals(id)));
     }
 
     public void completarCadastro(String nomeExibicao, String descricao, File foto, FutureCallback<String> callback) {
-        Log.d(TAG, "Iniciando completarCadastro...");
+        Log.d(TAG, "=== INÍCIO DO COMPLETAR CADASTRO (DETALHADO) ===");
+        Log.d(TAG, "Verificando conexão com URL: " + BASE_URL + "signup02.php");
+
+        Ion.with(context)
+                .load("GET", BASE_URL + "signup02.php")
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        if (e != null) {
+                            Log.e(TAG, "ERRO NO TESTE DE CONEXÃO: " + e.getMessage());
+                            callback.onCompleted(new Exception("Erro ao conectar com o servidor: " + e.getMessage()), null);
+                            return;
+                        }
+                        Log.d(TAG, "TESTE DE CONEXÃO OK - Iniciando envio dos dados");
+                        enviarDadosPerfil(nomeExibicao, descricao, foto, callback);
+                    }
+                });
+    }
+
+    private void enviarDadosPerfil(String nomeExibicao, String descricao, File foto, FutureCallback<String> callback) {
         String id = context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
                 .getString("user_id", null);
 
-        Log.d(TAG, "ID recuperado das SharedPreferences: " + id);
-
+        Log.d(TAG, "=== DADOS A SEREM ENVIADOS ===");
+        Log.d(TAG, "Nome de Exibição: " + nomeExibicao);
+        Log.d(TAG, "Descrição: " + descricao);
+        Log.d(TAG, "ID do Usuário: " + id);
+        
         if (id == null) {
             Log.e(TAG, "ID do usuário não encontrado nas SharedPreferences");
             callback.onCompleted(new Exception("ID do usuário não encontrado"), null);
             return;
         }
 
-        String url = BASE_URL + "signup02.php";
-        Log.d(TAG, "=== COMPLETANDO CADASTRO ===");
-        Log.d(TAG, "URL completa: " + url);
-        Log.d(TAG, "Dados enviados - Nome: " + nomeExibicao);
-        Log.d(TAG, "Dados enviados - Descrição: " + descricao);
-        Log.d(TAG, "Dados enviados - ID: " + id);
-        Log.d(TAG, "Foto presente: " + (foto != null ? "Sim" : "Não"));
-        if (foto != null) {
-            Log.d(TAG, "Detalhes da foto - Tamanho: " + foto.length() + " bytes");
-            Log.d(TAG, "Detalhes da foto - Caminho: " + foto.getAbsolutePath());
+        // Verificar se a foto é nula
+        if (foto == null) {
+            Log.e(TAG, "Arquivo de foto é nulo");
+            callback.onCompleted(new Exception("Arquivo de foto não fornecido"), null);
+            return;
         }
+
+        // Verificar se o arquivo existe
+        if (!foto.exists()) {
+            Log.e(TAG, "Arquivo de foto não existe no caminho: " + foto.getAbsolutePath());
+            callback.onCompleted(new Exception("Arquivo de foto não encontrado"), null);
+            return;
+        }
+
+        Log.d(TAG, "Detalhes da Foto:");
+        Log.d(TAG, "- Caminho: " + foto.getAbsolutePath());
+        Log.d(TAG, "- Tamanho: " + foto.length() + " bytes");
+        Log.d(TAG, "- Pode ler: " + foto.canRead());
+        Log.d(TAG, "- Existe: " + foto.exists());
+
+        String url = BASE_URL + "signup02.php";
+        Log.d(TAG, "Iniciando requisição POST para: " + url);
 
         Ion.with(context)
                 .load("POST", url)
                 .setHeader("Accept", "application/json")
-                .setHeader("Content-Type", "multipart/form-data")
-                .followRedirect(false)
-                .setTimeout(30000) // 30 segundos de timeout
+                .setLogging("IonLog", Log.DEBUG)
+                .followRedirect(true)
+                .setTimeout(30000)
                 .setMultipartParameter("nomeexi", nomeExibicao)
                 .setMultipartParameter("desc", descricao)
                 .setMultipartParameter("id", id)
-                .setMultipartParameter("tipo", "android")
                 .setMultipartFile("envft", foto)
                 .asString()
                 .setCallback(new FutureCallback<String>() {
                     @Override
                     public void onCompleted(Exception e, String result) {
                         if (e != null) {
-                            Log.e(TAG, "Erro na requisição: " + e.getMessage(), e);
-                            callback.onCompleted(new Exception("Erro ao conectar com o servidor: " + e.getMessage()), null);
+                            Log.e(TAG, "ERRO NA REQUISIÇÃO: ", e);
+                            Log.e(TAG, "Tipo de erro: " + e.getClass().getSimpleName());
+                            Log.e(TAG, "Mensagem de erro: " + e.getMessage());
+                            if (e.getCause() != null) {
+                                Log.e(TAG, "Causa do erro: " + e.getCause().getMessage());
+                            }
+                            callback.onCompleted(e, null);
                             return;
                         }
 
-                        Log.d(TAG, "=== RESPOSTA DO SERVIDOR (signup02.php) ===");
-                        Log.d(TAG, "Resposta completa: " + (result != null ? result : "null"));
+                        Log.d(TAG, "RESPOSTA DO SERVIDOR: " + result);
 
                         try {
                             JsonObject jsonResponse = JsonParser.parseString(result).getAsJsonObject();
-                            Log.d(TAG, "Resposta em JSON: " + jsonResponse.toString());
-
                             if (jsonResponse.has("success") && jsonResponse.get("success").getAsBoolean()) {
-                                Log.d(TAG, "Servidor confirmou sucesso");
+                                Log.d(TAG, "Perfil criado com sucesso!");
                                 context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
                                         .edit()
                                         .putBoolean("cadastro_completo", true)
                                         .apply();
                                 callback.onCompleted(null, "success");
                             } else {
-                                String message = jsonResponse.has("message") ? jsonResponse.get("message").getAsString() : "Erro desconhecido";
+                                String message = jsonResponse.has("message") ? 
+                                    jsonResponse.get("message").getAsString() : "Erro desconhecido";
                                 Log.e(TAG, "Erro retornado pelo servidor: " + message);
                                 callback.onCompleted(new Exception(message), null);
                             }
                         } catch (Exception jsonEx) {
-                            Log.e(TAG, "Erro ao parsear JSON: " + jsonEx.getMessage(), jsonEx);
+                            Log.e(TAG, "Erro ao processar resposta do servidor: " + jsonEx.getMessage());
+                            Log.e(TAG, "Resposta recebida: " + result);
                             callback.onCompleted(new Exception("Resposta inválida do servidor"), null);
                         }
                     }
@@ -182,37 +217,30 @@ public class ApiService {
     }
 
     private String generateUniqueId() {
-        // Gera um ID alfanumérico de 12 caracteres
         String timestamp = String.valueOf(System.currentTimeMillis());
         String random = String.valueOf(Math.random());
 
-        // Pega os últimos 6 dígitos do timestamp
         String timestampPart = timestamp.substring(Math.max(0, timestamp.length() - 6));
 
-        // Pega 6 dígitos do número aleatório (após o ponto decimal)
-        String randomPart = random.substring(2); // Remove "0."
+        String randomPart = random.substring(2);
         if (randomPart.length() > 6) {
             randomPart = randomPart.substring(0, 6);
         } else {
-            // Se não tiver 6 dígitos, completa com zeros
             while (randomPart.length() < 6) {
                 randomPart += "0";
             }
         }
 
-        // Combina as duas partes para formar um ID de 12 caracteres
         return timestampPart + randomPart;
     }
 
     public void realizarLogin(String usuarioOriginal, String senha, FutureCallback<String> callback) {
-        // Remove espaços e converte para minúsculas
         String usuarioTemp = usuarioOriginal.replace(" ", "").toLowerCase();
 
         Log.d(TAG, "=== DETALHES DO LOGIN ===");
         Log.d(TAG, "Usuário original: " + usuarioOriginal);
         Log.d(TAG, "Usuário após limpar espaços: " + usuarioTemp);
 
-        // Prepara as duas versões do usuário (com e sem @)
         final String usuarioSemArroba = usuarioTemp.startsWith("@") ? usuarioTemp.substring(1) : usuarioTemp;
         final String usuarioComArroba = usuarioTemp.startsWith("@") ? usuarioTemp : "@" + usuarioTemp;
 
@@ -221,16 +249,13 @@ public class ApiService {
         Log.d(TAG, "URL completa: " + url);
         Log.d(TAG, "Tentando primeiro com usuário: " + usuarioSemArroba);
 
-        // Primeira tentativa - sem @
         tentarLogin(usuarioSemArroba, senha, new FutureCallback<String>() {
             @Override
             public void onCompleted(Exception e, String result) {
                 if (e != null || (result != null && !result.contains("success"))) {
-                    // Se falhou, tenta com @
                     Log.d(TAG, "Primeira tentativa falhou, tentando com @: " + usuarioComArroba);
                     tentarLogin(usuarioComArroba, senha, callback);
                 } else {
-                    // Se deu certo, retorna o sucesso
                     callback.onCompleted(null, result);
                 }
             }
