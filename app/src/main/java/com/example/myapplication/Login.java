@@ -85,17 +85,17 @@ public class Login extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (e != null) {
                         Log.e(TAG, "Erro no login", e);
-                        Toast.makeText(Login.this, 
-                            e.getMessage(), 
-                            Toast.LENGTH_LONG).show();
+                        Toast.makeText(Login.this,
+                                e.getMessage(),
+                                Toast.LENGTH_LONG).show();
                         return;
                     }
 
                     if (result != null && result.contains("success")) {
                         Log.d(TAG, "Login bem-sucedido!");
-                        Toast.makeText(Login.this, 
-                            "Bem-vindo(a) de volta!", 
-                            Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this,
+                                "Bem-vindo(a) de volta!",
+                                Toast.LENGTH_SHORT).show();
 
                         // Pequeno delay para mostrar a mensagem de boas-vindas
                         new android.os.Handler().postDelayed(() -> {
@@ -105,9 +105,9 @@ public class Login extends AppCompatActivity {
                         }, 1000);
                     } else {
                         Log.e(TAG, "Login falhou. Resposta: " + result);
-                        Toast.makeText(Login.this, 
-                            "Usuário ou senha incorretos", 
-                            Toast.LENGTH_LONG).show();
+                        Toast.makeText(Login.this,
+                                "Usuário ou senha incorretos",
+                                Toast.LENGTH_LONG).show();
                         password.setText(""); // Limpa a senha
                     }
                 });
