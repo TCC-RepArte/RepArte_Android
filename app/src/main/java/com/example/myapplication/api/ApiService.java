@@ -69,7 +69,18 @@ public class ApiService {
                         Log.d(TAG, "Resposta do cadastro: " + result);
                         if (result != null && !result.toLowerCase().contains("erro")) {
                             Log.d(TAG, "Cadastro realizado com sucesso!");
-                            saveUserId(finalId);
+                            try {
+                                JsonObject jsonResponse = JsonParser.parseString(result).getAsJsonObject();
+                                if (jsonResponse.has("id")) {
+                                    String idFromServer = jsonResponse.get("id").getAsString();
+                                    saveUserId(idFromServer);
+                                } else {
+                                    saveUserId(finalId);
+                                }
+                            } catch (Exception ex) {
+                                Log.e(TAG, "Erro ao extrair ID do JSON: " + ex.getMessage());
+                                saveUserId(finalId);
+                            }
                             saveUserCredentials("@" + usuario, senha);
                             callback.onCompleted(null, "success");
                         } else {
@@ -131,7 +142,7 @@ public class ApiService {
         Log.d(TAG, "Nome de Exibição: " + nomeExibicao);
         Log.d(TAG, "Descrição: " + descricao);
         Log.d(TAG, "ID do Usuário: " + id);
-        
+
         if (id == null) {
             Log.e(TAG, "ID do usuário não encontrado nas SharedPreferences");
             callback.onCompleted(new Exception("ID do usuário não encontrado"), null);
@@ -198,8 +209,8 @@ public class ApiService {
                                         .apply();
                                 callback.onCompleted(null, "success");
                             } else {
-                                String message = jsonResponse.has("message") ? 
-                                    jsonResponse.get("message").getAsString() : "Erro desconhecido";
+                                String message = jsonResponse.has("message") ?
+                                        jsonResponse.get("message").getAsString() : "Erro desconhecido";
                                 Log.e(TAG, "Erro retornado pelo servidor: " + message);
                                 callback.onCompleted(new Exception(message), null);
                             }
