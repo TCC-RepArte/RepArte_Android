@@ -76,12 +76,71 @@ public class Perfil extends AppCompatActivity {
             return;
         }
 
-        // Apenas navega para a tela de login, sem enviar nada para o banco
-        Toast.makeText(this, "Cadastro concluído! Por favor, faça login.", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(Perfil.this, Login.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finishAffinity();
+        File photoFile = null;
+        if (selectedImageUri != null) {
+            try {
+                Log.d(TAG, "Tentando processar a foto...");
+                photoFile = createTempFileFromUri(selectedImageUri);
+                Log.d(TAG, "Foto processada com sucesso: " + photoFile.getAbsolutePath());
+            } catch (Exception e) {
+                Log.e(TAG, "Erro ao processar imagem: " + e.getMessage(), e);
+                Toast.makeText(this, "Erro ao processar imagem: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                return;
+            }
+        }
+
+        salvarButton.setEnabled(false);
+        Toast.makeText(this, "Salvando perfil...", Toast.LENGTH_SHORT).show();
+
+        apiService.completarCadastro(nomeExibicao, descricao, photoFile, new FutureCallback<String>() {
+            @Override
+            public void onCompleted(Exception e, String result) {
+                runOnUiThread(() -> {
+                    salvarButton.setEnabled(true);
+
+                    if (e != null) {
+                        Log.e(TAG, "Erro ao salvar perfil: " + e.getMessage(), e);
+                        new androidx.appcompat.app.AlertDialog.Builder(Perfil.this)
+                                .setTitle("Erro ao Salvar Perfil")
+                                .setMessage("Ocorreu um erro: " + e.getMessage() + "\nDeseja tentar novamente?")
+                                .setPositiveButton("Tentar Novamente", (dialog, which) -> salvarPerfil())
+                                .setNegativeButton("Voltar para Cadastro", (dialog, which) -> {
+                                    Intent intent = new Intent(Perfil.this, SignUp.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    finish();
+                                })
+                                .setCancelable(false)
+                                .show();
+                        return;
+                    }
+
+                    if (result != null && result.equals("success")) {
+                        Log.d(TAG, "Perfil salvo com sucesso!");
+                        Toast.makeText(Perfil.this, "Cadastro concluído com sucesso! Por favor, faça login.", Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(Perfil.this, Login.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finishAffinity();
+                    } else {
+                        Log.e(TAG, "Erro ao salvar perfil: resposta inesperada do servidor");
+                        new androidx.appcompat.app.AlertDialog.Builder(Perfil.this)
+                                .setTitle("Erro ao Salvar Perfil")
+                                .setMessage("O servidor retornou uma resposta inesperada. Deseja tentar novamente?")
+                                .setPositiveButton("Tentar Novamente", (dialog, which) -> salvarPerfil())
+                                .setNegativeButton("Voltar para Cadastro", (dialog, which) -> {
+                                    Intent intent = new Intent(Perfil.this, SignUp.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    finish();
+                                })
+                                .setCancelable(false)
+                                .show();
+                    }
+                });
+            }
+        });
     }
 
     private File createTempFileFromUri(Uri uri) throws Exception {
