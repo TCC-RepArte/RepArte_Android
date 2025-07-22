@@ -149,30 +149,11 @@ public class ApiService {
             return;
         }
 
-        // Verificar se a foto é nula
-        if (foto == null) {
-            Log.e(TAG, "Arquivo de foto é nulo");
-            callback.onCompleted(new Exception("Arquivo de foto não fornecido"), null);
-            return;
-        }
-
-        // Verificar se o arquivo existe
-        if (!foto.exists()) {
-            Log.e(TAG, "Arquivo de foto não existe no caminho: " + foto.getAbsolutePath());
-            callback.onCompleted(new Exception("Arquivo de foto não encontrado"), null);
-            return;
-        }
-
-        Log.d(TAG, "Detalhes da Foto:");
-        Log.d(TAG, "- Caminho: " + foto.getAbsolutePath());
-        Log.d(TAG, "- Tamanho: " + foto.length() + " bytes");
-        Log.d(TAG, "- Pode ler: " + foto.canRead());
-        Log.d(TAG, "- Existe: " + foto.exists());
-
         String url = BASE_URL + "signup02.php";
         Log.d(TAG, "Iniciando requisição POST para: " + url);
 
-        Ion.with(context)
+        if (foto != null && foto.exists()) {
+            Ion.with(context)
                 .load("POST", url)
                 .setHeader("Accept", "application/json")
                 .setLogging("IonLog", Log.DEBUG)
@@ -221,6 +202,56 @@ public class ApiService {
                         }
                     }
                 });
+        } else {
+            Ion.with(context)
+                .load("POST", url)
+                .setHeader("Accept", "application/json")
+                .setLogging("IonLog", Log.DEBUG)
+                .followRedirect(true)
+                .setTimeout(30000)
+                .setMultipartParameter("nomeexi", nomeExibicao)
+                .setMultipartParameter("desc", descricao)
+                .setMultipartParameter("id", id)
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        if (e != null) {
+                            Log.e(TAG, "ERRO NA REQUISIÇÃO: ", e);
+                            Log.e(TAG, "Tipo de erro: " + e.getClass().getSimpleName());
+                            Log.e(TAG, "Mensagem de erro: " + e.getMessage());
+                            if (e.getCause() != null) {
+                                Log.e(TAG, "Causa do erro: " + e.getCause().getMessage());
+                            }
+                            callback.onCompleted(e, null);
+                            return;
+                        }
+
+                        Log.d(TAG, "RESPOSTA DO SERVIDOR: " + result);
+
+                        try {
+                            JsonObject jsonResponse = JsonParser.parseString(result).getAsJsonObject();
+                            if (jsonResponse.has("success") && jsonResponse.get("success").getAsBoolean()) {
+                                Log.d(TAG, "Perfil criado com sucesso!");
+                                context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
+                                        .edit()
+                                        .putBoolean("cadastro_completo", true)
+                                        .apply();
+                                callback.onCompleted(null, "success");
+                            } else {
+                                String message = jsonResponse.has("message") ?
+                                        jsonResponse.get("message").getAsString() : "Erro desconhecido";
+                                Log.e(TAG, "Erro retornado pelo servidor: " + message);
+                                callback.onCompleted(new Exception(message), null);
+                            }
+                        } catch (Exception jsonEx) {
+                            Log.e(TAG, "Erro ao processar resposta do servidor: " + jsonEx.getMessage());
+                            Log.e(TAG, "Resposta recebida: " + result);
+                            callback.onCompleted(new Exception("Resposta inválida do servidor"), null);
+                        }
+                    }
+                });
+        }
     }
 
     public boolean isCadastroCompleto() {
