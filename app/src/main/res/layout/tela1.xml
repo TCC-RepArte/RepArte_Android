@@ -6,21 +6,22 @@
     android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background01"
+    android:background="@drawable/my_gradiant4"
     tools:context=".Login">
 
     <!--menu superior-->
     <!--view/container-->
+
     <View
         android:id="@+id/menu_superior"
-        android:layout_width="410dp"
-        android:layout_height="53dp"
-        android:layout_marginBottom="678dp"
-        android:background="@color/background01"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="403dp"
+        android:layout_height="59dp"
+        app:layout_constraintBottom_toTopOf="@+id/pesquisar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+        <!--android:background="@color/background01"-->
+
 
     <!--linear-layout da logo (menu superior) -->
     <LinearLayout
@@ -66,8 +67,10 @@
     <!--imagem/botão pra acessar seu perfil-->
     <ImageView
         android:id="@+id/perfil"
-        android:layout_width="50dp"
-        android:layout_height="64dp"
+        android:layout_width="54dp"
+        android:layout_height="65dp"
+        android:clickable="true"
+        android:contentDescription="Clique para prosseguir para sua tela de perfil."
         app:layout_constraintBottom_toBottomOf="@+id/menu_superior"
         app:layout_constraintEnd_toEndOf="@+id/menu_superior"
         app:layout_constraintHorizontal_bias="0.928"
@@ -78,51 +81,40 @@
 
 
     <!--barra de pesquisa-->
-    <!--PROGRAMAR DEPOIS!!!!!!!!!!!-->
     <SearchView
         android:id="@+id/pesquisar"
         android:layout_width="266dp"
         android:layout_height="28dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="73dp"
         android:background="@drawable/search_bar"
+        app:layout_constraintBottom_toTopOf="@id/text1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/perfil" />
 
-    <!--view/container postagem 01-->
     <View
         android:id="@+id/cont1"
         android:layout_width="391dp"
         android:layout_height="139dp"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="22dp"
         android:background="@drawable/div_tela"
+        app:layout_constraintBottom_toTopOf="@+id/linha_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text1" />
 
-
-    <!--texto "página incial"-->
     <TextView
         android:id="@+id/text1"
         android:layout_width="362dp"
         android:layout_height="36dp"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="21dp"
         android:fontFamily="@font/league_spartan_bold"
         android:text="Página inicial"
         android:textColor="@color/white"
         android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/cont1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pesquisar" />
 
-    <!--btn add uma obra? nao sei se vamos manter isso mas enfim...-->
     <Button
         android:id="@+id/btn_adc"
         android:layout_width="91dp"
@@ -162,13 +154,15 @@
         app:layout_constraintStart_toEndOf="@+id/btn_adc"
         app:layout_constraintTop_toTopOf="@+id/cont1" />
 
-    <!--imagem/futuro botão pra enviar a postagem-->
+    <!--futuro botão pra enviar a postagem-->
     <ImageView
         android:id="@+id/send_post"
-        android:layout_width="56dp"
-        android:layout_height="57dp"
+        android:layout_width="60dp"
+        android:layout_height="61dp"
         android:layout_marginStart="312dp"
         android:layout_marginTop="80dp"
+        android:contentDescription="Clique para enviar sua análise."
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="@id/cont1"
         app:layout_constraintTop_toTopOf="@+id/cont1"
         app:srcCompat="@drawable/foto1" />
@@ -180,29 +174,82 @@
         android:layout_marginStart="35dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="35dp"
+        android:layout_marginBottom="33dp"
         android:background="@color/linhas"
+        app:layout_constraintBottom_toTopOf="@+id/post1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/send_post" />
+        app:layout_constraintTop_toBottomOf="@+id/send_post"
+        app:layout_constraintVertical_bias="0.92" />
 
     <!--div/container/view da primeira postagem-->
+
     <View
         android:id="@+id/post1"
-        android:layout_width="399dp"
-        android:layout_height="190dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="10dp"
+        android:layout_width="398dp"
+        android:layout_height="221dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/div_teste1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linha_view" />
-    <!--imagem do perfil na primeira postagem-->
+
+    <Button
+        android:id="@+id/vermais1"
+        android:layout_width="169dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="108dp"
+        android:backgroundTint="@android:color/transparent"
+        android:text="Ver mais..."
+        android:textColor="#FF5722"
+        app:layout_constraintEnd_toEndOf="@+id/post1"
+        app:layout_constraintHorizontal_bias="0.707"
+        app:layout_constraintStart_toStartOf="@+id/post1"
+        app:layout_constraintTop_toTopOf="@+id/post1" />
+
+    <TextView
+        android:id="@+id/texto_sin"
+        android:layout_width="202dp"
+        android:layout_height="117dp"
+        android:layout_marginStart="72dp"
+        android:text="No plano puramente conceptual, Sinners apresenta-se como uma proposta inovadora e diferente: ao evocar a América profunda de Flannery O’Connor, Coogler procura fazer casar um drama criminal e familiar com o realismo mágico próprio da arte gótica sulista. Ainda assim, Coogler retém a moldura mental e a "
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/post1"
+        app:layout_constraintStart_toStartOf="@+id/post1"
+        app:layout_constraintTop_toTopOf="@+id/post1"
+        app:layout_constraintVertical_bias="0.227" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="92dp"
+        android:layout_height="159dp"
+        android:layout_marginBottom="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/post1"
+        app:layout_constraintEnd_toEndOf="@+id/post1"
+        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintStart_toStartOf="@+id/post1"
+        app:srcCompat="@drawable/sinners1" />
+
+    <TextView
+        android:id="@+id/fulano"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Fulano"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/post1" />
+
     <ImageView
         android:id="@+id/perfil2"
-        android:layout_width="50dp"
-        android:layout_height="64dp"
+        android:layout_width="56dp"
+        android:layout_height="74dp"
+        android:clickable="true"
+        android:contentDescription="Clique para ver o perfil do usuário."
         app:layout_constraintBottom_toBottomOf="@+id/post1"
         app:layout_constraintEnd_toEndOf="@+id/post1"
         app:layout_constraintHorizontal_bias="0.017"
@@ -211,167 +258,103 @@
         app:layout_constraintVertical_bias="0.015"
         app:srcCompat="@drawable/user_white" />
 
-    <!--nome do usuário na primeira postagem-->
-    <TextView
-        android:id="@+id/fulano"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="2dp"
-        android:fontFamily="@font/poppins_bold"
-        android:text="Fulano"
-        android:textAllCaps="true"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/post1" />
 
-    <!--texto postado pelo fulano na primeira postagem-->
-    <TextView
-        android:id="@+id/texto_sin"
-        android:layout_width="216dp"
-        android:layout_height="117dp"
-        android:layout_marginStart="68dp"
-        android:text="No plano puramente conceptual, Sinners apresenta-se como uma proposta inovadora e diferente: ao evocar a América profunda de Flannery O’Connor, Coogler procura fazer casar um drama criminal e familiar com o realismo mágico próprio da arte gótica sulista. Ainda assim, Coogler retém a moldura mental e a "
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/post1"
-        app:layout_constraintStart_toStartOf="@+id/post1"
-        app:layout_constraintTop_toTopOf="@+id/post1"
-        app:layout_constraintVertical_bias="0.328" />
-
-    <!--botão ver mais na primeira postagem-->
-    <Button
-        android:id="@+id/vermais1"
-        android:layout_width="169dp"
-        android:layout_height="73dp"
-        android:layout_marginTop="120dp"
-        android:backgroundTint="@android:color/transparent"
-        android:text="Ver mais..."
-        android:textColor="#FF5722"
-        app:layout_constraintEnd_toEndOf="@+id/post1"
-        app:layout_constraintHorizontal_bias="0.709"
-        app:layout_constraintStart_toStartOf="@+id/post1"
-        app:layout_constraintTop_toTopOf="@+id/post1" />
-
-    <!--POSTER SINNERS-->
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="92dp"
-        android:layout_height="159dp"
-        android:layout_marginStart="296dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@id/post1"
-        app:layout_constraintTop_toTopOf="@+id/post1"
-        app:srcCompat="@drawable/sinners1" />
-
-    <!-- BARRA DE COMENTÁRIOS E CURTIDAS-->
-
-    <View
-        android:id="@+id/view0"
-        android:layout_width="399dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="200dp"
-        android:layout_marginEnd="08dp"
-        android:background="@color/cont_tela"
-        app:layout_constraintBottom_toTopOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.989"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/texto_sin"
-        app:layout_constraintVertical_bias="0.24" />
+    <!--menu inferior. tbd-->
 
     <ImageView
         android:id="@+id/downvote"
         android:layout_width="32dp"
         android:layout_height="38dp"
-        android:layout_marginEnd="07dp"
-        app:layout_constraintBottom_toBottomOf="@id/view0"
-        app:layout_constraintEnd_toEndOf="@+id/view0"
-        app:layout_constraintHorizontal_bias="0.949"
-        app:layout_constraintStart_toStartOf="@+id/view0"
+        app:layout_constraintBottom_toBottomOf="@+id/post1"
+        app:layout_constraintEnd_toEndOf="@+id/post1"
+        app:layout_constraintHorizontal_bias="0.898"
+        app:layout_constraintStart_toStartOf="@+id/post1"
+        app:layout_constraintTop_toTopOf="@+id/post1"
+        app:layout_constraintVertical_bias="0.99"
         app:srcCompat="@drawable/down_vote" />
 
     <TextView
         android:id="@+id/downvote_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins_bold"
         android:text="14"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/view0"
-        app:layout_constraintHorizontal_bias="0.971"
-        app:layout_constraintStart_toStartOf="@+id/view0"
-        app:layout_constraintTop_toTopOf="@+id/view0" />
+        app:layout_constraintBottom_toBottomOf="@+id/post1"
+        app:layout_constraintEnd_toEndOf="@+id/post1"
+        app:layout_constraintHorizontal_bias="0.942"
+        app:layout_constraintStart_toStartOf="@+id/post1"
+        app:layout_constraintTop_toTopOf="@+id/post1"
+        app:layout_constraintVertical_bias="0.958" />
 
     <View
         android:id="@+id/linha_view01"
         android:layout_width="1dp"
         android:layout_height="22dp"
         android:layout_marginStart="290dp"
-        android:layout_marginTop="08dp"
+        android:layout_marginTop="560dp"
         android:layout_marginEnd="08dp"
         android:background="@color/linhas"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintHorizontal_bias="0.33"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/upvote_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="200dp"
-        android:layout_marginTop="08dp"
-        android:layout_marginEnd="060dp"
         android:fontFamily="@font/poppins_bold"
         android:text="48"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/view0"
-        app:layout_constraintHorizontal_bias="0.971"
-        app:layout_constraintStart_toStartOf="@+id/view0"
-        app:layout_constraintTop_toTopOf="@+id/view0" />
+        app:layout_constraintBottom_toBottomOf="@+id/post1"
+        app:layout_constraintEnd_toEndOf="@+id/post1"
+        app:layout_constraintHorizontal_bias="0.775"
+        app:layout_constraintStart_toStartOf="@+id/post1"
+        app:layout_constraintTop_toTopOf="@+id/post1"
+        app:layout_constraintVertical_bias="0.958" />
 
     <ImageView
         android:id="@+id/upvote"
         android:layout_width="32dp"
         android:layout_height="38dp"
-        android:layout_marginStart="200dp"
-        android:layout_marginTop="08dp"
-        android:layout_marginEnd="076dp"
-        app:layout_constraintBottom_toBottomOf="@id/view0"
-        app:layout_constraintEnd_toEndOf="@+id/view0"
-        app:layout_constraintHorizontal_bias="0.949"
-        app:layout_constraintStart_toStartOf="@+id/view0"
+        android:layout_marginStart="256dp"
+        app:layout_constraintBottom_toBottomOf="@+id/post1"
+        app:layout_constraintEnd_toEndOf="@+id/post1"
+        app:layout_constraintStart_toStartOf="@+id/post1"
+        app:layout_constraintTop_toTopOf="@+id/post1"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintVertical_bias="0.99"
         app:srcCompat="@drawable/up_vote" />
-
-    <!-- comentários -->
 
     <TextView
         android:id="@+id/coment_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="200dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="236dp"
+        android:layout_width="10dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="196dp"
         android:fontFamily="@font/poppins_bold"
         android:text="8"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/post1"
         app:layout_constraintEnd_toStartOf="@+id/upvote"
-        app:layout_constraintTop_toTopOf="@+id/view0"
-        tools:layout_editor_absoluteY="487dp" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/coment"
+        app:layout_constraintTop_toTopOf="@+id/post1"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/coment"
         android:layout_width="32dp"
         android:layout_height="38dp"
-        android:layout_marginEnd="355dp"
-        app:layout_constraintBottom_toBottomOf="@id/view0"
-        app:layout_constraintEnd_toEndOf="@+id/view0"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="192dp"
+        app:layout_constraintBottom_toBottomOf="@+id/post1"
+        app:layout_constraintEnd_toStartOf="@+id/coment_num"
+        app:layout_constraintStart_toStartOf="@+id/post1"
+        app:layout_constraintTop_toTopOf="@+id/post1"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/comentarios" />
-
-
-
-    <!--menu inferior. tbd-->
 
     <View
         android:id="@+id/view"
