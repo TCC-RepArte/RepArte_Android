@@ -286,7 +286,8 @@ public class ApiService {
                 .setBodyParameter("usuario", usuario)
                 .setBodyParameter("senha", senha)
                 .asString()
-                .setCallback(new FutureCallback<String>() {
+                .setCallback(new FutureCallback<String>()
+                {
                     @Override
                     public void onCompleted(Exception e, String result) {
                         if (e != null) {
@@ -320,5 +321,13 @@ public class ApiService {
                         }
                     }
                 });
+    }
+
+    public void buscarPerfil(String id, com.koushikdutta.async.future.FutureCallback<String> callback) {
+        String url = BASE_URL + "receber_perfil.php?id=" + id;
+        Ion.with(context)
+            .load("GET", url)
+            .asString()
+            .setCallback(callback);
     }
 }

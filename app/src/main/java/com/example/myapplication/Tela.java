@@ -21,5 +21,10 @@ public class Tela extends AppCompatActivity {
         //id
         perfil = findViewById(R.id.perfil);
 
+        //evento do botao
+        perfil.setOnClickListener(view -> {
+            Intent intent = new Intent(Tela.this, Alt_perfil.class);
+            startActivity(intent);
+        });
     }
 }

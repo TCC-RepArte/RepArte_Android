@@ -56,6 +56,9 @@
         <activity
             android:name=".Perfil"
             android:exported="true" /> <!-- código padrao -->
+        <activity
+            android:name=".Alt_perfil"
+            android:exported="true" /> <!-- Tela para visualização e alteração do perfil -->
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
