@@ -78,7 +78,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipEsportes"
@@ -90,7 +91,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipPolitica"
@@ -102,7 +104,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipGeek"
@@ -114,7 +117,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipAcao"
@@ -126,7 +130,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipFilmesCults"
@@ -138,7 +143,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipLitClassica"
@@ -150,7 +156,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipLitBrasileira"
@@ -162,7 +169,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipContosTerror"
@@ -174,7 +182,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipHorror"
@@ -186,7 +195,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipComedia"
@@ -198,7 +208,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipDrama"
@@ -210,7 +221,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipTecnologia"
@@ -222,7 +234,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipSaude"
@@ -234,7 +247,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipEducacao"
@@ -246,7 +260,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipGames"
@@ -258,7 +273,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipFeminismo"
@@ -270,7 +286,8 @@
             app:chipBackgroundColor="@color/chip_selector"
             app:chipStrokeColor="#D45E06"
             app:chipStrokeWidth="1dp"
-            app:cornerRadius="16dp" />
+            app:cornerRadius="16dp"
+            android:checkable="true"/>
 
     </com.google.android.material.chip.ChipGroup>
 

@@ -117,9 +117,9 @@ public class Perfil extends AppCompatActivity {
 
                     if (result != null && result.equals("success")) {
                         Log.d(TAG, "Perfil salvo com sucesso!");
-                        Toast.makeText(Perfil.this, "Cadastro concluído com sucesso! Por favor, faça login.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Perfil.this, "Cadastro concluído com sucesso!", Toast.LENGTH_LONG).show();
 
-                        Intent intent = new Intent(Perfil.this, Login.class);
+                        Intent intent = new Intent(Perfil.this, TagsActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finishAffinity();
