@@ -326,8 +326,8 @@ public class ApiService {
     public void buscarPerfil(String id, com.koushikdutta.async.future.FutureCallback<String> callback) {
         String url = BASE_URL + "receber_perfil.php?id=" + id;
         Ion.with(context)
-            .load("GET", url)
-            .asString()
-            .setCallback(callback);
+                .load("GET", url)
+                .asString()
+                .setCallback(callback);
     }
 }

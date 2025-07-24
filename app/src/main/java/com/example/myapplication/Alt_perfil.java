@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.example.myapplication.api.ApiService;
@@ -27,6 +28,7 @@ public class Alt_perfil extends AppCompatActivity {
     private EditText nomeEditText;
     private EditText descEditText;
     private Button salvarButton;
+    private ImageButton btnVoltar;
     private Uri selectedImageUri;
     private ApiService apiService;
 
@@ -43,7 +45,7 @@ public class Alt_perfil extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.perfil1);
+        setContentView(R.layout.alt_perfil);
 
         // Inicializa o ApiService
         apiService = new ApiService(this);
@@ -54,6 +56,7 @@ public class Alt_perfil extends AppCompatActivity {
         nomeEditText = findViewById(R.id.nome);
         descEditText = findViewById(R.id.desc);
         salvarButton = findViewById(R.id.salvar);
+        btnVoltar = findViewById(R.id.btn_Voltar);
 
         // Recupera o id do usuário das SharedPreferences
         String userId = getSharedPreferences("RepArte", MODE_PRIVATE).getString("user_id", null);
@@ -70,11 +73,7 @@ public class Alt_perfil extends AppCompatActivity {
                         if (json.getBoolean("success")) {
                             nomeEditText.setText(json.getString("nome"));
                             descEditText.setText(json.getString("descricao"));
-                            // Carregar a foto (se for URL)
-                            String fotoUrl = json.getString("foto_caminho");
-                            if (fotoUrl != null && !fotoUrl.isEmpty()) {
-                                Ion.with(profileImageView).load(fotoUrl);
-                            }
+
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -88,6 +87,14 @@ public class Alt_perfil extends AppCompatActivity {
 
         // Configura o botão de salvar
         salvarButton.setOnClickListener(v -> salvarPerfil());
+
+        btnVoltar.setOnClickListener(v -> {
+            Intent intent = new Intent(Alt_perfil.this, Tela.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        });
+
+
     }
 
     private void salvarPerfil() {
@@ -133,8 +140,8 @@ public class Alt_perfil extends AppCompatActivity {
                                 .setTitle("Erro ao Salvar Perfil")
                                 .setMessage("Ocorreu um erro: " + e.getMessage() + "\nDeseja tentar novamente?")
                                 .setPositiveButton("Tentar Novamente", (dialog, which) -> salvarPerfil())
-                                .setNegativeButton("Voltar para Cadastro", (dialog, which) -> {
-                                    Intent intent = new Intent(Alt_perfil.this, SignUp.class);
+                                .setNegativeButton("Voltar", (dialog, which) -> {
+                                    Intent intent = new Intent(Alt_perfil.this, Tela.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
                                     finish();
@@ -148,7 +155,7 @@ public class Alt_perfil extends AppCompatActivity {
                         Log.d(TAG, "Perfil salvo com sucesso!");
                         Toast.makeText(Alt_perfil.this, "Cadastro concluído com sucesso! Por favor, faça login.", Toast.LENGTH_LONG).show();
 
-                        Intent intent = new Intent(Alt_perfil.this, Login.class);
+                        Intent intent = new Intent(Alt_perfil.this, Tela.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finishAffinity();
@@ -158,8 +165,8 @@ public class Alt_perfil extends AppCompatActivity {
                                 .setTitle("Erro ao Salvar Perfil")
                                 .setMessage("O servidor retornou uma resposta inesperada. Deseja tentar novamente?")
                                 .setPositiveButton("Tentar Novamente", (dialog, which) -> salvarPerfil())
-                                .setNegativeButton("Voltar para Cadastro", (dialog, which) -> {
-                                    Intent intent = new Intent(Alt_perfil.this, SignUp.class);
+                                .setNegativeButton("Voltar para Tela inicial", (dialog, which) -> {
+                                    Intent intent = new Intent(Alt_perfil.this, Tela.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
                                     finish();
@@ -208,3 +215,4 @@ public class Alt_perfil extends AppCompatActivity {
         }
     }
 }
+
