@@ -74,6 +74,20 @@ public class Alt_perfil extends AppCompatActivity {
                             nomeEditText.setText(json.getString("nome"));
                             descEditText.setText(json.getString("descricao"));
 
+                            // Carregar a foto do perfil usando Ion com logs para debug
+
+                            String fotoUrl = apiService.getFotoPerfilUrl(userId);
+                            Log.d("Perfil", "URL da foto: " + fotoUrl);
+                            Ion.with(this)
+                                    .load(fotoUrl)
+                                    .intoImageView(profileImageView)
+                                    .setCallback((exception, imageView) -> {
+                                        if (exception != null) {
+                                            Log.e("Perfil", "Erro ao carregar imagem", exception);
+                                        } else {
+                                            Log.d("Perfil", "Imagem carregada com sucesso");
+                                        }
+                                    });
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -153,7 +167,6 @@ public class Alt_perfil extends AppCompatActivity {
 
                     if (result != null && result.equals("success")) {
                         Log.d(TAG, "Perfil salvo com sucesso!");
-                        Toast.makeText(Alt_perfil.this, "Cadastro concluído com sucesso! Por favor, faça login.", Toast.LENGTH_LONG).show();
 
                         Intent intent = new Intent(Alt_perfil.this, Tela.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

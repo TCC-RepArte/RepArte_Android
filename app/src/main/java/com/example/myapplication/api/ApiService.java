@@ -330,4 +330,8 @@ public class ApiService {
                 .asString()
                 .setCallback(callback);
     }
+
+    public String getFotoPerfilUrl(String userId) {
+        return BASE_URL + "receber_foto.php?id=" + userId;
+    }
 }
