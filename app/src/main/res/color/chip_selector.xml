@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="#D45E06" android:state_checked="true"/>
-    <item android:color="#C93E05" android:state_pressed="true"/>
-    <item android:color="#231252"/>
+    <item android:color="#7C3AED" android:state_checked="true"/><!-- Roxo vibrante selecionado -->
+    <item android:color="#1A237E" android:state_pressed="true"/><!-- Azul escuro pressionado -->
+    <item android:color="#2D0C57"/><!-- Roxo escuro padrão -->
 </selector>
