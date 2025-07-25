@@ -73,14 +73,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.07" />
+        app:layout_constraintVertical_bias="0.048" />
+
 
     <Button
         android:id="@+id/btn_foto"
-        android:layout_width="220dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="195dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="172dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#FF5722"
         android:text="Alterar foto de perfil"
         android:textColor="#FDFCFC"
@@ -100,34 +101,21 @@
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="@id/cont_perfil"
         app:layout_constraintTop_toBottomOf="@id/cont_perfil"
-        app:layout_constraintVertical_bias="0.505"
+        app:layout_constraintVertical_bias="0.514"
         app:srcCompat="@drawable/user_white" />
 
     <EditText
         android:id="@+id/nome"
         android:layout_width="195dp"
         android:layout_height="77dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:hint="Digite seu nome de exibição"
         android:textColor="@color/white"
         android:textColorHint="#D4D2D2"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/profile"
         app:layout_constraintTop_toTopOf="@id/cont_perfil" />
-
-
-    <View
-        android:id="@+id/linha_view"
-        android:layout_width="383dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="35dp"
-        android:background="@color/linhas"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cont_perfil" />
 
     <View
         android:id="@+id/bio"
@@ -137,8 +125,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linha_view"
-        app:layout_constraintVertical_bias="0.133" />
+        app:layout_constraintTop_toBottomOf="@+id/divisor1"
+        app:layout_constraintVertical_bias="0.103" />
 
     <EditText
         android:id="@+id/desc"
@@ -167,6 +155,17 @@
         app:cornerRadius="15dp"
         app:layout_constraintStart_toStartOf="@id/bio"
         app:layout_constraintTop_toBottomOf="@+id/desc" />
+
+    <View
+        android:id="@+id/divisor1"
+        android:layout_width="383dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="36dp"
+        android:background="?android:attr/listDivider"
+        android:backgroundTint="#D4D2D2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cont_perfil" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
