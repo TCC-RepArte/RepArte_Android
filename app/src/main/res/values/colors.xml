@@ -16,4 +16,5 @@
     <color name="btn_add">#3d3d3d</color>
     <color name="cont_tela">#1e1e1e</color>
     <color name="border">#FFFFFF</color>
+    <color name="amarelo_filtro">#FFD700</color>
 </resources>
