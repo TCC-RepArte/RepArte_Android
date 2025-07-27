@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.myapplication.api.TMDBManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -188,16 +191,15 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
     }
 
     private void configurarSecoes() {
-        // Configurar cliques nas seções
-        configurarCliqueSecao(R.id.filme_1, "Inception", "2010", "Filme", 8.8, 1000000);
-        configurarCliqueSecao(R.id.filme_2, "Interstellar", "2014", "Filme", 8.6, 800000);
-        configurarCliqueSecao(R.id.filme_3, "The Matrix", "1999", "Filme", 8.7, 1200000);
+        // Carregar filmes populares da API
+        carregarFilmesPopulares();
         
+        // Configurar seção "Livros Fuvest" (mantém os exemplos)
         configurarCliqueSecao(R.id.livro_1, "Dom Casmurro", "1899", "Livro", 9.0, 50000);
         configurarCliqueSecao(R.id.livro_2, "Grande Sertão", "1956", "Livro", 8.9, 30000);
         
-        configurarCliqueSecao(R.id.serie_1, "Breaking Bad", "2008", "Série", 9.5, 2000000);
-        configurarCliqueSecao(R.id.serie_2, "Stranger Things", "2016", "Série", 8.7, 1500000);
+        // Carregar séries populares da API
+        carregarSeriesPopulares();
     }
 
     private void configurarCliqueSecao(int id, String titulo, String ano, String tipo, double avaliacao, int votos) {
@@ -467,6 +469,124 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
             startActivity(intent);
         } catch (Exception e) {
             Toast.makeText(this, "Erro ao abrir detalhes: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void carregarFilmesPopulares() {
+        tmdbManager.getPopularMovies(new TMDBManager.PopularCallback() {
+            @Override
+            public void onSuccess(List<ModeloFilme> filmes) {
+                runOnUiThread(() -> {
+                    if (filmes.size() >= 3) {
+                        configurarFilmePopular(R.id.filme_1, filmes.get(0));
+                        configurarFilmePopular(R.id.filme_2, filmes.get(1));
+                        configurarFilmePopular(R.id.filme_3, filmes.get(2));
+                    }
+                });
+            }
+            
+            @Override
+            public void onError(String error) {
+                android.util.Log.e("BuscaActivity", "Erro ao carregar filmes populares: " + error);
+                // Em caso de erro, usar dados de exemplo
+                configurarCliqueSecao(R.id.filme_1, "Inception", "2010", "Filme", 8.8, 1000000);
+                configurarCliqueSecao(R.id.filme_2, "Interstellar", "2014", "Filme", 8.6, 800000);
+                configurarCliqueSecao(R.id.filme_3, "The Matrix", "1999", "Filme", 8.7, 1200000);
+            }
+        });
+    }
+
+    private void carregarSeriesPopulares() {
+        tmdbManager.getPopularTVShows(new TMDBManager.PopularCallback() {
+            @Override
+            public void onSuccess(List<ModeloFilme> series) {
+                runOnUiThread(() -> {
+                    if (series.size() >= 2) {
+                        configurarSeriePopular(R.id.serie_1, series.get(0));
+                        configurarSeriePopular(R.id.serie_2, series.get(1));
+                    }
+                });
+            }
+            
+            @Override
+            public void onError(String error) {
+                android.util.Log.e("BuscaActivity", "Erro ao carregar séries populares: " + error);
+                // Em caso de erro, usar dados de exemplo
+                configurarCliqueSecao(R.id.serie_1, "Breaking Bad", "2008", "Série", 9.5, 2000000);
+                configurarCliqueSecao(R.id.serie_2, "Stranger Things", "2016", "Série", 8.7, 1500000);
+            }
+        });
+    }
+
+    private void configurarFilmePopular(int viewId, ModeloFilme filme) {
+        View view = findViewById(viewId);
+        if (view != null) {
+            // Atualizar título (primeiro TextView dentro do LinearLayout)
+            TextView txtTitulo = (TextView) ((LinearLayout) view).getChildAt(1);
+            if (txtTitulo != null) {
+                txtTitulo.setText(filme.getTitulo());
+            }
+            
+            // Atualizar imagem (primeiro ImageView dentro do LinearLayout)
+            ImageView imgCapa = (ImageView) ((LinearLayout) view).getChildAt(0);
+            if (imgCapa != null && filme.getPosterPath() != null) {
+                String fullPosterUrl = "https://image.tmdb.org/t/p/w200" + filme.getPosterPath();
+                Glide.with(this)
+                    .load(fullPosterUrl)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .placeholder(R.drawable.avatar)
+                    .error(R.drawable.avatar)
+                    .into(imgCapa);
+            }
+            
+            // Configurar clique
+            view.setOnClickListener(v -> {
+                Intent intent = new Intent(BuscaActivity.this, DetalhesFilmeActivity.class);
+                intent.putExtra("filme_id", filme.getId());
+                intent.putExtra("titulo", filme.getTitulo());
+                intent.putExtra("ano", filme.getAno());
+                intent.putExtra("tipo", filme.getTipo());
+                intent.putExtra("avaliacao", filme.getAvaliacao());
+                intent.putExtra("votos", filme.getVotos());
+                intent.putExtra("poster_path", filme.getPosterPath());
+                startActivity(intent);
+            });
+        }
+    }
+
+    private void configurarSeriePopular(int viewId, ModeloFilme serie) {
+        View view = findViewById(viewId);
+        if (view != null) {
+            // Atualizar título (primeiro TextView dentro do LinearLayout)
+            TextView txtTitulo = (TextView) ((LinearLayout) view).getChildAt(1);
+            if (txtTitulo != null) {
+                txtTitulo.setText(serie.getTitulo());
+            }
+            
+            // Atualizar imagem (primeiro ImageView dentro do LinearLayout)
+            ImageView imgCapa = (ImageView) ((LinearLayout) view).getChildAt(0);
+            if (imgCapa != null && serie.getPosterPath() != null) {
+                String fullPosterUrl = "https://image.tmdb.org/t/p/w200" + serie.getPosterPath();
+                Glide.with(this)
+                    .load(fullPosterUrl)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .placeholder(R.drawable.avatar)
+                    .error(R.drawable.avatar)
+                    .into(imgCapa);
+            }
+            
+            // Configurar clique
+            view.setOnClickListener(v -> {
+                Intent intent = new Intent(BuscaActivity.this, DetalhesFilmeActivity.class);
+                intent.putExtra("filme_id", serie.getId());
+                intent.putExtra("titulo", serie.getTitulo());
+                intent.putExtra("ano", serie.getAno());
+                intent.putExtra("tipo", serie.getTipo());
+                intent.putExtra("avaliacao", serie.getAvaliacao());
+                intent.putExtra("votos", serie.getVotos());
+                intent.putExtra("poster_path", serie.getPosterPath());
+                startActivity(intent);
+            });
         }
     }
 } 
