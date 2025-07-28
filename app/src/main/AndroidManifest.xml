@@ -73,6 +73,9 @@
             android:name=".DetalhesFilmeActivity"
             android:exported="true" />
         <activity
+            android:name=".ConfActivity"
+            android:exported="true" />
+        <activity
             android:name=".ExibirPerfil"
             android:exported="true" />
         <meta-data

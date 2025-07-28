@@ -1,34 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background01">
+    android:background="@drawable/conf_background"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
-
-        <!-- Título -->
+        android:padding="@dimen/padding_large">
 
         <!-- Card de perfil -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@color/cont_tela"
-            android:padding="16dp"
-            android:layout_marginBottom="24dp"
+            android:background="@drawable/container_dr"
+            android:padding="@dimen/padding_large"
+            android:layout_marginBottom="@dimen/margin_large"
             android:gravity="center_vertical"
-            android:elevation="2dp"
-            android:clipToPadding="false"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="2dp"
-            android:backgroundTint="@color/cont_tela">
+            android:elevation="@dimen/card_elevation"
+            android:clickable="true"
+            android:focusable="true"
+            android:backgroundTint="#1e1e1e">
 
             <ImageView
                 android:id="@+id/profile_image"
@@ -37,7 +33,7 @@
                 android:src="@drawable/avatar"
                 android:background="@drawable/border"
                 android:scaleType="centerCrop"
-                android:layout_marginRight="16dp" />
+                android:layout_marginEnd="@dimen/margin_large" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -51,8 +47,9 @@
                     android:layout_height="wrap_content"
                     android:text="Nome do Usuário"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/text_large"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold" />
 
                 <TextView
                     android:id="@+id/profile_role"
@@ -60,189 +57,268 @@
                     android:layout_height="wrap_content"
                     android:text="arroba do usuário"
                     android:textColor="@color/linhas"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/text_medium"
+                    android:fontFamily="@font/poppins_italic" />
             </LinearLayout>
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/seta"
-                android:tint="@color/white" />
+                android:src="@drawable/ic_arrow_thick"
+                app:tint="@color/white" />
         </LinearLayout>
 
-        <!-- Outras configurações -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Outras configurações"
-            android:textColor="@color/linhas"
-            android:textSize="14sp"
-            android:layout_marginBottom="8dp" />
-
-        <!-- Lista de opções -->
+        <!-- Seção de Configurações -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/cont_tela"
-            android:padding="8dp"
-            android:layout_marginBottom="24dp"
-            android:backgroundTint="@color/cont_tela">
+            android:layout_marginBottom="@dimen/margin_large">
 
-            <!-- Detalhes do perfil -->
+            <!-- Card das opções -->
             <LinearLayout
-                android:id="@+id/option_profile_details"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/avatar"
-                    android:tint="@color/white" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Detalhes do perfil"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:layout_marginStart="16dp" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/container_dr"
+                android:padding="@dimen/padding_small"
+                android:backgroundTint="#1e1e1e"
+                android:elevation="@dimen/card_elevation">
 
-            <!-- Senha -->
-            <LinearLayout
-                android:id="@+id/option_password"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/lock"
-                    android:tint="@color/white" />
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- Detalhes do perfil -->
+                <LinearLayout
+                    android:id="@+id/option_profile_details"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Senha"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:layout_marginStart="16dp" />
-            </LinearLayout>
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="@dimen/padding_medium"
+                    android:minHeight="48dp">
 
-            <!-- Notificações -->
-            <LinearLayout
-                android:id="@+id/option_notifications"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/sino"
-                    android:tint="@color/white" />
-                <TextView
-                    android:layout_width="wrap_content"
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/avatar"
+                        app:tint="@color/white"
+                        android:layout_marginEnd="@dimen/margin_medium" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Detalhes do perfil"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_medium"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_arrow_thick"
+                        app:tint="@color/white" />
+                </LinearLayout>
+
+                <!-- Senha -->
+                <LinearLayout
+                    android:id="@+id/option_password"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Notificações"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:layout_marginStart="16dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="@dimen/padding_medium"
+                    android:minHeight="48dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/lock"
+                        app:tint="@color/white"
+                        android:layout_marginEnd="@dimen/margin_medium" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Senha"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_medium"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_arrow_thick"
+                        app:tint="@color/white" />
+                </LinearLayout>
+
+                <!-- Notificações -->
+                <LinearLayout
+                    android:id="@+id/option_notifications"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="@dimen/padding_medium"
+                    android:minHeight="48dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/sino"
+                        app:tint="@color/white"
+                        android:layout_marginEnd="@dimen/margin_medium" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Notificações"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_medium"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_arrow_thick"
+                        app:tint="@color/white" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Sobre, Ajuda, Desativar conta -->
+        <!-- Seção de Informações -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/cont_tela"
-            android:padding="8dp"
-            android:backgroundTint="@color/cont_tela">
+            android:orientation="vertical">
 
-            <!-- Sobre o aplicativo -->
+            <!-- Card das opções -->
             <LinearLayout
-                android:id="@+id/option_about"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/home_img"
-                    android:tint="@color/white" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sobre o aplicativo"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:layout_marginStart="16dp" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/container_dr"
+                android:padding="@dimen/padding_small"
+                android:backgroundTint="#1e1e1e"
+                android:elevation="@dimen/card_elevation">
 
-            <!-- Ajuda/FAQ -->
-            <LinearLayout
-                android:id="@+id/option_help"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/comentarios"
-                    android:tint="@color/white" />
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- Sobre o aplicativo -->
+                <LinearLayout
+                    android:id="@+id/option_about"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ajuda/FAQ"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:layout_marginStart="16dp" />
-            </LinearLayout>
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="@dimen/padding_medium"
+                    android:minHeight="48dp">
 
-            <!-- Desativar conta -->
-            <LinearLayout
-                android:id="@+id/option_deactivate"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/down_vote"
-                    android:tint="@color/orange" />
-                <TextView
-                    android:layout_width="wrap_content"
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/home_img"
+                        app:tint="@color/white"
+                        android:layout_marginEnd="@dimen/margin_medium" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sobre o aplicativo"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_medium"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_arrow_thick"
+                        app:tint="@color/white" />
+                </LinearLayout>
+
+                <!-- Ajuda/FAQ -->
+                <LinearLayout
+                    android:id="@+id/option_help"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Desativar minha conta"
-                    android:textColor="@color/orange"
-                    android:textSize="16sp"
-                    android:layout_marginStart="16dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="@dimen/padding_medium"
+                    android:minHeight="48dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/comentarios"
+                        app:tint="@color/white"
+                        android:layout_marginEnd="@dimen/margin_medium" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Ajuda/FAQ"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_medium"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_arrow_thick"
+                        app:tint="@color/white" />
+                </LinearLayout>
+
+                <!-- Desativar conta -->
+                <LinearLayout
+                    android:id="@+id/option_deactivate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="@dimen/padding_medium"
+                    android:minHeight="48dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/down_vote"
+                        app:tint="@color/orange"
+                        android:layout_marginEnd="@dimen/margin_medium" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Desativar minha conta"
+                        android:textColor="@color/orange"
+                        android:textSize="@dimen/text_medium"
+                        android:fontFamily="@font/poppins_bold" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
+        <!-- Espaço no final -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_large" />
 
     </LinearLayout>
 </ScrollView> 

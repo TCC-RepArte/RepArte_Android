@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background01">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_large">
+
+        <!-- Header com botão voltar e título -->
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/margin_large">
+
+            <ImageView
+                android:id="@+id/btn_voltar"
+                android:layout_width="@dimen/button_height"
+                android:layout_height="@dimen/button_height"
+                android:src="@drawable/ic_arrow_back"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="@dimen/padding_medium" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Buscar"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_xxlarge"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginStart="@dimen/margin_large" />
+
+            <View
+                android:layout_width="@dimen/button_height"
+                android:layout_height="@dimen/button_height" />
+        </LinearLayout>
+
+        <!-- Barra de pesquisa -->
+        <SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/search_bar"
+            android:queryHint="Buscar filmes, livros, séries..."
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@null"
+            android:layout_marginBottom="@dimen/margin_xlarge" />
+
+        <!-- Filtros -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filtrar por"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_xlarge"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/margin_medium" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_xlarge"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- Filtro Todos -->
+                <TextView
+                    android:id="@+id/filtro_todos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Todos"
+                    android:textColor="@color/white"
+                    android:background="@drawable/filtro_background"
+                    android:padding="@dimen/padding_large"
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:backgroundTint="@color/cont_tela" />
+
+                <!-- Filtro Filmes -->
+                <TextView
+                    android:id="@+id/filtro_filmes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Filmes"
+                    android:textColor="@color/white"
+                    android:background="@drawable/filtro_background"
+                    android:padding="@dimen/padding_large"
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:backgroundTint="@color/cont_tela" />
+
+                <!-- Filtro Séries -->
+                <TextView
+                    android:id="@+id/filtro_series"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Séries"
+                    android:textColor="@color/white"
+                    android:background="@drawable/filtro_background"
+                    android:padding="@dimen/padding_large"
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:backgroundTint="@color/cont_tela" />
+
+                <!-- Filtro Livros -->
+                <TextView
+                    android:id="@+id/filtro_livros"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Livros"
+                    android:textColor="@color/white"
+                    android:background="@drawable/filtro_background"
+                    android:padding="@dimen/padding_large"
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:backgroundTint="@color/cont_tela" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Container de resultados -->
+        <LinearLayout
+            android:id="@+id/container_resultados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/termo_pesquisado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Resultados para: Batman"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_large"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/margin_large" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_resultados"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/mensagem_erro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nenhum resultado encontrado"
+                android:textColor="@color/linhas"
+                android:textSize="@dimen/text_medium"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- Seções de conteúdo -->
+        <LinearLayout
+            android:id="@+id/secoes_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Seção Filmes em Alta -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/margin_xlarge">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Filmes em Alta"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_xlarge"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/margin_medium" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- Filme 1 -->
+                        <LinearLayout
+                            android:id="@+id/filme_1"
+                            android:layout_width="160dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="@dimen/margin_large"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:layout_width="160dp"
+                                android:layout_height="240dp"
+                                android:src="@drawable/foto1"
+                                android:scaleType="centerCrop"
+                                android:background="@drawable/border" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Inception"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:maxLines="2"
+                                android:ellipsize="end" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="2010 • Ação"
+                                android:textColor="@color/linhas"
+                                android:textSize="@dimen/text_medium"
+                                android:gravity="center" />
+                        </LinearLayout>
+
+                        <!-- Filme 2 -->
+                        <LinearLayout
+                            android:id="@+id/filme_2"
+                            android:layout_width="160dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="@dimen/margin_large"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:layout_width="160dp"
+                                android:layout_height="240dp"
+                                android:src="@drawable/foto2"
+                                android:scaleType="centerCrop"
+                                android:background="@drawable/border" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Interstellar"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:maxLines="2"
+                                android:ellipsize="end" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="2014 • Ficção"
+                                android:textColor="@color/linhas"
+                                android:textSize="@dimen/text_medium"
+                                android:gravity="center" />
+                        </LinearLayout>
+
+                        <!-- Filme 3 -->
+                        <LinearLayout
+                            android:id="@+id/filme_3"
+                            android:layout_width="160dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="@dimen/margin_large"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:layout_width="160dp"
+                                android:layout_height="240dp"
+                                android:src="@drawable/sinners1"
+                                android:scaleType="centerCrop"
+                                android:background="@drawable/border" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="The Matrix"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:maxLines="2"
+                                android:ellipsize="end" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="1999 • Ação"
+                                android:textColor="@color/linhas"
+                                android:textSize="@dimen/text_medium"
+                                android:gravity="center" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <!-- Seção Livros Fuvest -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/margin_xlarge">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Livros Fuvest"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_xlarge"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/margin_medium" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- Livro 1 -->
+                        <LinearLayout
+                            android:id="@+id/livro_1"
+                            android:layout_width="160dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="@dimen/margin_large"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:layout_width="160dp"
+                                android:layout_height="240dp"
+                                android:src="@drawable/foto1"
+                                android:scaleType="centerCrop"
+                                android:background="@drawable/border" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Dom Casmurro"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:maxLines="2"
+                                android:ellipsize="end" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="1899 • Livro"
+                                android:textColor="@color/linhas"
+                                android:textSize="@dimen/text_medium"
+                                android:gravity="center" />
+                        </LinearLayout>
+
+                        <!-- Livro 2 -->
+                        <LinearLayout
+                            android:id="@+id/livro_2"
+                            android:layout_width="160dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="@dimen/margin_large"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:layout_width="160dp"
+                                android:layout_height="240dp"
+                                android:src="@drawable/foto2"
+                                android:scaleType="centerCrop"
+                                android:background="@drawable/border" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Grande Sertão"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:maxLines="2"
+                                android:ellipsize="end" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="1956 • Livro"
+                                android:textColor="@color/linhas"
+                                android:textSize="@dimen/text_medium"
+                                android:gravity="center" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <!-- Seção Séries Populares -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/margin_xlarge">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Séries Populares"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_xlarge"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/margin_medium" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- Série 1 -->
+                        <LinearLayout
+                            android:id="@+id/serie_1"
+                            android:layout_width="160dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="@dimen/margin_large"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:layout_width="160dp"
+                                android:layout_height="240dp"
+                                android:src="@drawable/sinners1"
+                                android:scaleType="centerCrop"
+                                android:background="@drawable/border" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Breaking Bad"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:maxLines="2"
+                                android:ellipsize="end" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="2008 • Série"
+                                android:textColor="@color/linhas"
+                                android:textSize="@dimen/text_medium"
+                                android:gravity="center" />
+                        </LinearLayout>
+
+                        <!-- Série 2 -->
+                        <LinearLayout
+                            android:id="@+id/serie_2"
+                            android:layout_width="160dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="@dimen/margin_large"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:layout_width="160dp"
+                                android:layout_height="240dp"
+                                android:src="@drawable/foto1"
+                                android:scaleType="centerCrop"
+                                android:background="@drawable/border" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Stranger Things"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_large"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="@dimen/margin_medium"
+                                android:maxLines="2"
+                                android:ellipsize="end" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="2016 • Série"
+                                android:textColor="@color/linhas"
+                                android:textSize="@dimen/text_medium"
+                                android:gravity="center" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView> 

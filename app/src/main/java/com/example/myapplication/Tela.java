@@ -26,7 +26,7 @@ public class Tela extends AppCompatActivity {
 
         //evento do botao perfil
         perfil.setOnClickListener(view -> {
-            Intent intent = new Intent(Tela.this, Alt_perfil.class);
+            Intent intent = new Intent(Tela.this, ConfActivity.class);
             startActivity(intent);
         });
 

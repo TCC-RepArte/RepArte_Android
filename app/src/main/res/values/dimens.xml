@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Margens e Padding -->
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="margin_xlarge">32dp</dimen>
+    
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_large">24dp</dimen>
+    <dimen name="padding_xlarge">32dp</dimen>
+    
+    <!-- Tamanhos de texto -->
+    <dimen name="text_small">12sp</dimen>
+    <dimen name="text_medium">14sp</dimen>
+    <dimen name="text_large">16sp</dimen>
+    <dimen name="text_xlarge">20sp</dimen>
+    <dimen name="text_xxlarge">24sp</dimen>
+    <dimen name="text_title">30sp</dimen>
+    
+    <!-- Alturas e larguras -->
+    <dimen name="header_height">60dp</dimen>
+    <dimen name="search_height">48dp</dimen>
+    <dimen name="button_height">48dp</dimen>
+    
+    <!-- Imagens responsivas -->
+    <dimen name="image_small">80dp</dimen>
+    <dimen name="image_medium">120dp</dimen>
+    <dimen name="image_large">160dp</dimen>
+    <dimen name="image_xlarge">200dp</dimen>
+    
+    <!-- Cards e containers -->
+    <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    
+    <!-- Espaçamentos específicos -->
+    <dimen name="logo_width">35dp</dimen>
+    <dimen name="logo_height">36dp</dimen>
+    <dimen name="profile_image_size">54dp</dimen>
+</resources> 

@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_medium"
+            android:padding="@dimen/padding_large"
             android:gravity="center_vertical">
 
             <ImageView
@@ -26,7 +26,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="@dimen/padding_small" />
+                android:padding="@dimen/padding_medium" />
 
             <TextView
                 android:layout_width="0dp"
@@ -34,10 +34,10 @@
                 android:layout_weight="1"
                 android:text="Detalhes"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_xlarge"
+                android:textSize="@dimen/text_xxlarge"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:layout_marginStart="@dimen/margin_medium" />
+                android:layout_marginStart="@dimen/margin_large" />
 
             <View
                 android:layout_width="@dimen/button_height"
@@ -49,15 +49,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_medium"
+            android:padding="@dimen/padding_large"
             android:background="@color/cont_tela"
-            android:layout_margin="@dimen/margin_medium">
+            android:layout_margin="@dimen/margin_large">
 
             <!-- Imagem da capa -->
             <ImageView
                 android:id="@+id/img_capa_detalhes"
-                android:layout_width="@dimen/image_medium"
-                android:layout_height="@dimen/image_large"
+                android:layout_width="@dimen/image_large"
+                android:layout_height="@dimen/image_xlarge"
                 android:src="@drawable/foto1"
                 android:scaleType="centerCrop"
                 android:background="@drawable/border"
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginStart="@dimen/margin_medium">
+                android:layout_marginStart="@dimen/margin_large">
 
                 <!-- Título -->
                 <TextView
@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:text="Título do Filme"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_xlarge"
+                    android:textSize="@dimen/text_xxlarge"
                     android:textStyle="bold"
                     android:maxLines="3"
                     android:ellipsize="end" />
@@ -90,34 +90,32 @@
                     android:layout_height="wrap_content"
                     android:text="2024 • Filme • 2h 30min"
                     android:textColor="@color/linhas"
-                    android:textSize="@dimen/text_medium"
-                    android:layout_marginTop="@dimen/margin_small" />
+                    android:textSize="@dimen/text_large"
+                    android:layout_marginTop="@dimen/margin_medium" />
 
                 <!-- Avaliação -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="12dp"
-                    android:gravity="center_vertical">
+                    android:layout_marginTop="@dimen/margin_medium">
 
                     <TextView
                         android:id="@+id/txt_avaliacao_detalhes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="★ 8.5"
-                        android:textColor="@color/orange"
-                        android:textSize="16sp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_large"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txt_votos_detalhes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" (1.2k votos)"
+                        android:text=" (1.2M votos)"
                         android:textColor="@color/linhas"
-                        android:textSize="14sp"
-                        android:layout_marginStart="4dp" />
+                        android:textSize="@dimen/text_medium" />
                 </LinearLayout>
 
                 <!-- Gêneros -->
@@ -125,71 +123,91 @@
                     android:id="@+id/txt_generos_detalhes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ação, Drama, Suspense"
+                    android:text="Ação, Aventura, Ficção Científica"
                     android:textColor="@color/linhas"
-                    android:textSize="14sp"
-                    android:layout_marginTop="8dp" />
+                    android:textSize="@dimen/text_medium"
+                    android:layout_marginTop="@dimen/margin_medium" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Seção da sinopse -->
+        <!-- Sinopse -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="@dimen/padding_large"
             android:background="@color/cont_tela"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp">
+            android:layout_margin="@dimen/margin_large">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sinopse"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_xlarge"
                 android:textStyle="bold"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="@dimen/margin_medium" />
 
             <TextView
                 android:id="@+id/txt_sinopse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sinopse do filme será carregada aqui..."
+                android:text="Sinopse do filme será carregada aqui quando a API TMDB for implementada. Por enquanto, este é um texto de exemplo para demonstrar o layout da tela de detalhes."
                 android:textColor="@color/linhas"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_large"
                 android:lineSpacingExtra="4dp" />
         </LinearLayout>
-
-
 
         <!-- Seção de comentários -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="@dimen/padding_large"
             android:background="@color/cont_tela"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp">
+            android:layout_margin="@dimen/margin_large">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Comentários"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_xlarge"
                 android:textStyle="bold"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="@dimen/margin_medium" />
 
-            <!-- Campo para adicionar comentário -->
+            <!-- Comentário de exemplo -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_medium"
+                android:background="@drawable/border"
+                android:layout_marginBottom="@dimen/margin_medium">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Usuário123"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_medium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Filme incrível! Recomendo muito."
+                    android:textColor="@color/linhas"
+                    android:textSize="@dimen/text_medium"
+                    android:layout_marginTop="@dimen/margin_small" />
+            </LinearLayout>
+
+            <!-- Campo para novo comentário -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:layout_marginTop="@dimen/margin_medium">
 
                 <EditText
                     android:id="@+id/edt_comentario"
@@ -197,84 +215,21 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="Adicionar comentário..."
-                    android:textColorHint="@color/linhas"
                     android:textColor="@color/white"
-                    android:background="@drawable/search_bar"
-                    android:padding="12dp"
-                    android:maxLines="3" />
+                    android:textColorHint="@color/linhas"
+                    android:background="@drawable/border"
+                    android:padding="@dimen/padding_medium"
+                    android:layout_marginEnd="@dimen/margin_medium" />
 
-                <ImageView
+                <Button
                     android:id="@+id/btn_enviar_comentario"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/foto1"
-                    android:layout_marginStart="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="8dp" />
-            </LinearLayout>
-
-            <!-- Lista de comentários -->
-            <LinearLayout
-                android:id="@+id/container_comentarios"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <!-- Comentário de exemplo -->
-                <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp"
-                    android:background="@color/background01"
-                    android:layout_marginBottom="8dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/avatar"
-                            android:layout_marginEnd="8dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Usuário"
-                            android:textColor="@color/white"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" • há 2h"
-                            android:textColor="@color/linhas"
-                            android:textSize="12sp"
-                            android:layout_marginStart="4dp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Filme incrível! Recomendo muito."
-                        android:textColor="@color/linhas"
-                        android:textSize="14sp"
-                        android:layout_marginTop="4dp" />
-                </LinearLayout>
+                    android:text="Enviar"
+                    android:textColor="@color/white"
+                    android:background="@drawable/gradiente_roxo"
+                    android:padding="@dimen/padding_medium" />
             </LinearLayout>
         </LinearLayout>
-
-        <!-- Espaço extra no final -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="32dp" />
-
     </LinearLayout>
 </ScrollView> 

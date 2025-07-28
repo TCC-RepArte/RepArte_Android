@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -22,7 +23,9 @@ public class ConfActivity extends AppCompatActivity {
         profileDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navegação futura: Detalhes do perfil
+                // Navegar para a tela de detalhes do perfil
+                Intent intent = new Intent(ConfActivity.this, Alt_perfil.class);
+                startActivity(intent);
             }
         });
         password.setOnClickListener(new View.OnClickListener() {
