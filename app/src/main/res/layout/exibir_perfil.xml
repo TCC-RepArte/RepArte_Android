@@ -64,7 +64,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/salvar"
+                android:id="@+id/btnSalvar"
                 android:layout_width="140dp"
                 android:layout_height="58dp"
                 android:minWidth="48dp"
@@ -91,7 +91,7 @@
         app:srcCompat="@drawable/user_white" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/exibirNome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Nome de Exibição"
@@ -103,14 +103,14 @@
         app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView4"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintBottom_toTopOf="@+id/exibirUser"
         app:layout_constraintVertical_bias="0.4"
         app:layout_constraintVertical_chainStyle="packed"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="1dp"/>
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/exibirUser"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Usário"
@@ -119,9 +119,9 @@
         android:textStyle="bold"
         android:maxLines="1"
         android:ellipsize="end"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/exibirNome"
+        app:layout_constraintEnd_toEndOf="@+id/exibirNome"
+        app:layout_constraintTop_toBottomOf="@+id/exibirNome"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         android:layout_marginTop="4dp" />
 

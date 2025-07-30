@@ -72,7 +72,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/salvar"
+                android:id="@+id/btnSalvar"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:background="@android:color/transparent"

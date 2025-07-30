@@ -69,6 +69,7 @@
         android:layout_width="@dimen/profile_image_size"
         android:layout_height="@dimen/profile_image_size"
         android:clickable="true"
+        android:background="@drawable/border"
         android:contentDescription="Clique para prosseguir para sua tela de perfil."
         app:layout_constraintBottom_toBottomOf="@+id/menu_superior"
         app:layout_constraintEnd_toEndOf="@+id/menu_superior"

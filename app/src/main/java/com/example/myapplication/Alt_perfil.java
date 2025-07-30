@@ -55,7 +55,7 @@ public class Alt_perfil extends AppCompatActivity {
         btnFoto = findViewById(R.id.btn_foto);
         nomeEditText = findViewById(R.id.nome);
         descEditText = findViewById(R.id.desc);
-        salvarButton = findViewById(R.id.salvar);
+        salvarButton = findViewById(R.id.btnSalvar);
         btnVoltar = findViewById(R.id.btn_Voltar);
 
         // Recupera o id do usuário das SharedPreferences

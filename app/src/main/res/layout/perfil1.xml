@@ -143,7 +143,7 @@
         app:layout_constraintTop_toTopOf="@id/bio" />
 
     <Button
-        android:id="@+id/salvar"
+        android:id="@+id/btnSalvar"
         android:layout_width="163dp"
         android:layout_height="48dp"
         android:layout_marginStart="108dp"
