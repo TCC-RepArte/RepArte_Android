@@ -3,11 +3,27 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/my_gradiant4"
     tools:context=".Login">
+
+    <ScrollView
+        android:id="@+id/scroll_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/my_gradiant4"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/menu_inferior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/my_gradiant4">
 
     <!--menu superior-->
     <!--view/container-->
@@ -16,6 +32,7 @@
         android:id="@+id/menu_superior"
         android:layout_width="0dp"
         android:layout_height="@dimen/header_height"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/pesquisar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +47,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="@dimen/padding_large"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/menu_superior"
         app:layout_constraintStart_toStartOf="@+id/menu_superior"
         app:layout_constraintTop_toTopOf="@+id/menu_superior"
@@ -76,19 +94,32 @@
         app:layout_constraintTop_toTopOf="@+id/menu_superior"
         app:layout_constraintVertical_bias="0.5"
         android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_marginTop="8dp"
         app:srcCompat="@drawable/user_white" />
 
 
     <!--barra de pesquisa-->
 
-    <SearchView
+    <EditText
         android:id="@+id/pesquisar"
         android:layout_width="0dp"
         android:layout_height="@dimen/search_height"
         android:background="@drawable/search_bar"
         android:layout_marginStart="@dimen/margin_medium"
         android:layout_marginEnd="@dimen/margin_medium"
-        app:layout_constraintBottom_toTopOf="@id/text1"
+        android:layout_marginTop="16dp"
+        android:hint="Pesquisar..."
+        android:textColorHint="#B9B0B0"
+        android:textColor="@color/white"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:drawableStart="@drawable/search_icon"
+        android:drawablePadding="8dp"
+
+        android:clickable="true"
+        android:focusable="false"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@id/trending_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/perfil" />
@@ -103,10 +134,297 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text1" />
 
+    <!-- Trending Topics Section -->
+    <TextView
+        android:id="@+id/trending_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/league_spartan_bold"
+        android:text="Trending Topics"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pesquisar" />
+
+    <HorizontalScrollView
+        android:id="@+id/trending_scroll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trending_title">
+
+        <LinearLayout
+            android:id="@+id/trending_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
+            android:paddingEnd="16dp">
+
+            <!-- Trending Topic 1 -->
+            <Button
+                android:id="@+id/trending_action"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="#FF5722"
+                android:fontFamily="@font/roboto_medium"
+                android:text="#Ação"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:cornerRadius="18dp" />
+
+            <!-- Trending Topic 2 -->
+            <Button
+                android:id="@+id/trending_romance"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="#FF5722"
+                android:fontFamily="@font/roboto_medium"
+                android:text="#Romance"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:cornerRadius="18dp" />
+
+            <!-- Trending Topic 3 -->
+            <Button
+                android:id="@+id/trending_arte"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="#FF5722"
+                android:fontFamily="@font/roboto_medium"
+                android:text="#ArteContemporânea"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:cornerRadius="18dp" />
+
+            <!-- Trending Topic 4 -->
+            <Button
+                android:id="@+id/trending_livro"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="#FF5722"
+                android:fontFamily="@font/roboto_medium"
+                android:text="#LivroDaSemana"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:cornerRadius="18dp" />
+
+            <!-- Trending Topic 5 -->
+            <Button
+                android:id="@+id/trending_festival"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="#FF5722"
+                android:fontFamily="@font/roboto_medium"
+                android:text="#FestivalArte"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:cornerRadius="18dp" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Friends Section -->
+    <TextView
+        android:id="@+id/friends_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/league_spartan_bold"
+        android:text="Amigos"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trending_scroll" />
+
+    <TextView
+        android:id="@+id/add_friend_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Adicionar Amigo"
+        android:textColor="#FF5722"
+        android:textSize="14sp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/friends_title" />
+
+    <HorizontalScrollView
+        android:id="@+id/friends_scroll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/friends_title">
+
+        <LinearLayout
+            android:id="@+id/friends_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
+            android:paddingEnd="16dp">
+
+            <!-- Friend 1 -->
+            <LinearLayout
+                android:id="@+id/friend_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/friend_avatar_1"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/border"
+                    android:src="@drawable/user_white" />
+
+                <TextView
+                    android:id="@+id/friend_name_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Ana"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Friend 2 -->
+            <LinearLayout
+                android:id="@+id/friend_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/friend_avatar_2"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/border"
+                    android:src="@drawable/user_white" />
+
+                <TextView
+                    android:id="@+id/friend_name_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Carlos"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Friend 3 -->
+            <LinearLayout
+                android:id="@+id/friend_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/friend_avatar_3"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/border"
+                    android:src="@drawable/user_white" />
+
+                <TextView
+                    android:id="@+id/friend_name_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Maria"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Friend 4 -->
+            <LinearLayout
+                android:id="@+id/friend_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/friend_avatar_4"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/border"
+                    android:src="@drawable/user_white" />
+
+                <TextView
+                    android:id="@+id/friend_name_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="João"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Friend 5 -->
+            <LinearLayout
+                android:id="@+id/friend_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/friend_avatar_5"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/border"
+                    android:src="@drawable/user_white" />
+
+                <TextView
+                    android:id="@+id/friend_name_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Sofia"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
     <TextView
         android:id="@+id/text1"
         android:layout_width="362dp"
         android:layout_height="36dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/league_spartan_bold"
         android:text="Página inicial"
         android:textColor="@color/white"
@@ -115,7 +433,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.54"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pesquisar" />
+        app:layout_constraintTop_toBottomOf="@+id/friends_scroll" />
 
     <Button
         android:id="@+id/btn_adc"
@@ -284,6 +602,10 @@
         app:layout_constraintTop_toTopOf="@+id/post1"
         app:layout_constraintVertical_bias="0.095"
         app:srcCompat="@drawable/user_white" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
     <!--menu inferior... elementos tbd, mas a base fica tipo assim: -->
     <LinearLayout

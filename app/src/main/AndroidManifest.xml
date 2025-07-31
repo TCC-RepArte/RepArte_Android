@@ -79,6 +79,9 @@
             android:name=".ExibirPerfil"
             android:exported="true" />
         <activity android:name=".Postagem" android:exported="true" />
+        <activity
+            android:name=".AdicionarAmigoActivity"
+            android:exported="true" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

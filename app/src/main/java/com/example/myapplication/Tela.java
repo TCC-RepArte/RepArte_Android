@@ -8,9 +8,11 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import com.example.myapplication.api.ApiService;
 import com.koushikdutta.ion.bitmap.Transform;
 import com.koushikdutta.ion.Ion;
@@ -30,7 +32,7 @@ public class Tela extends AppCompatActivity {
 
         //declarar
         ImageView perfil;
-        SearchView pesquisar;
+        EditText pesquisar;
         Button vermais;
 
         //id
@@ -40,6 +42,12 @@ public class Tela extends AppCompatActivity {
 
         // Anima os elementos da tela principal
         animateMainScreenElements(perfil, pesquisar);
+        
+        // Configura as interações dos trending topics
+        setupTrendingTopics();
+        
+        // Configura as interações dos amigos
+        setupFriendsList();
 
         //evento botao ver mais
         vermais.setOnClickListener(view -> {
@@ -64,33 +72,6 @@ public class Tela extends AppCompatActivity {
                 Intent intent = new Intent(Tela.this, BuscaActivity.class);
                 startActivity(intent);
             });
-        });
-
-        // Configurar a SearchView para abrir a tela de busca quando clicar
-        pesquisar.setOnSearchClickListener(view -> {
-            // Aplica animação de bounce para feedback
-            AppAnimationUtils.animateBounce(pesquisar);
-            Intent intent = new Intent(Tela.this, BuscaActivity.class);
-            startActivity(intent);
-        });
-
-        // Opcional: Configurar para buscar quando submeter
-        pesquisar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                if (query != null && !query.trim().isEmpty()) {
-                    Intent intent = new Intent(Tela.this, BuscaActivity.class);
-                    intent.putExtra("termo_busca", query.trim());
-                    startActivity(intent);
-                }
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                // Busca em tempo real (opcional)
-                return true;
-            }
         });
 
         String userId = getSharedPreferences("RepArte", MODE_PRIVATE).getString("user_id", null);
@@ -133,7 +114,7 @@ public class Tela extends AppCompatActivity {
     /**
      * Anima os elementos da tela principal
      */
-    private void animateMainScreenElements(ImageView perfil, SearchView pesquisar) {
+    private void animateMainScreenElements(ImageView perfil, EditText pesquisar) {
         // Anima o perfil com fade in e escala
         if (perfil != null) {
             perfil.setAlpha(0f);
@@ -160,8 +141,101 @@ public class Tela extends AppCompatActivity {
                     .start();
         }
 
-        // Anima outros elementos da tela se existirem
-        // Você pode adicionar mais elementos aqui conforme necessário
+        // Anima os trending topics com slide up
+        View trendingTitle = findViewById(R.id.trending_title);
+        if (trendingTitle != null) {
+            trendingTitle.setAlpha(0f);
+            trendingTitle.setTranslationY(30f);
+            trendingTitle.animate()
+                    .alpha(1f)
+                    .translationY(0f)
+                    .setDuration(600)
+                    .setStartDelay(600)
+                    .start();
+        }
+
+        // Anima a lista de amigos com slide up
+        View friendsTitle = findViewById(R.id.friends_title);
+        if (friendsTitle != null) {
+            friendsTitle.setAlpha(0f);
+            friendsTitle.setTranslationY(30f);
+            friendsTitle.animate()
+                    .alpha(1f)
+                    .translationY(0f)
+                    .setDuration(600)
+                    .setStartDelay(800)
+                    .start();
+        }
+    }
+
+    /**
+     * Configura as interações dos trending topics
+     */
+    private void setupTrendingTopics() {
+        // Configura cada trending topic
+        setupTrendingTopic(R.id.trending_action, "#Ação");
+        setupTrendingTopic(R.id.trending_romance, "#Romance");
+        setupTrendingTopic(R.id.trending_arte, "#ArteContemporânea");
+        setupTrendingTopic(R.id.trending_livro, "#LivroDaSemana");
+        setupTrendingTopic(R.id.trending_festival, "#FestivalArte");
+    }
+
+    /**
+     * Configura um trending topic específico
+     */
+    private void setupTrendingTopic(int buttonId, String hashtag) {
+        Button button = findViewById(buttonId);
+        if (button != null) {
+            button.setOnClickListener(v -> {
+                // Aplica animação de clique
+                AppAnimationUtils.animateButtonClick(button, () -> {
+                    // TODO: Implementar busca por hashtag quando a funcionalidade estiver pronta
+                    Toast.makeText(Tela.this, "Funcionalidade em desenvolvimento!", Toast.LENGTH_SHORT).show();
+                });
+            });
+        }
+    }
+
+    /**
+     * Configura as interações da lista de amigos
+     */
+    private void setupFriendsList() {
+        // Configura o link "Adicionar Amigo"
+        TextView addFriendLink = findViewById(R.id.add_friend_link);
+        if (addFriendLink != null) {
+            addFriendLink.setOnClickListener(v -> {
+                // Aplica animação de clique
+                AppAnimationUtils.animateButtonClick(addFriendLink, () -> {
+                    // Navega para a tela de adicionar amigos
+                    Intent intent = new Intent(Tela.this, AdicionarAmigoActivity.class);
+                    startActivity(intent);
+                });
+            });
+        }
+
+        // Configura cada amigo
+        setupFriend(R.id.friend_1, "Ana");
+        setupFriend(R.id.friend_2, "Carlos");
+        setupFriend(R.id.friend_3, "Maria");
+        setupFriend(R.id.friend_4, "João");
+        setupFriend(R.id.friend_5, "Sofia");
+    }
+
+    /**
+     * Configura um amigo específico
+     */
+    private void setupFriend(int friendLayoutId, String friendName) {
+        View friendLayout = findViewById(friendLayoutId);
+        if (friendLayout != null) {
+            friendLayout.setOnClickListener(v -> {
+                // Aplica animação leve de toque
+                Animation animation = AnimationUtils.loadAnimation(this, R.anim.avatar_tap);
+                friendLayout.startAnimation(animation);
+                
+                // TODO: Implementar navegação para perfil do amigo quando a funcionalidade estiver pronta
+                // Por enquanto, não faz nada ao clicar
+            });
+        }
     }
 }
 
