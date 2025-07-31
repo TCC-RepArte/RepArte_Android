@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#020103"
-    android:id="@+id/tela_bg">
+    android:id="@+id/tela_bg"
+    tools:context=".Postagem">
 
 
     <View
@@ -35,7 +36,7 @@
         app:layout_constraintVertical_bias="0.483" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/txtTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_bold"
@@ -75,7 +76,7 @@
         app:srcCompat="@drawable/user_white" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/txtUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/hammersmith_one"
@@ -90,19 +91,19 @@
         app:layout_constraintVertical_bias="0.062" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imgObra"
         android:layout_width="105dp"
         android:layout_height="149dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.629"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintStart_toEndOf="@+id/txtUser"
         app:layout_constraintTop_toBottomOf="@+id/divider1"
         app:layout_constraintVertical_bias="0.073"
         app:srcCompat="@drawable/sinners1" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/txtPost"
         android:layout_width="352dp"
         android:layout_height="310dp"
         android:fontFamily="@font/roboto_medium"
@@ -119,18 +120,46 @@
         app:layout_constraintVertical_bias="0.221" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/txtObra"
         android:layout_width="115dp"
         android:layout_height="50dp"
         android:fontFamily="@font/hammersmith_one"
         android:text="Sinners, 2025"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView5"
-        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+        app:layout_constraintBottom_toTopOf="@+id/txtPost"
+        app:layout_constraintEnd_toStartOf="@+id/imgObra"
         app:layout_constraintHorizontal_bias="0.588"
         app:layout_constraintStart_toEndOf="@+id/profile1"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/txtUser"
         app:layout_constraintVertical_bias="0.174" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="409dp"
+        android:layout_height="3dp"
+        android:background="?android:attr/listDivider"
+        android:backgroundTint="#D4D2D2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtPost"
+        app:layout_constraintVertical_bias="0.236" />
+
+    <TextView
+        android:id="@+id/txtComent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Comentários"
+        android:textColor="#FFFFFF"
+        android:textSize="19sp"
+        app:layout_constraintBottom_toTopOf="@+id/divider2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.102"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtPost"
+        app:layout_constraintVertical_bias="0.6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

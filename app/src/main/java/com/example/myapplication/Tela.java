@@ -31,13 +31,21 @@ public class Tela extends AppCompatActivity {
         //declarar
         ImageView perfil;
         SearchView pesquisar;
+        Button vermais;
 
         //id
         perfil = findViewById(R.id.perfil);
         pesquisar = findViewById(R.id.pesquisar);
+        vermais = findViewById(R.id.vermais1);
 
         // Anima os elementos da tela principal
         animateMainScreenElements(perfil, pesquisar);
+
+        //evento botao ver mais
+        vermais.setOnClickListener(view -> {
+            Intent intent = new Intent(Tela.this, Postagem.class);
+            startActivity(intent);
+        });
 
         //evento do botao perfil
         perfil.setOnClickListener(view -> {
