@@ -103,25 +103,30 @@ public class ExibirPerfil extends AppCompatActivity {
             }
 
 
-        // Configura o botão de salvar
+        // Configura o botão de salvar com animação
         if (btnSalvar != null) {
             btnSalvar.setOnClickListener(v -> {
-                Intent intent = new Intent(ExibirPerfil.this, Alt_perfil.class);
-                String currentUserId = getSharedPreferences("RepArte", MODE_PRIVATE).getString("user_id", null);
-                if (currentUserId != null) {
-                    intent.putExtra("USER_ID_EXTRA", currentUserId); // Opcional: passa o ID para a tela de edição
-                }
-                startActivity(intent);
-
+                // Aplica animação de clique
+                AppAnimationUtils.animateButtonClick(btnSalvar, () -> {
+                    Intent intent = new Intent(ExibirPerfil.this, Alt_perfil.class);
+                    String currentUserId = getSharedPreferences("RepArte", MODE_PRIVATE).getString("user_id", null);
+                    if (currentUserId != null) {
+                        intent.putExtra("USER_ID_EXTRA", currentUserId); // Opcional: passa o ID para a tela de edição
+                    }
+                    startActivity(intent);
+                });
             });
         } else {
             Log.e(TAG, "Botão 'btnSalvar' não encontrado para configurar o OnClickListener.");
         }
 
         btnVoltar.setOnClickListener(v -> {
-            Intent intent = new Intent(ExibirPerfil.this, ConfActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            // Aplica animação de clique
+            AppAnimationUtils.animateButtonClick(btnVoltar, () -> {
+                Intent intent = new Intent(ExibirPerfil.this, ConfActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            });
         });
 
 
@@ -133,6 +138,8 @@ public class ExibirPerfil extends AppCompatActivity {
             textViewPostagem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // Aplica animação de bounce para feedback visual
+                    AppAnimationUtils.animateBounce(textViewPostagem);
                     updateIndicator(textViewPostagem);
                     // TODO: Lógica para mostrar conteúdo de Postagens
                 }
@@ -145,6 +152,8 @@ public class ExibirPerfil extends AppCompatActivity {
             textViewComentario.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // Aplica animação de bounce para feedback visual
+                    AppAnimationUtils.animateBounce(textViewComentario);
                     updateIndicator(textViewComentario);
                     // TODO: Lógica para mostrar conteúdo de Comentários
                 }
@@ -157,6 +166,8 @@ public class ExibirPerfil extends AppCompatActivity {
             textViewSobreMim.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // Aplica animação de bounce para feedback visual
+                    AppAnimationUtils.animateBounce(textViewSobreMim);
                     updateIndicator(textViewSobreMim);
                     // TODO: Lógica para mostrar conteúdo de Sobre Mim
                 }
@@ -170,7 +181,60 @@ public class ExibirPerfil extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Aplica animações de entrada para os elementos principais
+        animateElementsOnStart();
     }
+
+    /**
+     * Aplica animações de entrada para os elementos principais da tela
+     */
+    private void animateElementsOnStart() {
+        // Anima a imagem do perfil com fade in
+        if (profileImageView != null) {
+            AppAnimationUtils.animateFadeIn(profileImageView);
+        }
+
+        // Anima os botões com slide up
+        if (btnSalvar != null) {
+            btnSalvar.setVisibility(View.INVISIBLE);
+            btnSalvar.postDelayed(() -> {
+                btnSalvar.setVisibility(View.VISIBLE);
+                AppAnimationUtils.animateSlideUp(btnSalvar);
+            }, 200);
+        }
+
+        if (btnVoltar != null) {
+            btnVoltar.setVisibility(View.INVISIBLE);
+            btnVoltar.postDelayed(() -> {
+                btnVoltar.setVisibility(View.VISIBLE);
+                AppAnimationUtils.animateSlideUp(btnVoltar);
+            }, 300);
+        }
+
+        // Anima os textos de navegação com fade in
+        if (textViewPostagem != null) {
+            textViewPostagem.setAlpha(0f);
+            textViewPostagem.postDelayed(() -> {
+                AppAnimationUtils.animateFadeInWithVisibility(textViewPostagem);
+            }, 400);
+        }
+
+        if (textViewComentario != null) {
+            textViewComentario.setAlpha(0f);
+            textViewComentario.postDelayed(() -> {
+                AppAnimationUtils.animateFadeInWithVisibility(textViewComentario);
+            }, 500);
+        }
+
+        if (textViewSobreMim != null) {
+            textViewSobreMim.setAlpha(0f);
+            textViewSobreMim.postDelayed(() -> {
+                AppAnimationUtils.animateFadeInWithVisibility(textViewSobreMim);
+            }, 600);
+        }
+    }
+
     private void updateIndicator(TextView selectedTextView) {
         // Verificações de nulo para segurança
         if (indicatorView == null || selectedTextView == null || constraintLayout == null) {
@@ -212,7 +276,11 @@ public class ExibirPerfil extends AppCompatActivity {
                 ConstraintSet.MATCH_CONSTRAINT
         );
 
+        // Aplica a animação com transição suave
         constraintSet.applyTo(constraintLayout);
+        
+        // Adiciona uma animação de bounce no indicador para feedback visual
+        AppAnimationUtils.animateBounce(indicatorView);
     }
 
     // Função utilitária para converter dp em pixels

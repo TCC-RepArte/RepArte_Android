@@ -52,7 +52,7 @@ public class Perfil extends AppCompatActivity {
         btnFoto = findViewById(R.id.btn_foto);
         nomeEditText = findViewById(R.id.nome);
         descEditText = findViewById(R.id.desc);
-        salvarButton = findViewById(R.id.salvar);
+        salvarButton = findViewById(R.id.btnSalvar);
 
         // Configura o botão de selecionar foto
         btnFoto.setOnClickListener(v -> pickImage.launch("image/*"));

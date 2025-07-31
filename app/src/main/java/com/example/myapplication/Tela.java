@@ -36,21 +36,32 @@ public class Tela extends AppCompatActivity {
         perfil = findViewById(R.id.perfil);
         pesquisar = findViewById(R.id.pesquisar);
 
+        // Anima os elementos da tela principal
+        animateMainScreenElements(perfil, pesquisar);
+
         //evento do botao perfil
         perfil.setOnClickListener(view -> {
-            Intent intent = new Intent(Tela.this, ConfActivity.class);
-            startActivity(intent);
+            // Aplica animação de clique
+            AppAnimationUtils.animateButtonClick(perfil, () -> {
+                Intent intent = new Intent(Tela.this, ConfActivity.class);
+                startActivity(intent);
+            });
         });
 
         //evento da barra de pesquisa
         pesquisar.setOnClickListener(view -> {
-            // Navegar para a tela de busca
-            Intent intent = new Intent(Tela.this, BuscaActivity.class);
-            startActivity(intent);
+            // Aplica animação de clique
+            AppAnimationUtils.animateButtonClick(pesquisar, () -> {
+                // Navegar para a tela de busca
+                Intent intent = new Intent(Tela.this, BuscaActivity.class);
+                startActivity(intent);
+            });
         });
 
         // Configurar a SearchView para abrir a tela de busca quando clicar
         pesquisar.setOnSearchClickListener(view -> {
+            // Aplica animação de bounce para feedback
+            AppAnimationUtils.animateBounce(pesquisar);
             Intent intent = new Intent(Tela.this, BuscaActivity.class);
             startActivity(intent);
         });
@@ -111,6 +122,39 @@ public class Tela extends AppCompatActivity {
         }
     }
 
+    /**
+     * Anima os elementos da tela principal
+     */
+    private void animateMainScreenElements(ImageView perfil, SearchView pesquisar) {
+        // Anima o perfil com fade in e escala
+        if (perfil != null) {
+            perfil.setAlpha(0f);
+            perfil.setScaleX(0.8f);
+            perfil.setScaleY(0.8f);
+            perfil.animate()
+                    .alpha(1f)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(800)
+                    .setStartDelay(200)
+                    .start();
+        }
+
+        // Anima a barra de pesquisa com slide up
+        if (pesquisar != null) {
+            pesquisar.setAlpha(0f);
+            pesquisar.setTranslationY(30f);
+            pesquisar.animate()
+                    .alpha(1f)
+                    .translationY(0f)
+                    .setDuration(600)
+                    .setStartDelay(400)
+                    .start();
+        }
+
+        // Anima outros elementos da tela se existirem
+        // Você pode adicionar mais elementos aqui conforme necessário
+    }
 }
 
 
