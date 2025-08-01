@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/my_gradiant4"
+    tools:context=".Login">
+
+    <ScrollView
+        android:id="@+id/scroll_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/menu_inferior"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_main0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="80dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp">
+
+    <View
+        android:id="@+id/cont1_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/div_tela"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/send_post"
+        android:layout_marginBottom="-16dp"/>
+
+    <Button
+        android:id="@+id/btn_adc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#3d3d3d"
+        android:fontFamily="@font/hammersmith_one"
+        android:minWidth="80dp"
+        android:minHeight="80dp"
+        android:text="+"
+        android:textColor="@android:color/white"
+        android:textSize="34sp"
+        app:cornerRadius="15dp"
+        app:layout_constraintStart_toStartOf="@+id/cont1_background"
+        app:layout_constraintTop_toTopOf="@+id/cont1_background"
+        app:strokeColor="@color/border"
+        app:strokeWidth="3dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Selecione a obra"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_adc"
+        app:layout_constraintEnd_toEndOf="@+id/cont1_background"
+        app:layout_constraintStart_toEndOf="@+id/btn_adc"
+        app:layout_constraintTop_toTopOf="@+id/btn_adc" />
+
+    <EditText
+        android:id="@+id/post"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/fundo_redondo"
+        android:ems="10"
+        android:fontFamily="@font/roboto_light"
+        android:gravity="top|start"
+        android:hint="Clique aqui para escrever sua análise..."
+        android:inputType="textMultiLine"
+        android:minHeight="200dp"
+        android:padding="12dp"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/white"
+        android:textColorHint="#B9B0B0"
+        app:layout_constraintEnd_toEndOf="@+id/cont1_background"
+        app:layout_constraintStart_toStartOf="@+id/cont1_background"
+        app:layout_constraintTop_toBottomOf="@+id/btn_adc" />
+
+    <ImageView
+        android:id="@+id/send_post"
+        android:layout_width="92dp"
+        android:layout_height="109dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="Clique para enviar sua análise."
+        android:focusable="true"
+        android:minWidth="60dp"
+        android:minHeight="60dp"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/cont1_background"
+        app:layout_constraintTop_toBottomOf="@+id/post"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/foto1"
+        app:tint="@android:color/white" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <!-- menu inferior -->
+<LinearLayout
+android:id="@+id/menu_inferior"
+android:layout_width="0dp"
+android:layout_height="90dp"
+android:orientation="horizontal"
+android:gravity="center"
+android:background="@color/cont_tela"
+android:paddingHorizontal="16dp"
+android:weightSum="4"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent">
+<!-- ... Conteúdo do menu inferior ... -->
+<!-- primeiro botão (home) -->
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="6dp"
+        android:background="@drawable/div_tela3"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/home_img"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:contentDescription="Início"
+            android:src="@drawable/home_img" />
+    </LinearLayout>
+</LinearLayout>
+
+<!-- segundo botão (lápis)-->
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="6dp"
+        android:background="@drawable/div_tela2"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/lapis_img"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:contentDescription="Criar Postagem"
+            android:src="@drawable/lapis_img" />
+    </LinearLayout>
+</LinearLayout>
+
+<!-- terceiro botão (sininho) -->
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="6dp"
+        android:background="@drawable/div_tela2"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/sino_txt"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:contentDescription="Notificações"
+            android:src="@drawable/sino" />
+    </LinearLayout>
+</LinearLayout>
+
+<!-- quarto botão (balãozinho) -->
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="6dp"
+        android:background="@drawable/div_tela2"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/balao_txt"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:contentDescription="Mensagens"
+            android:src="@drawable/balao_texto" />
+    </LinearLayout>
+</LinearLayout>
+</LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

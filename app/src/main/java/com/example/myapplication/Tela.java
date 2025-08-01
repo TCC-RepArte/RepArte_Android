@@ -32,13 +32,17 @@ public class Tela extends AppCompatActivity {
 
         //declarar
         ImageView perfil;
+        ImageView lapis_img;
         EditText pesquisar;
         Button vermais;
+
+
 
         //id
         perfil = findViewById(R.id.perfil);
         pesquisar = findViewById(R.id.pesquisar);
         vermais = findViewById(R.id.vermais1);
+        lapis_img = findViewById(R.id.lapis_img);
 
         // Anima os elementos da tela principal
         animateMainScreenElements(perfil, pesquisar);
@@ -52,6 +56,12 @@ public class Tela extends AppCompatActivity {
         //evento botao ver mais
         vermais.setOnClickListener(view -> {
             Intent intent = new Intent(Tela.this, Postagem.class);
+            startActivity(intent);
+        });
+
+        //evento botao postagem
+        lapis_img.setOnClickListener(view -> {
+            Intent intent = new Intent(Tela.this, Tela_post.class);
             startActivity(intent);
         });
 
