@@ -67,7 +67,9 @@ public class ConfActivity extends AppCompatActivity {
         about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navegação futura: Sobre o aplicativo
+                Intent intent = new Intent(ConfActivity.this, SobreAppActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
         help.setOnClickListener(new View.OnClickListener() {

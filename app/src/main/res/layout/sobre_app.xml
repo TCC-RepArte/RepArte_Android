@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/my_gradiant4"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header Hero com Gradiente Roxo e Formas Abstratas -->
+        <LinearLayout
+            android:id="@+id/header_hero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="32dp"
+            android:background="@drawable/gradiente_roxo"
+            android:layout_marginBottom="0dp"
+            android:elevation="0dp">
+
+            <!-- Logo do Corvo em Destaque -->
+            <FrameLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="24dp">
+
+                <!-- Círculo de fundo com gradiente -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border"
+                    android:backgroundTint="#2E1A47" />
+
+                <!-- Logo do corvo centralizado -->
+                <ImageView
+                    android:id="@+id/logo_corvo"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/foto2"
+                    android:background="@drawable/border"
+                    android:padding="8dp"
+                    android:backgroundTint="#1A1A2E" />
+
+            </FrameLayout>
+
+            <!-- Título Principal -->
+            <TextView
+                android:id="@+id/titulo_principal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RepArte"
+                android:textColor="@color/white"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/league_spartan_bold"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Subtítulo Profissional -->
+            <TextView
+                android:id="@+id/subtitulo_profissional"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Plataforma de Desenvolvimento de Escrita"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:background="@drawable/container_dr"
+                android:padding="12dp"
+                android:backgroundTint="#2E1A47"
+                android:elevation="4dp" />
+
+        </LinearLayout>
+
+                 <!-- Seção de Missão com Design Profissional -->
+         <LinearLayout
+             android:id="@+id/card_missao"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical"
+             android:background="@drawable/container_dr"
+             android:padding="24dp"
+             android:layout_marginHorizontal="20dp"
+             android:layout_marginTop="0dp"
+             android:layout_marginBottom="0dp"
+             android:backgroundTint="#2E1A47"
+             android:elevation="6dp">
+
+            <!-- Header da Missão -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="20dp">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_palette"
+                    android:background="@drawable/border"
+                    android:padding="10dp"
+                    android:backgroundTint="#FF5722"
+                    android:layout_marginEnd="16dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Nossa Missão"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold" />
+
+            </LinearLayout>
+
+            <!-- Conteúdo da Missão -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Criar uma plataforma interativa e colaborativa, gratuita e acessível, onde estudantes e redatores possam aprimorar suas habilidades de escrita, argumentação e pensamento crítico."
+                android:textColor="@color/linhas"
+                android:textSize="15sp"
+                android:fontFamily="@font/roboto_light"
+                android:lineSpacingExtra="4dp" />
+
+        </LinearLayout>
+
+        <!-- Seção de Funcionalidades em Grid Profissional -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp">
+
+            <!-- Título da Seção -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="O que oferecemos"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_marginBottom="16dp"
+                android:layout_gravity="center" />
+
+            <!-- Grid de Funcionalidades -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Primeira linha -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <!-- Card Busca -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@drawable/container_dr"
+                        android:padding="20dp"
+                        android:backgroundTint="#2E1A47"
+                        android:elevation="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/search_bar"
+                            android:layout_marginBottom="12dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Busca de Repertórios"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                    <!-- Card Publicação -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@drawable/container_dr"
+                        android:padding="20dp"
+                        android:backgroundTint="#2E1A47"
+                        android:elevation="6dp"
+                        android:layout_marginStart="6dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/postagem"
+                            android:layout_marginBottom="12dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Publicar Análises"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Segunda linha -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <!-- Card Debates -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@drawable/container_dr"
+                        android:padding="20dp"
+                        android:backgroundTint="#2E1A47"
+                        android:elevation="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/comentarios"
+                            android:layout_marginBottom="12dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Debates Construtivos"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                    <!-- Card Desafios -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@drawable/container_dr"
+                        android:padding="20dp"
+                        android:backgroundTint="#2E1A47"
+                        android:elevation="6dp"
+                        android:layout_marginStart="6dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/lapis_img"
+                            android:layout_marginBottom="12dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Desafios de Redação"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+                 <!-- Seção da Equipe com Design Elegante -->
+         <LinearLayout
+             android:id="@+id/card_equipe"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical"
+             android:background="@drawable/container_dr"
+             android:padding="24dp"
+             android:layout_marginHorizontal="20dp"
+             android:layout_marginBottom="0dp"
+             android:backgroundTint="#2E1A47"
+             android:elevation="6dp">
+
+            <!-- Header da Equipe -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="20dp">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/user_white"
+                    android:background="@drawable/border"
+                    android:padding="10dp"
+                                            android:backgroundTint="#FF5722"
+                        android:layout_marginEnd="16dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Nossa Equipe"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins_bold" />
+
+            </LinearLayout>
+
+            <!-- Lista de Fundadores -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Anne da Silva Felix\nBianca Sousa Santos\nBruna Maria de Melo Souza\nKarina Barboza da Silva\nLaís de Souza Ferro\nLuis Gustavo Santos\nSophia Rocha Ferreira"
+                android:textColor="@color/linhas"
+                android:textSize="15sp"
+                android:fontFamily="@font/roboto_light"
+                android:lineSpacingExtra="6dp"
+                android:background="@drawable/container_dr"
+                android:padding="16dp"
+                android:backgroundTint="#2E1A47"
+                android:elevation="4dp" />
+
+        </LinearLayout>
+
+                 <!-- Card de Informações Técnicas -->
+         <LinearLayout
+             android:id="@+id/card_info"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical"
+             android:background="@drawable/container_dr"
+             android:padding="24dp"
+             android:layout_marginHorizontal="20dp"
+             android:layout_marginBottom="0dp"
+             android:backgroundTint="#2E1A47"
+             android:elevation="6dp">
+
+            <!-- Header das Informações -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="20dp">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_shield"
+                    android:background="@drawable/border"
+                    android:padding="10dp"
+                                            android:backgroundTint="#FF5722"
+                        android:layout_marginEnd="16dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Informações do App"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins_bold" />
+
+            </LinearLayout>
+
+            <!-- Grid de Informações -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- Versão -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:background="@drawable/container_dr"
+                    android:padding="16dp"
+                    android:backgroundTint="#2E1A47"
+                                            android:elevation="4dp"
+                        android:layout_marginEnd="8dp"
+                        android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Versão 1.0.0"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center" />
+
+                </LinearLayout>
+
+                <!-- Plataforma -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:background="@drawable/container_dr"
+                    android:padding="16dp"
+                    android:backgroundTint="#2E1A47"
+                                            android:elevation="4dp"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Android"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Mensagem Especial -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Desenvolvido com dedicação para estudantes apaixonados por escrita"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/container_dr"
+                android:padding="16dp"
+                android:backgroundTint="#2E1A47"
+                android:elevation="4dp" />
+
+        </LinearLayout>
+
+        <!-- Botão Voltar com Seta Padrão -->
+        <LinearLayout
+            android:id="@+id/btn_voltar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/container_dr"
+            android:backgroundTint="#2E1A47"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="32dp"
+            android:elevation="4dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_back"
+                android:layout_marginEnd="12dp"
+                app:tint="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Voltar"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView> 

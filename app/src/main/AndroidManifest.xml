@@ -85,6 +85,9 @@
             android:name=".AdicionarAmigoActivity"
             android:exported="true" />
         <activity
+            android:name=".SobreAppActivity"
+            android:exported="true" />
+        <activity
             android:name=".Tela_post"
             android:exported="true" /> <!-- Tela de postagem -->
 
