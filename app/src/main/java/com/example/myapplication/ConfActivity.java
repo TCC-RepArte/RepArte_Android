@@ -42,6 +42,7 @@ public class ConfActivity extends AppCompatActivity {
         LinearLayout password = findViewById(R.id.option_password);
         LinearLayout notifications = findViewById(R.id.option_notifications);
         LinearLayout about = findViewById(R.id.option_about);
+        LinearLayout acessibilidade = findViewById(R.id.option_acessibilidade);
         LinearLayout help = findViewById(R.id.option_help);
         LinearLayout deactivate = findViewById(R.id.option_deactivate);
 
@@ -68,6 +69,14 @@ public class ConfActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ConfActivity.this, SobreAppActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
+        acessibilidade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ConfActivity.this, AcessibilidadeActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }

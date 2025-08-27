@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/my_gradiant4">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:background="@drawable/gradiente_roxo">
+
+        <!-- Botão Voltar -->
+        <LinearLayout
+            android:id="@+id/btn_voltar_acessibilidade"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:background="@drawable/border"
+            android:backgroundTint="#2E1A47"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_back"
+                android:contentDescription="Botão voltar"
+                app:tint="@color/white" />
+
+        </LinearLayout>
+
+        <!-- Título -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Acessibilidade"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center" />
+
+        <!-- Espaçador -->
+        <View
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+    </LinearLayout>
+
+    <!-- Conteúdo Principal -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Seção: Funcionalidades Principais -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Funcionalidades Principais"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Grid de Funcionalidades -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Primeira linha -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <!-- TTS - Leitor de Texto -->
+                    <LinearLayout
+                        android:id="@+id/btn_tts"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@drawable/container_dr"
+                        android:padding="16dp"
+                        android:backgroundTint="#2E1A47"
+                        android:elevation="4dp"
+                        android:layout_marginEnd="6dp"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/sino"
+                            android:layout_marginBottom="8dp"
+                            android:contentDescription="Ícone leitor de texto"
+                            app:tint="#FF5722" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Leitor de Texto"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                    <!-- Libras -->
+                    <LinearLayout
+                        android:id="@+id/btn_libras"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@drawable/container_dr"
+                        android:padding="16dp"
+                        android:backgroundTint="#2E1A47"
+                        android:elevation="4dp"
+                        android:layout_marginStart="6dp"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/user_white"
+                            android:layout_marginBottom="8dp"
+                            android:contentDescription="Ícone libras"
+                            app:tint="#FF5722" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Libras"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Segunda linha -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <!-- Zoom -->
+                    <LinearLayout
+                        android:id="@+id/btn_zoom"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@drawable/container_dr"
+                        android:padding="16dp"
+                        android:backgroundTint="#2E1A47"
+                        android:elevation="4dp"
+                        android:layout_marginEnd="6dp"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                                                 <ImageView
+                             android:layout_width="32dp"
+                             android:layout_height="32dp"
+                             android:src="@drawable/search_icon"
+                             android:layout_marginBottom="8dp"
+                             android:contentDescription="Ícone zoom"
+                             app:tint="#FF5722" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Zoom"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                    <!-- Tamanho da Fonte -->
+                    <LinearLayout
+                        android:id="@+id/btn_fonte"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@drawable/container_dr"
+                        android:padding="16dp"
+                        android:backgroundTint="#2E1A47"
+                        android:elevation="4dp"
+                        android:layout_marginStart="6dp"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/lapis_img"
+                            android:layout_marginBottom="8dp"
+                            android:contentDescription="Ícone tamanho da fonte"
+                            app:tint="#FF5722" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tamanho da Fonte"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Terceira linha -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <!-- Contraste -->
+                    <LinearLayout
+                        android:id="@+id/btn_contraste"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@drawable/container_dr"
+                        android:padding="16dp"
+                        android:backgroundTint="#2E1A47"
+                        android:elevation="4dp"
+                        android:layout_marginEnd="6dp"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_moon"
+                            android:layout_marginBottom="8dp"
+                            android:contentDescription="Ícone alto contraste"
+                            app:tint="#FF5722" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Alto Contraste"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                    <!-- Destaque Links -->
+                    <LinearLayout
+                        android:id="@+id/btn_links"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@drawable/container_dr"
+                        android:padding="16dp"
+                        android:backgroundTint="#2E1A47"
+                        android:elevation="4dp"
+                        android:layout_marginStart="6dp"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/comentarios"
+                            android:layout_marginBottom="8dp"
+                            android:contentDescription="Ícone destaque links"
+                            app:tint="#FF5722" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Destaque Links"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Status das Funcionalidades -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status das Funcionalidades"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Status TTS -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/container_dr"
+                    android:padding="12dp"
+                    android:backgroundTint="#2E1A47"
+                    android:elevation="4dp"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Leitor de Texto"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:id="@+id/status_tts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Desativado"
+                        android:textColor="#FF5722"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                </LinearLayout>
+
+                <!-- Status Libras -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/container_dr"
+                    android:padding="12dp"
+                    android:backgroundTint="#2E1A47"
+                    android:elevation="4dp"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Tradução Libras"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:id="@+id/status_libras"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Desativado"
+                        android:textColor="#FF5722"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                </LinearLayout>
+ 
+            </LinearLayout>
+ 
+             <!-- WebView para Libras (inicialmente oculto) -->
+             <WebView
+                 android:id="@+id/webview_libras"
+                 android:layout_width="match_parent"
+                 android:layout_height="200dp"
+                 android:layout_marginTop="16dp"
+                 android:visibility="gone"
+                 android:background="@drawable/container_dr"
+                 android:backgroundTint="#2E1A47" />
+ 
+             <!-- Botão Desligar Tudo -->
+             <LinearLayout
+                 android:id="@+id/btn_desligar_tudo"
+                 android:layout_width="match_parent"
+                 android:layout_height="48dp"
+                 android:orientation="horizontal"
+                 android:gravity="center"
+                 android:background="@drawable/container_dr"
+                 android:backgroundTint="#2E1A47"
+                 android:elevation="4dp"
+                 android:clickable="true"
+                 android:focusable="true"
+                 android:padding="12dp"
+                 android:layout_marginTop="16dp">
+ 
+                                  <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Desligar Todas as Funcionalidades"
+                     android:textColor="@color/white"
+                     android:textSize="14sp"
+                     android:fontFamily="@font/poppins_bold" />
+ 
+             </LinearLayout>
+ 
+         </LinearLayout>
+ 
+          </ScrollView>
+ 
+ </LinearLayout>
