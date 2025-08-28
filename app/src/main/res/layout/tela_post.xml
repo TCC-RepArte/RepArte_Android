@@ -37,24 +37,20 @@
         app:layout_constraintBottom_toBottomOf="@+id/send_post"
         android:layout_marginBottom="-16dp"/>
 
-    <Button
+    <ImageView
         android:id="@+id/btn_adc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#3d3d3d"
-        android:fontFamily="@font/hammersmith_one"
-        android:minWidth="80dp"
-        android:minHeight="80dp"
-        android:text="+"
-        android:textColor="@android:color/white"
-        android:textSize="34sp"
-        app:cornerRadius="15dp"
+        android:background="@drawable/btn_adc_initial"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="centerCrop"
+        android:contentDescription="Selecione uma obra para analisar"
         app:layout_constraintStart_toStartOf="@+id/cont1_background"
-        app:layout_constraintTop_toTopOf="@+id/cont1_background"
-        app:strokeColor="@color/border"
-        app:strokeWidth="3dp" />
+        app:layout_constraintTop_toTopOf="@+id/cont1_background" />
 
     <TextView
         android:id="@+id/textView3"

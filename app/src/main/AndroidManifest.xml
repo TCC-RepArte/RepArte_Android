@@ -91,6 +91,9 @@
             android:name=".Tela_post"
             android:exported="true" /> <!-- Tela de postagem -->
         <activity
+            android:name=".SelecaoObraActivity"
+            android:exported="true" /> <!-- Tela de seleção de obra -->
+        <activity
             android:name=".AcessibilidadeActivity"
             android:exported="true" /> <!-- Tela de acessibilidade -->
 

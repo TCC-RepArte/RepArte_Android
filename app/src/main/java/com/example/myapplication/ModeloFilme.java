@@ -1,6 +1,9 @@
 package com.example.myapplication;
 
-public class ModeloFilme {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ModeloFilme implements Parcelable {
     private int id;
     private String titulo;
     private String tituloOriginal;
@@ -20,6 +23,53 @@ public class ModeloFilme {
         this.dataLancamento = dataLancamento;
         this.avaliacao = avaliacao;
         this.tipo = tipo;
+    }
+
+    // Construtor Parcelable
+    protected ModeloFilme(Parcel in) {
+        id = in.readInt();
+        titulo = in.readString();
+        tituloOriginal = in.readString();
+        posterPath = in.readString();
+        overview = in.readString();
+        dataLancamento = in.readString();
+        avaliacao = in.readDouble();
+        votos = in.readInt();
+        tipo = in.readString();
+        generos = in.readString();
+    }
+
+    // Creator Parcelable
+    public static final Creator<ModeloFilme> CREATOR = new Creator<ModeloFilme>() {
+        @Override
+        public ModeloFilme createFromParcel(Parcel in) {
+            return new ModeloFilme(in);
+        }
+
+        @Override
+        public ModeloFilme[] newArray(int size) {
+            return new ModeloFilme[size];
+        }
+    };
+
+    // Implementação Parcelable
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(titulo);
+        dest.writeString(tituloOriginal);
+        dest.writeString(posterPath);
+        dest.writeString(overview);
+        dest.writeString(dataLancamento);
+        dest.writeDouble(avaliacao);
+        dest.writeInt(votos);
+        dest.writeString(tipo);
+        dest.writeString(generos);
     }
 
     // Getters e Setters

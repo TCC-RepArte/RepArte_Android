@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:background="@drawable/div_tela"
+    android:layout_marginBottom="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <!-- Poster da obra -->
+    <ImageView
+        android:id="@+id/img_poster"
+        android:layout_width="60dp"
+        android:layout_height="90dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/border"
+        android:src="@drawable/avatar"
+        android:contentDescription="Poster da obra" />
+
+    <!-- Informações da obra -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="16dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/txt_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Título da Obra"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/roboto_medium"
+            android:maxLines="2"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/txt_ano_tipo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="2024 • Filme"
+            android:textColor="#B9B0B0"
+            android:textSize="14sp"
+            android:fontFamily="@font/roboto_light" />
+
+        <TextView
+            android:id="@+id/txt_avaliacao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="★ 8.5 (1.2k votos)"
+            android:textColor="#FFD700"
+            android:textSize="14sp"
+            android:fontFamily="@font/roboto_medium" />
+
+    </LinearLayout>
+
+    <!-- Ícone de seleção -->
+    <ImageView
+        android:id="@+id/icone_selecao"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_arrow_thick"
+        android:tint="@color/white"
+        android:contentDescription="Selecionar obra" />
+
+</LinearLayout> 
