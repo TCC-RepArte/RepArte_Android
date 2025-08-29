@@ -13,14 +13,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.myapplication.ModeloFilme;
+import com.example.myapplication.api.ApiService;
+import com.koushikdutta.async.future.FutureCallback;
 
 public class Tela_post extends AppCompatActivity {
 
     private ImageView btnAdc;
     private TextView textView3;
+    private EditText editTextTituloPost;
     private EditText post;
     private ImageView sendPost;
     private ModeloFilme obraSelecionada;
+    private ApiService apiService;
 
     // Activity Result Launcher para seleção de obra
     private final ActivityResultLauncher<Intent> selecaoObraLauncher = registerForActivityResult(
@@ -40,6 +44,9 @@ public class Tela_post extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tela_post);
 
+        // Inicializar API Service
+        apiService = new ApiService(this);
+
         // Inicializar views
         inicializarViews();
         
@@ -50,6 +57,7 @@ public class Tela_post extends AppCompatActivity {
     private void inicializarViews() {
         btnAdc = findViewById(R.id.btn_adc);
         textView3 = findViewById(R.id.textView3);
+        editTextTituloPost = findViewById(R.id.editTextTituloPost);
         post = findViewById(R.id.post);
         sendPost = findViewById(R.id.send_post);
     }
@@ -68,18 +76,20 @@ public class Tela_post extends AppCompatActivity {
                 return;
             }
             
+            String tituloPost = editTextTituloPost.getText().toString().trim();
+            if (tituloPost.isEmpty()) {
+                Toast.makeText(this, "Escreva um título para o post", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
             String textoPost = post.getText().toString().trim();
             if (textoPost.isEmpty()) {
                 Toast.makeText(this, "Escreva sua análise antes de enviar", Toast.LENGTH_SHORT).show();
                 return;
             }
             
-            // TODO: Implementar envio do post para o backend
-            Toast.makeText(this, "Post enviado com sucesso!", Toast.LENGTH_SHORT).show();
-            
-            // Limpar campos
-            post.setText("");
-            resetarBotaoObra();
+            // Enviar post para o backend
+            enviarPost(tituloPost, textoPost);
         });
 
         // Evento do botão home
@@ -91,6 +101,37 @@ public class Tela_post extends AppCompatActivity {
                 finish();
             });
         }
+    }
+
+    private void enviarPost(String titulo, String texto) {
+        // Mostrar loading
+        Toast.makeText(this, "Enviando post...", Toast.LENGTH_SHORT).show();
+        
+        // Enviar post para o backend
+        apiService.enviarPost(titulo, texto, obraSelecionada.getId(), new FutureCallback<String>() {
+            @Override
+            public void onCompleted(Exception e, String result) {
+                runOnUiThread(() -> {
+                    if (e != null) {
+                        Toast.makeText(Tela_post.this, "Erro ao enviar post: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    } else if (result != null && result.contains("success")) {
+                        Toast.makeText(Tela_post.this, "Post enviado com sucesso!", Toast.LENGTH_SHORT).show();
+                        
+                        // Limpar campos
+                        editTextTituloPost.setText("");
+                        post.setText("");
+                        resetarBotaoObra();
+                        
+                        // Voltar para a tela principal
+                        Intent intent = new Intent(Tela_post.this, Tela.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(Tela_post.this, "Erro ao enviar post", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
     }
 
     private void atualizarBotaoObra() {

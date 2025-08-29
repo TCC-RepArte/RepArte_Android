@@ -37,7 +37,30 @@
         app:layout_constraintBottom_toBottomOf="@+id/send_post"
         android:layout_marginBottom="-16dp"/>
 
-    <ImageView
+
+        <EditText
+            android:id="@+id/editTextTituloPost"
+            android:layout_width="353dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="12dp"
+            android:background="@null"
+            android:hint="Escreva o título do post"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#B0FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/post"
+            app:layout_constraintEnd_toEndOf="@+id/cont1_background"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/cont1_background"
+            app:layout_constraintTop_toBottomOf="@+id/btn_adc"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ImageView
         android:id="@+id/btn_adc"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -67,29 +90,30 @@
         app:layout_constraintStart_toEndOf="@+id/btn_adc"
         app:layout_constraintTop_toTopOf="@+id/btn_adc" />
 
-    <EditText
-        android:id="@+id/post"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/fundo_redondo"
-        android:ems="10"
-        android:fontFamily="@font/roboto_light"
-        android:gravity="top|start"
-        android:hint="Clique aqui para escrever sua análise..."
-        android:inputType="textMultiLine"
-        android:minHeight="200dp"
-        android:padding="12dp"
-        android:textAlignment="viewStart"
-        android:textColor="@android:color/white"
-        android:textColorHint="#B9B0B0"
-        app:layout_constraintEnd_toEndOf="@+id/cont1_background"
-        app:layout_constraintStart_toStartOf="@+id/cont1_background"
-        app:layout_constraintTop_toBottomOf="@+id/btn_adc" />
+        <EditText
+            android:id="@+id/post"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="76dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/fundo_redondo"
+            android:ems="10"
+            android:fontFamily="@font/roboto_light"
+            android:gravity="top|start"
+            android:hint="Clique aqui para escrever sua análise..."
+            android:inputType="textMultiLine"
+            android:minHeight="200dp"
+            android:padding="12dp"
+            android:textAlignment="viewStart"
+            android:textColor="@android:color/white"
+            android:textColorHint="#B9B0B0"
+            app:layout_constraintEnd_toEndOf="@+id/cont1_background"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/cont1_background"
+            app:layout_constraintTop_toBottomOf="@+id/btn_adc" />
 
-    <ImageView
+        <ImageView
         android:id="@+id/send_post"
         android:layout_width="92dp"
         android:layout_height="109dp"

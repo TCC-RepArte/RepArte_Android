@@ -334,4 +334,52 @@ public class ApiService {
     public String getFotoPerfilUrl(String userId) {
         return BASE_URL + "receber_foto.php?id=" + userId;
     }
+
+    public void enviarPost(String titulo, String texto, int idObra, FutureCallback<String> callback) {
+        String userId = context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
+                .getString("user_id", null);
+
+        if (userId == null) {
+            callback.onCompleted(new Exception("Usuário não autenticado"), null);
+            return;
+        }
+
+        String url = BASE_URL + "criar_postagem.php";
+        Log.d(TAG, "=== ENVIANDO POST ===");
+        Log.d(TAG, "URL: " + url);
+        Log.d(TAG, "Título: " + titulo);
+        Log.d(TAG, "Texto: " + texto);
+        Log.d(TAG, "ID da Obra: " + idObra);
+        Log.d(TAG, "ID do Usuário: " + userId);
+
+        Ion.with(context)
+                .load("POST", url)
+                .setHeader("Content-Type", "application/x-www-form-urlencoded")
+                .setHeader("Connection", "close")
+                .setTimeout(30000)
+                .setBodyParameter("titulo", titulo)
+                .setBodyParameter("texto", texto)
+                .setBodyParameter("id_obra", String.valueOf(idObra))
+                .setBodyParameter("id_usuario", userId)
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        if (e != null) {
+                            Log.e(TAG, "Erro ao enviar post: ", e);
+                            callback.onCompleted(e, null);
+                            return;
+                        }
+
+                        Log.d(TAG, "Resposta do envio do post: " + result);
+                        if (result != null && result.toLowerCase().contains("success")) {
+                            Log.d(TAG, "Post enviado com sucesso!");
+                            callback.onCompleted(null, "success");
+                        } else {
+                            Log.e(TAG, "Erro no envio do post. Resposta: " + result);
+                            callback.onCompleted(new Exception("Erro no envio: " + result), null);
+                        }
+                    }
+                });
+    }
 }
