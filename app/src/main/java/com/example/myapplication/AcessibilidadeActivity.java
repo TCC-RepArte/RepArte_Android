@@ -8,14 +8,25 @@ import android.widget.Toast;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.WebSettings;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.View.OnTouchListener;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AcessibilidadeActivity extends AppCompatActivity {
 
     private AcessibilidadeManager acessibilidadeManager;
-    private TextView statusTTS, statusLibras;
+    private TextView statusTTS, statusLibras, statusZoom, statusFonte, statusContraste, statusLinks;
     private WebView webViewLibras;
+    
+    // Detector de gestos para zoom
+    private ScaleGestureDetector scaleGestureDetector;
+    private GestureDetector gestureDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +41,11 @@ public class AcessibilidadeActivity extends AppCompatActivity {
         
         // Atualizar status
         atualizarStatus();
+        
+        // Configurar zoom se estiver ativo
+        if (acessibilidadeManager.isZoomAtivo()) {
+            configurarZoom();
+        }
     }
 
     private void atualizarStatus() {
@@ -50,12 +66,52 @@ public class AcessibilidadeActivity extends AppCompatActivity {
             statusLibras.setText("Desativado");
             statusLibras.setTextColor(getResources().getColor(android.R.color.holo_red_light));
         }
+        
+        // Atualizar status Zoom
+        if (acessibilidadeManager.isZoomAtivo()) {
+            statusZoom.setText("Ativado");
+            statusZoom.setTextColor(getResources().getColor(android.R.color.holo_green_light));
+        } else {
+            statusZoom.setText("Desativado");
+            statusZoom.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+        }
+        
+        // Atualizar status Fonte
+        if (acessibilidadeManager.isFonteAtivo()) {
+            statusFonte.setText("Ativado");
+            statusFonte.setTextColor(getResources().getColor(android.R.color.holo_green_light));
+        } else {
+            statusFonte.setText("Desativado");
+            statusFonte.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+        }
+        
+        // Atualizar status Contraste
+        if (acessibilidadeManager.isContrasteAtivo()) {
+            statusContraste.setText("Ativado");
+            statusContraste.setTextColor(getResources().getColor(android.R.color.holo_green_light));
+        } else {
+            statusContraste.setText("Desativado");
+            statusContraste.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+        }
+        
+        // Atualizar status Links
+        if (acessibilidadeManager.isLinksAtivo()) {
+            statusLinks.setText("Ativado");
+            statusLinks.setTextColor(getResources().getColor(android.R.color.holo_green_light));
+        } else {
+            statusLinks.setText("Desativado");
+            statusLinks.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+        }
     }
 
     private void configurarBotoes() {
         // Status das funcionalidades
         statusTTS = findViewById(R.id.status_tts);
         statusLibras = findViewById(R.id.status_libras);
+        statusZoom = findViewById(R.id.status_zoom);
+        statusFonte = findViewById(R.id.status_fonte);
+        statusContraste = findViewById(R.id.status_contraste);
+        statusLinks = findViewById(R.id.status_links);
         
         // Configurar WebView para Libras
         webViewLibras = findViewById(R.id.webview_libras);
@@ -63,13 +119,34 @@ public class AcessibilidadeActivity extends AppCompatActivity {
             WebSettings webSettings = webViewLibras.getSettings();
             webSettings.setJavaScriptEnabled(true);
             webSettings.setDomStorageEnabled(true);
-            webViewLibras.setWebViewClient(new WebViewClient());
+            webSettings.setAllowFileAccess(true);
+            webSettings.setAllowContentAccess(true);
+            webSettings.setLoadsImagesAutomatically(true);
+            
+            webViewLibras.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    if (acessibilidadeManager.isTtsAtivo()) {
+                        acessibilidadeManager.lerElementoClicado("VLibras carregado com sucesso");
+                    }
+                }
+                
+                @Override
+                public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                    super.onReceivedError(view, request, error);
+                    Toast.makeText(AcessibilidadeActivity.this, "Erro ao carregar VLibras", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         // Botão voltar
         findViewById(R.id.btn_voltar_acessibilidade).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (acessibilidadeManager.isTtsAtivo()) {
+                    acessibilidadeManager.lerElementoClicado("Voltando para configurações");
+                }
                 finish();
             }
         });
@@ -90,7 +167,7 @@ public class AcessibilidadeActivity extends AppCompatActivity {
                 if (acessibilidadeManager.isTtsAtivo()) {
                     acessibilidadeManager.lerElementoClicado("Botão Libras clicado");
                 }
-                acessibilidadeManager.alternarLibras();
+                alternarLibras();
                 atualizarStatus();
             }
         });
@@ -100,9 +177,13 @@ public class AcessibilidadeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (acessibilidadeManager.isTtsAtivo()) {
-                    acessibilidadeManager.lerElementoClicado("Zoom " + (acessibilidadeManager.isZoomAtivo() ? "desativado" : "ativado"));
+                    acessibilidadeManager.lerElementoClicado("Botão Zoom clicado");
                 }
                 acessibilidadeManager.alternarZoom();
+                if (acessibilidadeManager.isZoomAtivo()) {
+                    configurarZoom();
+                }
+                atualizarStatus();
             }
         });
 
@@ -111,9 +192,10 @@ public class AcessibilidadeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (acessibilidadeManager.isTtsAtivo()) {
-                    acessibilidadeManager.lerElementoClicado("Tamanho da fonte " + (acessibilidadeManager.isFonteAtivo() ? "desativado" : "ativado"));
+                    acessibilidadeManager.lerElementoClicado("Botão Tamanho da Fonte clicado");
                 }
                 acessibilidadeManager.alternarFonte();
+                atualizarStatus();
             }
         });
 
@@ -122,9 +204,10 @@ public class AcessibilidadeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (acessibilidadeManager.isTtsAtivo()) {
-                    acessibilidadeManager.lerElementoClicado("Alto contraste " + (acessibilidadeManager.isContrasteAtivo() ? "desativado" : "ativado"));
+                    acessibilidadeManager.lerElementoClicado("Botão Alto Contraste clicado");
                 }
                 acessibilidadeManager.alternarContraste();
+                atualizarStatus();
             }
         });
 
@@ -133,9 +216,10 @@ public class AcessibilidadeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (acessibilidadeManager.isTtsAtivo()) {
-                    acessibilidadeManager.lerElementoClicado("Funcionalidade Destaque Links em desenvolvimento");
+                    acessibilidadeManager.lerElementoClicado("Botão Destaque de Links clicado");
                 }
-                Toast.makeText(AcessibilidadeActivity.this, "Funcionalidade Destaque Links em desenvolvimento", Toast.LENGTH_SHORT).show();
+                acessibilidadeManager.alternarDestaqueLinks();
+                atualizarStatus();
             }
         });
 
@@ -148,6 +232,10 @@ public class AcessibilidadeActivity extends AppCompatActivity {
                 }
                 acessibilidadeManager.desligarTodasFuncionalidades();
                 atualizarStatus();
+                // Ocultar WebView
+                if (webViewLibras != null) {
+                    webViewLibras.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -162,12 +250,45 @@ public class AcessibilidadeActivity extends AppCompatActivity {
             // Ativar Libras
             if (webViewLibras != null) {
                 webViewLibras.setVisibility(View.VISIBLE);
-                String htmlLibras = "<!DOCTYPE html><html><head><meta charset='utf-8'><title>VLibras</title></head><body>" +
-                    "<div vw='true' class='vw-accessibility' data-vw-widget='https://vlibras.gov.br/app'></div>" +
-                    "<script src='https://vlibras.gov.br/app/vlibras-plugin.js'></script>" +
-                    "<script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>" +
-                    "</body></html>";
+                // Implementação correta do VLibras do gov.br
+                String htmlLibras = "<!DOCTYPE html>\n" +
+                    "<html lang='pt-BR'>\n" +
+                    "<head>\n" +
+                    "    <meta charset='utf-8'>\n" +
+                    "    <meta name='viewport' content='width=device-width, initial-scale=1.0'>\n" +
+                    "    <title>VLibras</title>\n" +
+                    "    <style>\n" +
+                    "        body { margin: 0; padding: 0; background: #2E1A47; }\n" +
+                    "        .vlibras-container { width: 100%; height: 100%; }\n" +
+                    "        .vw-accessibility { position: fixed; bottom: 0; right: 0; z-index: 9999; }\n" +
+                    "    </style>\n" +
+                    "</head>\n" +
+                    "<body>\n" +
+                    "    <div vw='true' class='vw-accessibility' data-vw-widget='https://vlibras.gov.br/app'></div>\n" +
+                    "    <script>\n" +
+                    "        (function() {\n" +
+                    "            var script = document.createElement('script');\n" +
+                    "            script.src = 'https://vlibras.gov.br/app/vlibras-plugin.js';\n" +
+                    "            script.onload = function() {\n" +
+                    "                if (window.VLibras) {\n" +
+                    "                    new window.VLibras.Widget('https://vlibras.gov.br/app');\n" +
+                    "                }\n" +
+                    "            };\n" +
+                    "            document.head.appendChild(script);\n" +
+                    "        })();\n" +
+                    "    </script>\n" +
+                    "</body>\n" +
+                    "</html>";
                 webViewLibras.loadDataWithBaseURL("https://vlibras.gov.br", htmlLibras, "text/html", "UTF-8", null);
+            }
+        }
+    }
+
+    private void configurarZoom() {
+        if (acessibilidadeManager.isZoomAtivo()) {
+            View rootView = findViewById(android.R.id.content);
+            if (rootView != null) {
+                acessibilidadeManager.configurarZoom(rootView);
             }
         }
     }
@@ -175,10 +296,28 @@ public class AcessibilidadeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (acessibilidadeManager != null) {
+            acessibilidadeManager.shutdown();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reaplicar configurações ativas
+        if (acessibilidadeManager.isContrasteAtivo()) {
+            acessibilidadeManager.alternarContraste();
+        }
+        if (acessibilidadeManager.isFonteAtivo()) {
+            acessibilidadeManager.alternarFonte();
+        }
+        if (acessibilidadeManager.isLinksAtivo()) {
+            acessibilidadeManager.alternarDestaqueLinks();
+        }
     }
 }

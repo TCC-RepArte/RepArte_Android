@@ -26,6 +26,9 @@ public class ApiService {
         final String usuario = usuarioTemp;
         email = email.replace(" ", "");
 
+        // Limpar sessão anterior para evitar conflitos
+        limparSessao();
+
         String id = generateUniqueId();
         if (id.length() > 12) {
             id = id.substring(0, 12);
@@ -227,6 +230,26 @@ public class ApiService {
         return context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
                 .getBoolean("cadastro_completo", false);
     }
+    
+    public void limparSessao() {
+        Log.d(TAG, "Limpando sessão do usuário");
+        context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
+                .edit()
+                .remove("user_id")
+                .remove("ultimo_usuario")
+                .remove("ultima_senha")
+                .remove("cadastro_completo")
+                .apply();
+    }
+    
+    public String getUserIdAtual() {
+        return context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
+                .getString("user_id", null);
+    }
+    
+    public boolean isUsuarioLogado() {
+        return getUserIdAtual() != null;
+    }
 
     private String generateUniqueId() {
         String timestamp = String.valueOf(System.currentTimeMillis());
@@ -252,6 +275,9 @@ public class ApiService {
         Log.d(TAG, "=== DETALHES DO LOGIN ===");
         Log.d(TAG, "Usuário original: " + usuarioOriginal);
         Log.d(TAG, "Usuário após limpar espaços: " + usuarioTemp);
+        
+        // Limpar sessão anterior para evitar conflitos
+        limparSessao();
 
         final String usuarioSemArroba = usuarioTemp.startsWith("@") ? usuarioTemp.substring(1) : usuarioTemp;
         final String usuarioComArroba = usuarioTemp.startsWith("@") ? usuarioTemp : "@" + usuarioTemp;
@@ -303,6 +329,18 @@ public class ApiService {
                                 JsonObject jsonResponse = JsonParser.parseString(result).getAsJsonObject();
                                 if (jsonResponse.has("sucesso") && jsonResponse.get("sucesso").getAsBoolean()) {
                                     Log.d(TAG, "Login realizado com sucesso!");
+                                    
+                                    // Extrair e salvar o ID do usuário se disponível
+                                    if (jsonResponse.has("id")) {
+                                        String userId = jsonResponse.get("id").getAsString();
+                                        saveUserId(userId);
+                                        Log.d(TAG, "ID do usuário salvo: " + userId);
+                                    } else if (jsonResponse.has("user_id")) {
+                                        String userId = jsonResponse.get("user_id").getAsString();
+                                        saveUserId(userId);
+                                        Log.d(TAG, "ID do usuário salvo: " + userId);
+                                    }
+                                    
                                     callback.onCompleted(null, "success");
                                     return;
                                 }
@@ -312,6 +350,21 @@ public class ApiService {
 
                             if (result.contains("success")) {
                                 Log.d(TAG, "Login realizado com sucesso via string!");
+                                
+                                // Tentar extrair ID mesmo de resposta string
+                                try {
+                                    if (result.contains("id:")) {
+                                        String[] parts = result.split("id:");
+                                        if (parts.length > 1) {
+                                            String userId = parts[1].trim().split("\\s")[0];
+                                            saveUserId(userId);
+                                            Log.d(TAG, "ID do usuário extraído da string: " + userId);
+                                        }
+                                    }
+                                } catch (Exception jsonEx) {
+                                    Log.d(TAG, "Não foi possível extrair ID da resposta string");
+                                }
+                                
                                 callback.onCompleted(null, "success");
                             } else {
                                 callback.onCompleted(new Exception("Login falhou"), null);
@@ -333,6 +386,64 @@ public class ApiService {
 
     public String getFotoPerfilUrl(String userId) {
         return BASE_URL + "receber_foto.php?id=" + userId;
+    }
+
+    public void buscarTodasPostagens(FutureCallback<String> callback) {
+        String url = BASE_URL + "buscar_todas_postagens.php";
+        Log.d(TAG, "=== BUSCANDO TODAS AS POSTAGENS ===");
+        Log.d(TAG, "URL: " + url);
+
+        Ion.with(context)
+                .load("GET", url)
+                .setHeader("Accept", "application/json")
+                .setTimeout(30000)
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        if (e != null) {
+                            Log.e(TAG, "Erro ao buscar postagens: ", e);
+                            callback.onCompleted(e, null);
+                            return;
+                        }
+
+                        Log.d(TAG, "Postagens encontradas: " + result);
+                        callback.onCompleted(null, result);
+                    }
+                });
+    }
+
+    public void buscarPostagensUsuario(String userId, FutureCallback<String> callback) {
+        if (userId == null) {
+            callback.onCompleted(new Exception("ID do usuário não fornecido"), null);
+            return;
+        }
+
+        // TEMPORÁRIO: Usar arquivo de teste para debug
+        String url = BASE_URL + "teste_postagens.php";
+        Log.d(TAG, "=== BUSCANDO POSTAGENS DO USUÁRIO (TESTE) ===");
+        Log.d(TAG, "URL: " + url);
+        Log.d(TAG, "ID do Usuário: " + userId);
+        Log.d(TAG, "USANDO ARQUIVO DE TESTE PARA DEBUG!");
+
+        Ion.with(context)
+                .load("GET", url)
+                .setHeader("Accept", "application/json")
+                .setTimeout(30000)
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        if (e != null) {
+                            Log.e(TAG, "Erro ao buscar postagens: ", e);
+                            callback.onCompleted(e, null);
+                            return;
+                        }
+
+                        Log.d(TAG, "Postagens encontradas: " + result);
+                        callback.onCompleted(null, result);
+                    }
+                });
     }
 
     public void enviarPost(String titulo, String texto, int idObra, FutureCallback<String> callback) {

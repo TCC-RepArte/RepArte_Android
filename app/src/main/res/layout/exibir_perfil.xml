@@ -177,6 +177,18 @@
         app:layout_constraintEnd_toEndOf="@+id/textViewPostagem"
         android:layout_marginTop="4dp" />
 
-
+    <!-- RecyclerView para postagens do usuário -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_postagens_perfil"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:clipToPadding="false"
+        android:paddingHorizontal="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/indicatorView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

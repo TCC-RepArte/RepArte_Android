@@ -25,13 +25,18 @@ import com.koushikdutta.ion.bitmap.Transform;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONArray;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExibirPerfil extends AppCompatActivity {
 
     private static final String TAG = "ExibirPerfil"; // Tag para Logs
     private ApiService apiService;
     private TextView textViewPostagem;
-    private TextView textViewComentario;
+    private TextView textViewComentarios;
     private TextView textViewSobreMim;
     private ImageView profileImageView;
     private Button btnSalvar;
@@ -39,6 +44,12 @@ public class ExibirPerfil extends AppCompatActivity {
     private ConstraintLayout constraintLayout;
 
     private ImageButton btnVoltar;
+    
+    // Variáveis para postagens
+    private RecyclerView recyclerViewPostagens;
+    private PostagemAdapter postagemAdapter;
+    private List<ModeloPostagem> listaPostagens;
+    private String userIdAtual;
 
 
     @Override
@@ -50,7 +61,7 @@ public class ExibirPerfil extends AppCompatActivity {
 
         constraintLayout = findViewById(R.id.main);
         textViewPostagem = findViewById(R.id.textViewPostagem);
-        textViewComentario = findViewById(R.id.textViewComentarios);
+        textViewComentarios = findViewById(R.id.textViewComentarios);
         textViewSobreMim = findViewById(R.id.textViewSobreMim);
         indicatorView = findViewById(R.id.indicatorView);
         profileImageView = findViewById(R.id.imageView4);
@@ -66,9 +77,18 @@ public class ExibirPerfil extends AppCompatActivity {
             Log.e(TAG, "IndicatorView 'indicatorView' não encontrado!");
         }
 
-        String userId = getSharedPreferences("RepArte", MODE_PRIVATE).getString("user_id", null);
-            String fotoUrl = apiService.getFotoPerfilUrl(userId);
-            Log.d("Perfil", "URL da foto: " + fotoUrl);
+        userIdAtual = getSharedPreferences("RepArte", MODE_PRIVATE).getString("user_id", null);
+        Log.d(TAG, "=== DEBUG PERFIL ===");
+        Log.d(TAG, "User ID atual: " + userIdAtual);
+        
+        if (userIdAtual == null) {
+            Log.e(TAG, "ERRO: User ID é nulo! Não será possível carregar postagens.");
+        } else {
+            Log.d(TAG, "User ID encontrado: " + userIdAtual);
+        }
+        
+        String fotoUrl = apiService.getFotoPerfilUrl(userIdAtual);
+        Log.d("Perfil", "URL da foto: " + fotoUrl);
 
             if (profileImageView != null) {
                 Ion.with(this)
@@ -141,20 +161,21 @@ public class ExibirPerfil extends AppCompatActivity {
                     // Aplica animação de bounce para feedback visual
                     AppAnimationUtils.animateBounce(textViewPostagem);
                     updateIndicator(textViewPostagem);
-                    // TODO: Lógica para mostrar conteúdo de Postagens
+                    // Mostrar postagens do usuário
+                    mostrarPostagensUsuario();
                 }
             });
         } else {
             Log.w(TAG, "TextView 'textViewPostagem' não encontrado!");
         }
 
-        if (textViewComentario != null) {
-            textViewComentario.setOnClickListener(new View.OnClickListener() {
+        if (textViewComentarios != null) {
+            textViewComentarios.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Aplica animação de bounce para feedback visual
-                    AppAnimationUtils.animateBounce(textViewComentario);
-                    updateIndicator(textViewComentario);
+                    AppAnimationUtils.animateBounce(textViewComentarios);
+                    updateIndicator(textViewComentarios);
                     // TODO: Lógica para mostrar conteúdo de Comentários
                 }
             });
@@ -184,6 +205,94 @@ public class ExibirPerfil extends AppCompatActivity {
 
         // Aplica animações de entrada para os elementos principais
         animateElementsOnStart();
+        
+        // Inicializar RecyclerView para postagens
+        inicializarRecyclerViewPostagens();
+        
+        // Carregar postagens do usuário atual
+        mostrarPostagensUsuario();
+    }
+    
+    private void inicializarRecyclerViewPostagens() {
+        recyclerViewPostagens = findViewById(R.id.recycler_postagens_perfil);
+        if (recyclerViewPostagens != null) {
+            listaPostagens = new ArrayList<>();
+            postagemAdapter = new PostagemAdapter(this, listaPostagens);
+            
+            recyclerViewPostagens.setLayoutManager(new LinearLayoutManager(this));
+            recyclerViewPostagens.setAdapter(postagemAdapter);
+        }
+    }
+    
+    private void mostrarPostagensUsuario() {
+        Log.d(TAG, "=== MOSTRAR POSTAGENS USUÁRIO ===");
+        Log.d(TAG, "User ID atual: " + userIdAtual);
+        
+        if (userIdAtual != null) {
+            Log.d(TAG, "Chamando API para buscar postagens do usuário: " + userIdAtual);
+            apiService.buscarPostagensUsuario(userIdAtual, new com.koushikdutta.async.future.FutureCallback<String>() {
+                @Override
+                public void onCompleted(Exception e, String result) {
+                    runOnUiThread(() -> {
+                        if (e != null) {
+                            Log.e(TAG, "Erro ao carregar postagens: " + e.getMessage());
+                            Toast.makeText(ExibirPerfil.this, "Erro ao carregar postagens", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        
+                        Log.d(TAG, "Resposta da API: " + result);
+                        
+                        if (result != null && !result.isEmpty()) {
+                            try {
+                                Log.d(TAG, "Tentando processar JSON da resposta...");
+                                JSONArray jsonArray = new JSONArray(result);
+                                Log.d(TAG, "JSON processado com sucesso. Número de postagens: " + jsonArray.length());
+                                
+                                List<ModeloPostagem> novasPostagens = new ArrayList<>();
+                                
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject postagemJson = jsonArray.getJSONObject(i);
+                                    ModeloPostagem postagem = new ModeloPostagem(
+                                        postagemJson.getString("id"),
+                                        postagemJson.getString("titulo"),
+                                        postagemJson.getString("texto"),
+                                        postagemJson.getString("id_usuario"),
+                                        postagemJson.getString("nome_usuario"),
+                                        postagemJson.getString("foto_usuario"),
+                                        postagemJson.getString("id_obra"),
+                                        postagemJson.getString("titulo_obra"),
+                                        postagemJson.getString("poster_obra"),
+                                        postagemJson.getString("data_criacao")
+                                    );
+                                    novasPostagens.add(postagem);
+                                }
+                                
+                                Log.d(TAG, "Verificando se lista e adapter estão disponíveis...");
+                                Log.d(TAG, "Lista postagens é nula? " + (listaPostagens == null));
+                                Log.d(TAG, "Adapter é nulo? " + (postagemAdapter == null));
+                                
+                                if (listaPostagens != null && postagemAdapter != null) {
+                                    Log.d(TAG, "Atualizando lista e adapter...");
+                                    listaPostagens.clear();
+                                    listaPostagens.addAll(novasPostagens);
+                                    postagemAdapter.notifyDataSetChanged();
+                                    
+                                    Log.d(TAG, "Postagens do usuário carregadas: " + novasPostagens.size());
+                                    Log.d(TAG, "Adapter notificado da mudança");
+                                } else {
+                                    Log.e(TAG, "ERRO: Lista ou adapter são nulos!");
+                                }
+                                
+                            } catch (Exception jsonEx) {
+                                Log.e(TAG, "Erro ao processar JSON das postagens: " + jsonEx.getMessage());
+                            }
+                        } else {
+                            Log.d(TAG, "Nenhuma postagem encontrada para o usuário");
+                        }
+                    });
+                }
+            });
+        }
     }
 
     /**
@@ -220,10 +329,10 @@ public class ExibirPerfil extends AppCompatActivity {
             }, 400);
         }
 
-        if (textViewComentario != null) {
-            textViewComentario.setAlpha(0f);
-            textViewComentario.postDelayed(() -> {
-                AppAnimationUtils.animateFadeInWithVisibility(textViewComentario);
+        if (textViewComentarios != null) {
+            textViewComentarios.setAlpha(0f);
+            textViewComentarios.postDelayed(() -> {
+                AppAnimationUtils.animateFadeInWithVisibility(textViewComentarios);
             }, 500);
         }
 

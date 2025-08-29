@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -16,12 +18,20 @@ import android.view.animation.AnimationUtils;
 import com.example.myapplication.api.ApiService;
 import com.koushikdutta.ion.bitmap.Transform;
 import com.koushikdutta.ion.Ion;
+import com.example.myapplication.PostagemAdapter;
+import com.example.myapplication.ModeloPostagem;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Tela extends AppCompatActivity {
+public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostagemClickListener {
 
     private ApiService apiService;
+    private RecyclerView recyclerViewPostagens;
+    private PostagemAdapter postagemAdapter;
+    private List<ModeloPostagem> listaPostagens;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +62,9 @@ public class Tela extends AppCompatActivity {
         
         // Configura as interações dos amigos
         setupFriendsList();
+        
+        // Inicializa o RecyclerView das postagens
+        inicializarRecyclerView();
 
         //evento botao ver mais
         vermais.setOnClickListener(view -> {
@@ -89,6 +102,9 @@ public class Tela extends AppCompatActivity {
         if (userId != null) {
             String fotoUrl = apiService.getFotoPerfilUrl(userId);
             Log.d("Perfil", "URL da foto: " + fotoUrl);
+            
+            // Carregar todas as postagens para o feed principal
+            carregarTodasPostagens();
 
             Ion.with(this)
                     .load(fotoUrl)
@@ -246,6 +262,136 @@ public class Tela extends AppCompatActivity {
                 // Por enquanto, não faz nada ao clicar
             });
         }
+    }
+    
+    private void inicializarRecyclerView() {
+        recyclerViewPostagens = findViewById(R.id.recycler_postagens);
+        listaPostagens = new ArrayList<>();
+        
+        postagemAdapter = new PostagemAdapter(this, listaPostagens);
+        postagemAdapter.setOnPostagemClickListener(this);
+        
+        recyclerViewPostagens.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewPostagens.setAdapter(postagemAdapter);
+    }
+    
+    private void carregarTodasPostagens() {
+        apiService.buscarTodasPostagens(new com.koushikdutta.async.future.FutureCallback<String>() {
+            @Override
+            public void onCompleted(Exception e, String result) {
+                runOnUiThread(() -> {
+                    if (e != null) {
+                        Log.e("Tela", "Erro ao carregar postagens: " + e.getMessage());
+                        Toast.makeText(Tela.this, "Erro ao carregar postagens", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    
+                    if (result != null && !result.isEmpty()) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(result);
+                            List<ModeloPostagem> novasPostagens = new ArrayList<>();
+                            
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject postagemJson = jsonArray.getJSONObject(i);
+                                ModeloPostagem postagem = new ModeloPostagem(
+                                    postagemJson.getString("id"),
+                                    postagemJson.getString("titulo"),
+                                    postagemJson.getString("texto"),
+                                    postagemJson.getString("id_usuario"),
+                                    postagemJson.getString("nome_usuario"),
+                                    postagemJson.getString("foto_usuario"),
+                                    postagemJson.getString("id_obra"),
+                                    postagemJson.getString("titulo_obra"),
+                                    postagemJson.getString("poster_obra"),
+                                    postagemJson.getString("data_criacao")
+                                );
+                                novasPostagens.add(postagem);
+                            }
+                            
+                            listaPostagens.clear();
+                            listaPostagens.addAll(novasPostagens);
+                            postagemAdapter.notifyDataSetChanged();
+                            
+                            Log.d("Tela", "Postagens carregadas: " + novasPostagens.size());
+                            
+                        } catch (Exception jsonEx) {
+                            Log.e("Tela", "Erro ao processar JSON das postagens: " + jsonEx.getMessage());
+                        }
+                    } else {
+                        Log.d("Tela", "Nenhuma postagem encontrada");
+                    }
+                });
+            }
+        });
+    }
+    
+    private void carregarPostagensUsuario(String userId) {
+        apiService.buscarPostagensUsuario(userId, new com.koushikdutta.async.future.FutureCallback<String>() {
+            @Override
+            public void onCompleted(Exception e, String result) {
+                runOnUiThread(() -> {
+                    if (e != null) {
+                        Log.e("Tela", "Erro ao carregar postagens: " + e.getMessage());
+                        Toast.makeText(Tela.this, "Erro ao carregar postagens", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    
+                    if (result != null && !result.isEmpty()) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(result);
+                            List<ModeloPostagem> novasPostagens = new ArrayList<>();
+                            
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject postagemJson = jsonArray.getJSONObject(i);
+                                ModeloPostagem postagem = new ModeloPostagem(
+                                    postagemJson.getString("id"),
+                                    postagemJson.getString("titulo"),
+                                    postagemJson.getString("texto"),
+                                    postagemJson.getString("id_usuario"),
+                                    postagemJson.getString("nome_usuario"),
+                                    postagemJson.getString("foto_usuario"),
+                                    postagemJson.getString("id_obra"),
+                                    postagemJson.getString("titulo_obra"),
+                                    postagemJson.getString("poster_obra"),
+                                    postagemJson.getString("data_criacao")
+                                );
+                                novasPostagens.add(postagem);
+                            }
+                            
+                            listaPostagens.clear();
+                            listaPostagens.addAll(novasPostagens);
+                            postagemAdapter.notifyDataSetChanged();
+                            
+                            Log.d("Tela", "Postagens carregadas: " + novasPostagens.size());
+                            
+                        } catch (Exception jsonEx) {
+                            Log.e("Tela", "Erro ao processar JSON das postagens: " + jsonEx.getMessage());
+                        }
+                    } else {
+                        Log.d("Tela", "Nenhuma postagem encontrada");
+                    }
+                });
+            }
+        });
+    }
+    
+    // Implementação dos métodos da interface OnPostagemClickListener
+    @Override
+    public void onPostagemClick(ModeloPostagem postagem) {
+        // TODO: Abrir detalhes da postagem
+        Toast.makeText(this, "Postagem: " + postagem.getTitulo(), Toast.LENGTH_SHORT).show();
+    }
+    
+    @Override
+    public void onUsuarioClick(String userId) {
+        // TODO: Abrir perfil do usuário
+        Toast.makeText(this, "Abrindo perfil do usuário: " + userId, Toast.LENGTH_SHORT).show();
+    }
+    
+    @Override
+   public void onObraClick(String obraId) {
+        // TODO: Abrir detalhes da obra
+        Toast.makeText(this, "Abrindo detalhes da obra: " + obraId, Toast.LENGTH_SHORT).show();
     }
 }
 

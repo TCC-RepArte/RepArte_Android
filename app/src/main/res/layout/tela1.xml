@@ -603,6 +603,21 @@
         app:layout_constraintVertical_bias="0.095"
         app:srcCompat="@drawable/user_white" />
 
+    <!-- RecyclerView para as postagens -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_postagens"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linha_view"
+        app:layout_constraintBottom_toTopOf="@+id/menu_inferior" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
