@@ -28,6 +28,8 @@ public class SobreAppActivity extends AppCompatActivity {
         // Animar elementos na entrada de forma suave
         animateElementsOnStart();
     }
+    
+
 
     private void initializeViews() {
         btnVoltar = findViewById(R.id.btn_voltar);
@@ -37,6 +39,15 @@ public class SobreAppActivity extends AppCompatActivity {
         cardInfo = findViewById(R.id.card_info);
         tituloPrincipal = findViewById(R.id.titulo_principal);
         subtituloProfissional = findViewById(R.id.subtitulo_profissional);
+        
+        // Verificar se todos os elementos foram encontrados
+        if (btnVoltar == null) Log.e("SobreApp", "ERRO: btn_voltar não encontrado!");
+        if (headerHero == null) Log.e("SobreApp", "ERRO: header_hero não encontrado!");
+        if (cardMissao == null) Log.e("SobreApp", "ERRO: card_missao não encontrado!");
+        if (cardEquipe == null) Log.e("SobreApp", "ERRO: card_equipe não encontrado!");
+        if (cardInfo == null) Log.e("SobreApp", "ERRO: card_info não encontrado!");
+        if (tituloPrincipal == null) Log.e("SobreApp", "ERRO: titulo_principal não encontrado!");
+        if (subtituloProfissional == null) Log.e("SobreApp", "ERRO: subtitulo_profissional não encontrado!");
     }
 
     private void setupListeners() {
@@ -58,6 +69,15 @@ public class SobreAppActivity extends AppCompatActivity {
     }
 
     private void animateElementsOnStart() {
+        Log.d("SobreApp", "=== INICIANDO ANIMAÇÕES ===");
+        
+        // Debug: verificar se os elementos foram encontrados ANTES de configurar
+        Log.d("SobreApp", "Header: " + (headerHero != null ? "OK" : "NULL"));
+        Log.d("SobreApp", "Card Missão: " + (cardMissao != null ? "OK" : "NULL"));
+        Log.d("SobreApp", "Card Equipe: " + (cardEquipe != null ? "OK" : "NULL"));
+        Log.d("SobreApp", "Card Info: " + (cardInfo != null ? "OK" : "NULL"));
+        Log.d("SobreApp", "Botão Voltar: " + (btnVoltar != null ? "OK" : "NULL"));
+        
         // Configurar estado inicial dos elementos
         setupInitialStates();
         
@@ -65,6 +85,7 @@ public class SobreAppActivity extends AppCompatActivity {
         headerHero.postDelayed(new Runnable() {
             @Override
             public void run() {
+                Log.d("SobreApp", "Animando Header...");
                 animateHeader();
             }
         }, 200);
@@ -72,31 +93,26 @@ public class SobreAppActivity extends AppCompatActivity {
         // Animar cards sequencialmente
         animateCardsSequentially();
         
-        // Debug: verificar se os elementos foram encontrados
-        Log.d("SobreApp", "Header: " + (headerHero != null ? "OK" : "NULL"));
-        Log.d("SobreApp", "Card Missão: " + (cardMissao != null ? "OK" : "NULL"));
-        Log.d("SobreApp", "Card Equipe: " + (cardEquipe != null ? "OK" : "NULL"));
-        Log.d("SobreApp", "Card Info: " + (cardInfo != null ? "OK" : "NULL"));
+        Log.d("SobreApp", "=== ANIMAÇÕES INICIADAS ===");
     }
 
     private void setupInitialStates() {
-        // Header começa invisível
+        Log.d("SobreApp", "Configurando estados iniciais...");
+        
+        // Header começa invisível (como estava antes)
         headerHero.setAlpha(0f);
         headerHero.setTranslationY(50f);
+        Log.d("SobreApp", "Header configurado: Alpha=0, TranslationY=50");
         
-        // Cards começam invisíveis
+        // Card Missão começa invisível (como estava antes)
         cardMissao.setAlpha(0f);
         cardMissao.setTranslationY(30f);
+        Log.d("SobreApp", "Card Missão configurado: Alpha=0, TranslationY=30");
         
-        cardEquipe.setAlpha(0f);
-        cardEquipe.setTranslationY(30f);
+        // NOVOS: Elementos já configurados no XML (alpha="0" e translationY="100dp")
+        Log.d("SobreApp", "Card Equipe, Card Info e Botão Voltar já configurados no XML");
         
-        cardInfo.setAlpha(0f);
-        cardInfo.setTranslationY(30f);
-        
-        // Botão começa invisível
-        btnVoltar.setAlpha(0f);
-        btnVoltar.setTranslationY(20f);
+        Log.d("SobreApp", "Estados iniciais configurados com sucesso!");
     }
 
     private void animateHeader() {
@@ -109,40 +125,46 @@ public class SobreAppActivity extends AppCompatActivity {
     }
 
     private void animateCardsSequentially() {
-        // Card Missão
+        // Card Missão (como estava antes)
         cardMissao.postDelayed(new Runnable() {
             @Override
             public void run() {
+                Log.d("SobreApp", "Animando Card Missão...");
                 animateCard(cardMissao);
             }
         }, 400);
         
+        // NOVOS: Elementos que não tinham animação antes
         // Card Equipe
         cardEquipe.postDelayed(new Runnable() {
             @Override
             public void run() {
+                Log.d("SobreApp", "Animando Card Equipe...");
                 animateCard(cardEquipe);
             }
-        }, 600);
+        }, 800);
         
         // Card Info
         cardInfo.postDelayed(new Runnable() {
             @Override
             public void run() {
+                Log.d("SobreApp", "Animando Card Info...");
                 animateCard(cardInfo);
             }
-        }, 800);
+        }, 1000);
         
         // Botão Voltar
         btnVoltar.postDelayed(new Runnable() {
             @Override
             public void run() {
+                Log.d("SobreApp", "Animando Botão Voltar...");
                 animateBotaoVoltar();
             }
-        }, 1000);
+        }, 1200);
     }
 
     private void animateCard(LinearLayout card) {
+        Log.d("SobreApp", "Executando animateCard para: " + card.getId());
         card.animate()
                 .alpha(1f)
                 .translationY(0f)
@@ -151,10 +173,13 @@ public class SobreAppActivity extends AppCompatActivity {
     }
 
     private void animateBotaoVoltar() {
+        Log.d("SobreApp", "Executando animateBotaoVoltar");
         btnVoltar.animate()
                 .alpha(1f)
                 .translationY(0f)
                 .setDuration(400)
                 .start();
     }
+    
+
 } 
