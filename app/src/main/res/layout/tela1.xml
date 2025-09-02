@@ -124,16 +124,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/perfil" />
 
-    <View
-        android:id="@+id/cont1"
-        android:layout_width="391dp"
-        android:layout_height="139dp"
-        android:background="@drawable/div_tela"
-        app:layout_constraintBottom_toTopOf="@+id/linha_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text1" />
-
     <!-- Trending Topics Section -->
     <TextView
         android:id="@+id/trending_title"
@@ -429,64 +419,12 @@
         android:text="Página inicial"
         android:textColor="@color/white"
         android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@+id/cont1"
+        app:layout_constraintBottom_toTopOf="@+id/linha_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.54"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friends_scroll" />
+        app:layout_constraintTop_toBottomOf="@+id/friends_scroll"     />
 
-    <Button
-        android:id="@+id/btn_adc"
-        android:layout_width="91dp"
-        android:layout_height="117dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="12dp"
-        android:backgroundTint="#3d3d3d"
-        android:fontFamily="@font/hammersmith_one"
-        android:text="+"
-        android:textAlignment="center"
-        android:textSize="30sp"
-        app:cornerRadius="15dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cont1"
-        app:layout_constraintEnd_toEndOf="@id/cont1"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/cont1"
-        app:layout_constraintTop_toTopOf="@+id/cont1"
-        app:layout_constraintVertical_bias="0.0"
-        app:strokeColor="@color/border"
-        app:strokeWidth="3dp" />
-
-    <!--edittext pra escrever sua analise/postagem-->
-    <EditText
-        android:id="@+id/post"
-        android:layout_width="270dp"
-        android:layout_height="74dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:fontFamily="@font/roboto_light"
-        android:hint="Clique aqui para escrever sua análise..."
-        android:inputType="textMultiLine"
-        android:textAlignment="viewStart"
-        android:textColorHint="#B9B0B0"
-        app:layout_constraintEnd_toEndOf="@+id/cont1"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/btn_adc"
-        app:layout_constraintTop_toTopOf="@+id/cont1" />
-
-    <!--futuro botão pra enviar a postagem-->
-    <ImageView
-        android:id="@+id/send_post"
-        android:layout_width="60dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="312dp"
-        android:layout_marginTop="80dp"
-        android:contentDescription="Clique para enviar sua análise."
-        android:clickable="true"
-        app:layout_constraintStart_toStartOf="@id/cont1"
-        app:layout_constraintTop_toTopOf="@+id/cont1"
-        app:srcCompat="@drawable/foto1" />
     <!--linha que separa o layout-->
     <View
         android:id="@+id/linha_view"
@@ -501,7 +439,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/send_post"
+        app:layout_constraintTop_toBottomOf="@+id/text1"
         app:layout_constraintVertical_bias="0.92" />
 
     <!--div/container/view da primeira postagem-->
@@ -616,7 +554,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linha_view"
-        app:layout_constraintBottom_toTopOf="@+id/menu_inferior" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
