@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.example.myapplication.api.ApiService;
 import android.widget.Toast;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -50,6 +51,8 @@ public class ExibirPerfil extends AppCompatActivity {
     private PostagemAdapter postagemAdapter;
     private List<ModeloPostagem> listaPostagens;
     private String userIdAtual;
+    private TextView exibirNome;
+    private TextView exibirUser;
 
 
     @Override
@@ -66,6 +69,8 @@ public class ExibirPerfil extends AppCompatActivity {
         indicatorView = findViewById(R.id.indicatorView);
         profileImageView = findViewById(R.id.imageView4);
         btnSalvar = findViewById(R.id.btnSalvar);
+        exibirNome = findViewById(R.id.exibirNome);
+        exibirUser = findViewById(R.id.exibirUser);
 
         btnVoltar = findViewById(R.id.btn_Voltar);
 
@@ -211,6 +216,9 @@ public class ExibirPerfil extends AppCompatActivity {
         
         // Carregar postagens do usuário atual
         mostrarPostagensUsuario();
+
+        // Carregar nome de exibição e usuário (arroba)
+        loadUserProfileData();
     }
     
     private void inicializarRecyclerViewPostagens() {
@@ -397,6 +405,89 @@ public class ExibirPerfil extends AppCompatActivity {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         // Usar displayMetrics.density é geralmente mais simples e recomendado
         return Math.round(dp * displayMetrics.density);
+    }
+
+    private void loadUserProfileData() {
+        String userId = getSharedPreferences("RepArte", MODE_PRIVATE).getString("user_id", null);
+
+        if (userId == null || userId.isEmpty()) {
+            Log.e("Perfil", "user_id não encontrado nas SharedPreferences");
+            if (exibirNome != null) exibirNome.setText("Nome do Usuário");
+            if (exibirUser != null) exibirUser.setText("@usuario");
+            return;
+        }
+
+        // Buscar nome de exibição (receber_perfil.php)
+        apiService.buscarPerfil(userId, (e, result) -> {
+            if (e != null) {
+                Log.e("Perfil", "Erro ao buscar perfil", e);
+                return;
+            }
+            try {
+                if (result != null) {
+                    JSONObject json = new JSONObject(result);
+                    boolean success = json.optBoolean("success", false);
+                    if (success) {
+                        String nome = json.optString("nome", "");
+                        if (exibirNome != null && nome != null && !nome.isEmpty()) {
+                            exibirNome.setText(nome);
+                        }
+                    } else {
+                        Log.w("Perfil", "receber_perfil retornou sucesso=false: " + json.optString("message"));
+                    }
+                }
+            } catch (Exception ex) {
+                Log.e("Perfil", "Falha ao processar JSON de receber_perfil", ex);
+            }
+        });
+
+        // Buscar usuário/arrob a (receber_usuario.php)
+        apiService.buscarUsuarioPorId(userId, (e, result) -> {
+            if (e != null) {
+                Log.e("Perfil", "Erro ao buscar usuário", e);
+                return;
+            }
+            try {
+                if (result != null) {
+                    String raw = result;
+                    String trimmed = raw.trim();
+                    // Se vier HTML/DOCTYPE ou qualquer ruído, tentar isolar o bloco JSON
+                    int firstBrace = trimmed.indexOf('{');
+                    int lastBrace = trimmed.lastIndexOf('}');
+                    String jsonCandidate = (firstBrace >= 0 && lastBrace > firstBrace) ? trimmed.substring(firstBrace, lastBrace + 1) : trimmed;
+                    try {
+                        JSONObject json = new JSONObject(jsonCandidate);
+                        boolean success = json.optBoolean("success", false);
+                        if (success) {
+                            String usuario = json.optString("usuario", "");
+                            if (exibirUser != null && usuario != null && !usuario.isEmpty()) {
+                                exibirUser.setText(usuario);
+                            }
+                        } else {
+                            Log.w("Perfil", "receber_usuario retornou sucesso=false: " + json.optString("message"));
+                        }
+                    } catch (Exception jsEx) {
+                        // Fallback: tentar extrair o campo usuario por regex simples
+                        java.util.regex.Matcher m = java.util.regex.Pattern.compile("\"usuario\"\\s*:\\s*\"([^\"]+)\"").matcher(jsonCandidate);
+                        if (m.find()) {
+                            String usuario = m.group(1);
+                            if (exibirUser != null && usuario != null && !usuario.isEmpty()) {
+                                exibirUser.setText(usuario);
+                            }
+                            Log.w("Perfil", "JSON inválido; 'usuario' extraído via regex. Conteúdo bruto iniciado por: " + trimmed.substring(0, Math.min(80, trimmed.length())));
+                        } else {
+                            throw jsEx;
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                Log.e("Perfil", "Falha ao processar JSON de receber_usuario", ex);
+            }
+        });
+
 
     }
+
+
+
 }

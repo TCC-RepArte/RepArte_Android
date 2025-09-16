@@ -380,8 +380,39 @@ public class ApiService {
         String url = BASE_URL + "receber_perfil.php?id=" + id;
         Ion.with(context)
                 .load("GET", url)
+                .setHeader("Accept", "application/json")
+                .setHeader("Connection", "close")
+                .setTimeout(30000)
+                .followRedirect(true)
                 .asString()
                 .setCallback(callback);
+    }
+
+    public void buscarUsuarioPorId(String id, com.koushikdutta.async.future.FutureCallback<String> callback) {
+        String url = BASE_URL + "receber_user.php?id=" + id;
+        Log.d(TAG, "=== BUSCANDO USUÁRIO POR ID ===");
+        Log.d(TAG, "URL: " + url);
+        Log.d(TAG, "ID: " + id);
+
+        Ion.with(context)
+                .load("GET", url)
+                .setHeader("Accept", "application/json")
+                .setHeader("Connection", "close")
+                .setTimeout(30000)
+                .followRedirect(true)
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        if (e != null) {
+                            Log.e(TAG, "Erro ao buscar usuário: ", e);
+                            callback.onCompleted(e, null);
+                            return;
+                        }
+                        Log.d(TAG, "Resposta receber_usuario: " + result);
+                        callback.onCompleted(null, result);
+                    }
+                });
     }
 
     public String getFotoPerfilUrl(String userId) {
