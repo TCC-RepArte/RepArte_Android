@@ -3,163 +3,210 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tela_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#020103"
-    android:id="@+id/tela_bg"
+    android:background="@drawable/background_cinza"
     tools:context=".Postagem">
 
-
-    <View
-        android:id="@+id/top_menu"
-        android:layout_width="415dp"
-        android:layout_height="84dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.039" />
-
-    <ImageButton
-        android:id="@+id/btn_Voltar"
-        android:layout_width="67dp"
-        android:layout_height="53dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="Voltar"
+    <ImageView
+        android:id="@+id/banner_obra"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/seta"
-        app:layout_constraintBottom_toBottomOf="@id/top_menu"
-        app:layout_constraintEnd_toEndOf="@+id/top_menu"
-        app:layout_constraintHorizontal_bias="0.051"
-        app:layout_constraintStart_toStartOf="@id/top_menu"
-        app:layout_constraintTop_toTopOf="@id/top_menu"
-        app:layout_constraintVertical_bias="0.483" />
-
-    <TextView
-        android:id="@+id/txtTitulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_bold"
-        android:text="Postagem"
-        android:textColor="#FFFFFF"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="@id/top_menu"
-        app:layout_constraintEnd_toEndOf="@id/top_menu"
-        app:layout_constraintHorizontal_bias="0.082"
-        app:layout_constraintStart_toEndOf="@id/btn_Voltar"
-        app:layout_constraintTop_toTopOf="@id/top_menu"
-        app:layout_constraintVertical_bias="0.555" />
-
-    <View
-        android:id="@+id/divider1"
-        android:layout_width="409dp"
-        android:layout_height="3dp"
-        android:background="?android:attr/listDivider"
-        android:backgroundTint="#D4D2D2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:adjustViewBounds="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_menu"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <ImageView
-        android:id="@+id/profile1"
-        android:layout_width="92dp"
-        android:layout_height="97dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.11"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider1"
-        app:layout_constraintVertical_bias="0.069"
-        app:srcCompat="@drawable/user_white" />
-
-    <TextView
-        android:id="@+id/txtUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/hammersmith_one"
-        android:text="Fulano"
-        android:textColor="#FFFFFF"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.097"
-        app:layout_constraintStart_toEndOf="@+id/profile1"
-        app:layout_constraintTop_toBottomOf="@+id/divider1"
-        app:layout_constraintVertical_bias="0.062" />
-
-    <ImageView
-        android:id="@+id/imgObra"
-        android:layout_width="105dp"
-        android:layout_height="149dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.629"
-        app:layout_constraintStart_toEndOf="@+id/txtUser"
-        app:layout_constraintTop_toBottomOf="@+id/divider1"
-        app:layout_constraintVertical_bias="0.073"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_percent="0.4"
         app:srcCompat="@drawable/sinners1" />
 
-    <TextView
-        android:id="@+id/txtPost"
-        android:layout_width="352dp"
-        android:layout_height="310dp"
-        android:fontFamily="@font/roboto_medium"
-        android:text="Ryan Coogler faz de Sinners uma ode trágica ao deep south, mergulhando na génese da América, aprofundando-a e apimentando-a com velhas temáticas cujos traumas perduram e ainda muito importunam. A escravatura é abordada de forma sombria mas delicada, sendo adornada por uma banda sonora astuta e sedutora, que traz do início ao fim as riquezas harmoniosas do folk irlandês, do gospel, do jazz e da música soul.  Sinners assume-se, sem pudor, como um filme musical de terror, mas também como um drama e thriller gótico. \n\ \n\ É das visões mais originais e visceralmente propulsivas do cinema americano mainstream recente e, só por si, faz valer o preço de um bilhete. "
-        android:textAlignment="textStart"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile1"
-        app:layout_constraintVertical_bias="0.221" />
-
-    <TextView
-        android:id="@+id/txtObra"
-        android:layout_width="115dp"
-        android:layout_height="50dp"
-        android:fontFamily="@font/hammersmith_one"
-        android:text="Sinners, 2025"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/txtPost"
-        app:layout_constraintEnd_toStartOf="@+id/imgObra"
-        app:layout_constraintHorizontal_bias="0.588"
-        app:layout_constraintStart_toEndOf="@+id/profile1"
-        app:layout_constraintTop_toBottomOf="@+id/txtUser"
-        app:layout_constraintVertical_bias="0.174" />
+    <ImageView
+        android:id="@+id/btn_voltar_postagem"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="12dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="Voltar"
+        android:padding="4dp"
+        android:src="@drawable/ic_arrow_back"
+        android:tint="@color/white"
+        app:layout_constraintStart_toStartOf="@id/banner_obra"
+        app:layout_constraintTop_toTopOf="@id/banner_obra" />
 
     <View
-        android:id="@+id/divider2"
-        android:layout_width="409dp"
-        android:layout_height="3dp"
-        android:background="?android:attr/listDivider"
-        android:backgroundTint="#D4D2D2"
+        android:id="@+id/edge_shadow"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="-120dp"
+        android:background="@drawable/edge_shadow_top"
+        android:rotation="-180"
+        app:layout_constraintTop_toBottomOf="@id/banner_obra"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="-60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPost"
-        app:layout_constraintVertical_bias="0.236" />
+        app:layout_constraintTop_toBottomOf="@id/banner_obra">
 
-    <TextView
-        android:id="@+id/txtComent"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/card_conteudo"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_bold"
-        android:text="Comentários"
-        android:textColor="#FFFFFF"
-        android:textSize="19sp"
-        app:layout_constraintBottom_toTopOf="@+id/divider2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.102"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPost"
-        app:layout_constraintVertical_bias="0.6" />
+        android:background="@drawable/container_top_rounded"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:minHeight="400dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/profile1"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/user_white" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Fulano"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/txtObra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Sinners (2025)"
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imgObra"
+                android:layout_width="56dp"
+                android:layout_height="80dp"
+                android:contentDescription="Poster da obra"
+                android:src="@drawable/sinners1" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSeguir"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Seguir"
+            android:textColor="@color/white"
+            app:cornerRadius="18dp" />
+
+        <TextView
+            android:id="@+id/txtPost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_medium"
+            android:lineSpacingExtra="1dp"
+            android:lineSpacingMultiplier="1.1"
+            android:text="Ryan Coogler faz de Sinners uma ode trágica ao deep south, mergulhando na gênese da América..."
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/btnLerMais"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Ler mais"
+            android:textColor="@color/primary" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/linhas" />
+
+        <TextView
+            android:id="@+id/txtComent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Comentários"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/box_comentario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/inputComentario"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_background"
+                android:fontFamily="@font/roboto_medium"
+                android:hint="Escreva um comentário..."
+                android:maxLines="3"
+                android:minLines="1"
+                android:minHeight="40dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:textColor="@color/white"
+                android:textColorHint="#80FFFFFF" />
+
+            <Button
+                android:id="@+id/btnEnviarComentario"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/primary"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Enviar"
+                android:textColor="@color/white"
+                app:cornerRadius="20dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/listaComentarios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

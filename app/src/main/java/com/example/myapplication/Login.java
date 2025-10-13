@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,8 +19,9 @@ public class Login extends AppCompatActivity {
     private ApiService apiService;
     private EditText nome, password;
     private Button btn_login1, button5;
-    private TextView titulo, text_ou;
+    private TextView titulo, text_ou, tv_forgot_password;
     private ImageView avatar, lock;
+    private ImageView btnTogglePassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class Login extends AppCompatActivity {
         button5 = findViewById(R.id.button5);
         avatar = findViewById(R.id.imageView14);
         lock = findViewById(R.id.imageView15);
+        btnTogglePassword = findViewById(R.id.btn_toggle_password);
+        tv_forgot_password = findViewById(R.id.tv_forgot_password);
 
         // Limpa os campos ao iniciar
         nome.setText("");
@@ -44,6 +48,37 @@ public class Login extends AppCompatActivity {
 
         // Anima os elementos da tela de login
         animateLoginElements();
+
+        // alterna visibilidade da senha
+        if (btnTogglePassword != null) {
+            btnTogglePassword.setOnClickListener(v -> {
+                // Verifica se a senha está oculta (método mais confiável)
+                boolean isPasswordHidden = password.getTransformationMethod() != null;
+                
+                if (isPasswordHidden) {
+                    // Mostra a senha
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    btnTogglePassword.setImageResource(R.drawable.ic_visibility);
+                } else {
+                    // Esconde a senha
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    btnTogglePassword.setImageResource(R.drawable.ic_visibility_off);
+                }
+                // Mantém o cursor no final do texto
+                password.setSelection(password.getText().length());
+            });
+        }
+
+        // esqueci a senha → tela dedicada
+        if (tv_forgot_password != null) {
+            tv_forgot_password.setOnClickListener(v -> {
+                Intent i = new Intent(Login.this, ForgotRequestActivity.class);
+                String prefill = nome.getText().toString().trim();
+                if (!prefill.isEmpty()) i.putExtra("alvo", prefill);
+                startActivity(i);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            });
+        }
 
         //evento do botão de registrar (ir pra página de sign-up)
         button5.setOnClickListener(view -> {

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/my_gradiant_drawable"
+    tools:context=".ForgotResetActivity">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="24dp"
+        android:text="Definir nova senha"
+        android:textColor="#C9FD4F0A"
+        android:textSize="34sp"
+        android:fontFamily="@font/hammersmith_one"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <View
+        android:id="@+id/container_p1"
+        android:layout_width="0dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/container_dr"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/et_password1"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint=" Nova senha"
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#AEAEAE"
+        app:layout_constraintTop_toTopOf="@id/container_p1"
+        app:layout_constraintBottom_toBottomOf="@id/container_p1"
+        app:layout_constraintStart_toStartOf="@id/container_p1"
+        app:layout_constraintEnd_toEndOf="@id/container_p1" />
+
+    <ImageButton
+        android:id="@+id/btn_toggle_p1"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/ic_visibility_off"
+        app:tint="#FFFFFF"
+        app:layout_constraintTop_toTopOf="@+id/container_p1"
+        app:layout_constraintBottom_toBottomOf="@+id/container_p1"
+        app:layout_constraintEnd_toEndOf="@+id/container_p1"
+        android:layout_marginEnd="8dp" />
+
+    <View
+        android:id="@+id/container_p2"
+        android:layout_width="0dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/container_dr"
+        app:layout_constraintTop_toBottomOf="@id/container_p1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/et_password2"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint=" Confirmar nova senha"
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#AEAEAE"
+        app:layout_constraintTop_toTopOf="@id/container_p2"
+        app:layout_constraintBottom_toBottomOf="@id/container_p2"
+        app:layout_constraintStart_toStartOf="@id/container_p2"
+        app:layout_constraintEnd_toEndOf="@id/container_p2" />
+
+    <ImageButton
+        android:id="@+id/btn_toggle_p2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/ic_visibility_off"
+        app:tint="#FFFFFF"
+        app:layout_constraintTop_toTopOf="@+id/container_p2"
+        app:layout_constraintBottom_toBottomOf="@+id/container_p2"
+        app:layout_constraintEnd_toEndOf="@+id/container_p2"
+        android:layout_marginEnd="8dp" />
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:text="Salvar nova senha"
+        android:textSize="16sp"
+        android:fontFamily="@font/poppins_bold"
+        android:backgroundTint="#C9FD4F0A"
+        app:layout_constraintTop_toBottomOf="@id/container_p2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

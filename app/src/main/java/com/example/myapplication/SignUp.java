@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ public class SignUp extends AppCompatActivity {
     private EditText nome, mail, password1, password2;
     private Button btn_login1;
     private TextView click01, texto1, titulo2;
+    private android.widget.ImageView btn_toggle_password1, btn_toggle_password2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,46 @@ public class SignUp extends AppCompatActivity {
         password1 = findViewById(R.id.senha1);
         password2 = findViewById(R.id.senha2);
         btn_login1 = findViewById(R.id.btn_login1);
+        btn_toggle_password1 = findViewById(R.id.btn_toggle_password1);
+        btn_toggle_password2 = findViewById(R.id.btn_toggle_password2);
+
+        if (btn_toggle_password1 != null) {
+            btn_toggle_password1.setOnClickListener(v -> {
+                // Verifica se a senha está oculta (método mais confiável)
+                boolean isPasswordHidden = password1.getTransformationMethod() != null;
+                
+                if (isPasswordHidden) {
+                    // Mostra a senha
+                    password1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    btn_toggle_password1.setImageResource(R.drawable.ic_visibility);
+                } else {
+                    // Esconde a senha
+                    password1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    btn_toggle_password1.setImageResource(R.drawable.ic_visibility_off);
+                }
+                // Mantém o cursor no final do texto
+                password1.setSelection(password1.getText().length());
+            });
+        }
+
+        if (btn_toggle_password2 != null) {
+            btn_toggle_password2.setOnClickListener(v -> {
+                // Verifica se a senha está oculta (método mais confiável)
+                boolean isPasswordHidden = password2.getTransformationMethod() != null;
+                
+                if (isPasswordHidden) {
+                    // Mostra a senha
+                    password2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    btn_toggle_password2.setImageResource(R.drawable.ic_visibility);
+                } else {
+                    // Esconde a senha
+                    password2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    btn_toggle_password2.setImageResource(R.drawable.ic_visibility_off);
+                }
+                // Mantém o cursor no final do texto
+                password2.setSelection(password2.getText().length());
+            });
+        }
 
         //evento texto clickavel (voltar pra tela de login)
         //'clique aqui'
@@ -74,6 +116,11 @@ public class SignUp extends AppCompatActivity {
             // caso o campo de senha1 esteja vazio
             if (senha1.isEmpty()) {
                 password1.setError("Campo obrigatório.");
+                hasError = true;
+            }
+            // tamanho mínimo da senha
+            if (!senha1.isEmpty() && senha1.length() < 6) {
+                password1.setError("A senha deve ter pelo menos 6 caracteres.");
                 hasError = true;
             }
             // caso o campo de senha2 esteja vazio

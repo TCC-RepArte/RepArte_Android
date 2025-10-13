@@ -98,6 +98,10 @@
             android:name=".AcessibilidadeActivity"
             android:exported="true" /> <!-- Tela de acessibilidade -->
 
+        <activity android:name=".ForgotRequestActivity" android:exported="true" />
+        <activity android:name=".ForgotOtpActivity" android:exported="true" />
+        <activity android:name=".ForgotResetActivity" android:exported="true" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

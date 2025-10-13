@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import androidx.core.content.ContextCompat;
 import com.example.myapplication.api.ApiService;
 import com.koushikdutta.ion.bitmap.Transform;
 import com.koushikdutta.ion.Ion;
@@ -42,7 +44,9 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
 
         //declarar
         ImageView perfil;
+        ImageView home_img;
         ImageView lapis_img;
+        ImageView sino_img;
         EditText pesquisar;
         Button vermais;
 
@@ -52,7 +56,19 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
         perfil = findViewById(R.id.perfil);
         pesquisar = findViewById(R.id.pesquisar);
         vermais = findViewById(R.id.vermais1);
+        home_img = findViewById(R.id.home_img);
         lapis_img = findViewById(R.id.lapis_img);
+        sino_img = findViewById(R.id.sino_txt);
+        
+        // Debug: verificar se o botão foi encontrado
+        if (vermais == null) {
+            Log.e("Tela", "ERRO: Botão vermais1 não foi encontrado!");
+            Toast.makeText(this, "Erro: Botão não encontrado", Toast.LENGTH_LONG).show();
+        } else {
+            Log.d("Tela", "Botão vermais1 encontrado com sucesso!");
+            Log.d("Tela", "Botão é clicável: " + vermais.isClickable());
+            Log.d("Tela", "Botão é focado: " + vermais.isFocusable());
+        }
 
         // Anima os elementos da tela principal
         animateMainScreenElements(perfil, pesquisar);
@@ -67,16 +83,42 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
         inicializarRecyclerView();
 
         //evento botao ver mais
-        vermais.setOnClickListener(view -> {
-            Intent intent = new Intent(Tela.this, Postagem.class);
-            startActivity(intent);
-        });
+        if (vermais != null) {
+            vermais.setOnClickListener(view -> {
+                Intent intent = new Intent(Tela.this, Postagem.class);
+                startActivity(intent);
+            });
+        }
 
-        //evento botao postagem
-        lapis_img.setOnClickListener(view -> {
-            Intent intent = new Intent(Tela.this, Tela_post.class);
-            startActivity(intent);
-        });
+        // Seleção inicial: Home ativo (quadrado laranja, ícone branco)
+        updateBottomMenuSelection(R.id.home_img);
+
+        // evento botao home
+        if (home_img != null) {
+            home_img.setOnClickListener(view -> {
+                updateBottomMenuSelection(R.id.home_img);
+                // Já estamos na home; manter na mesma tela
+            });
+        }
+
+        // evento botao postagem (lápis)
+        if (lapis_img != null) {
+            lapis_img.setOnClickListener(view -> {
+                updateBottomMenuSelection(R.id.lapis_img);
+                Intent intent = new Intent(Tela.this, Tela_post.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_slide_in_right, R.anim.fade_slide_out_left);
+            });
+        }
+
+        // evento botao sino (notificações)
+        if (sino_img != null) {
+            sino_img.setOnClickListener(view -> {
+                updateBottomMenuSelection(R.id.sino_txt);
+                Toast.makeText(Tela.this, "Notificações em breve", Toast.LENGTH_SHORT).show();
+                overridePendingTransition(R.anim.fade_slide_in_right, R.anim.fade_slide_out_left);
+            });
+        }
 
         //evento do botao perfil
         perfil.setOnClickListener(view -> {
@@ -135,6 +177,37 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
             Log.e("Perfil", "User ID é nulo, não foi possível carregar a foto.");
             perfil.setImageResource(R.drawable.user_white);
         }
+    }
+
+    /**
+     * Atualiza as cores dos ícones do menu inferior para indicar a aba selecionada.
+     */
+    private void updateBottomMenuSelection(int selectedViewId) {
+        ImageView home = findViewById(R.id.home_img);
+        ImageView lapis = findViewById(R.id.lapis_img);
+        ImageView sino = findViewById(R.id.sino_txt);
+
+        View homeContainer = findViewById(R.id.home_container);
+        View lapisContainer = findViewById(R.id.lapis_container);
+        View sinoContainer = findViewById(R.id.sino_container);
+
+        int white = ContextCompat.getColor(this, android.R.color.white);
+
+        // Atualiza fundos
+        if (homeContainer != null) {
+            homeContainer.setBackground(ContextCompat.getDrawable(this, selectedViewId == R.id.home_img ? R.drawable.div_tela3 : R.drawable.div_tela2));
+        }
+        if (lapisContainer != null) {
+            lapisContainer.setBackground(ContextCompat.getDrawable(this, selectedViewId == R.id.lapis_img ? R.drawable.div_tela3 : R.drawable.div_tela2));
+        }
+        if (sinoContainer != null) {
+            sinoContainer.setBackground(ContextCompat.getDrawable(this, selectedViewId == R.id.sino_txt ? R.drawable.div_tela3 : R.drawable.div_tela2));
+        }
+
+        // Ícones permanecem brancos
+        if (home != null) home.setColorFilter(white, PorterDuff.Mode.SRC_IN);
+        if (lapis != null) lapis.setColorFilter(white, PorterDuff.Mode.SRC_IN);
+        if (sino != null) sino.setColorFilter(white, PorterDuff.Mode.SRC_IN);
     }
 
     /**

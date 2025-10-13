@@ -98,6 +98,7 @@ public class Tela_post extends AppCompatActivity {
             homeImg.setOnClickListener(view -> {
                 Intent intent = new Intent(Tela_post.this, Tela.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fade_slide_in_left, R.anim.fade_slide_out_right);
                 finish();
             });
         }

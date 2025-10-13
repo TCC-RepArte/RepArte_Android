@@ -300,6 +300,122 @@ public class ApiService {
         });
     }
 
+    public void solicitarRecuperacaoSenha(String emailOuUsuario, FutureCallback<String> callback) {
+        String alvo = emailOuUsuario == null ? "" : emailOuUsuario.trim();
+        if (alvo.isEmpty()) {
+            callback.onCompleted(new Exception("Informe seu e-mail ou usuário"), null);
+            return;
+        }
+
+        String url = BASE_URL + "forgot_password.php";
+        Log.d(TAG, "Solicitando recuperação de senha para: " + alvo);
+
+        Ion.with(context)
+                .load("POST", url)
+                .setHeader("Content-Type", "application/x-www-form-urlencoded")
+                .setTimeout(20000)
+                .setBodyParameter("alvo", alvo)
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        if (e != null) {
+                            callback.onCompleted(e, null);
+                            return;
+                        }
+                        try {
+                            if (result != null) {
+                                JsonObject json = JsonParser.parseString(result).getAsJsonObject();
+                                boolean ok = (json.has("success") && json.get("success").getAsBoolean())
+                                        || result.toLowerCase().contains("success");
+                                if (ok) {
+                                    callback.onCompleted(null, "success");
+                                    return;
+                                }
+                            }
+                        } catch (Exception ignored) { }
+                        callback.onCompleted(new Exception("Falha ao solicitar recuperação"), null);
+                    }
+                });
+    }
+
+    // Fluxo de recuperação: enviar código para email/usuário
+    public void enviarCodigoRecuperacao(String emailOuUsuario, FutureCallback<String> callback) {
+        String alvo = emailOuUsuario == null ? "" : emailOuUsuario.trim();
+        if (alvo.isEmpty()) {
+            callback.onCompleted(new Exception("Informe seu e-mail ou usuário"), null);
+            return;
+        }
+        Ion.with(context)
+                .load("POST", BASE_URL + "forgot_send_code.php")
+                .setHeader("Content-Type", "application/x-www-form-urlencoded")
+                .setTimeout(20000)
+                .setBodyParameter("alvo", alvo)
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        if (e != null) { callback.onCompleted(e, null); return; }
+                        callback.onCompleted(null, result != null ? result : "success");
+                    }
+                });
+    }
+
+    // Fluxo de recuperação: validar código e obter token
+    public void verificarCodigoRecuperacao(String emailOuUsuario, String codigo, FutureCallback<String> callback) {
+        String alvo = emailOuUsuario == null ? "" : emailOuUsuario.trim();
+        if (alvo.isEmpty() || codigo == null || codigo.trim().isEmpty()) {
+            callback.onCompleted(new Exception("Dados incompletos"), null);
+            return;
+        }
+        Ion.with(context)
+                .load("POST", BASE_URL + "forgot_verify_code.php")
+                .setHeader("Content-Type", "application/x-www-form-urlencoded")
+                .setTimeout(20000)
+                .setBodyParameter("alvo", alvo)
+                .setBodyParameter("codigo", codigo)
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        if (e != null) { callback.onCompleted(e, null); return; }
+                        try {
+                            JsonObject json = JsonParser.parseString(result).getAsJsonObject();
+                            if (json.has("token")) {
+                                callback.onCompleted(null, json.get("token").getAsString());
+                                return;
+                            }
+                        } catch (Exception ignore) {}
+                        callback.onCompleted(new Exception("Código inválido"), null);
+                    }
+                });
+    }
+
+    // Fluxo de recuperação: redefinir senha de fato
+    public void redefinirSenha(String emailOuUsuario, String token, String novaSenha, FutureCallback<String> callback) {
+        String alvo = emailOuUsuario == null ? "" : emailOuUsuario.trim();
+        if (alvo.isEmpty() || token == null || token.trim().isEmpty() || novaSenha == null || novaSenha.isEmpty()) {
+            callback.onCompleted(new Exception("Dados incompletos"), null);
+            return;
+        }
+        Ion.with(context)
+                .load("POST", BASE_URL + "forgot_reset_password.php")
+                .setHeader("Content-Type", "application/x-www-form-urlencoded")
+                .setTimeout(20000)
+                .setBodyParameter("alvo", alvo)
+                .setBodyParameter("token", token)
+                .setBodyParameter("senha", novaSenha)
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        if (e != null) { callback.onCompleted(e, null); return; }
+                        boolean ok = result != null && result.toLowerCase().contains("success");
+                        callback.onCompleted(ok ? null : new Exception("Falha ao redefinir"), ok ? "success" : null);
+                    }
+                });
+    }
+
     private void tentarLogin(String usuario, String senha, FutureCallback<String> callback) {
         Log.d(TAG, "Tentando login com usuário: " + usuario);
         Log.d(TAG, "Senha (tamanho): " + senha.length());
