@@ -139,6 +139,20 @@
                     android:focusable="true"
                     android:backgroundTint="@color/cont_tela" />
 
+                <!-- Filtro Obras de Arte -->
+                <TextView
+                    android:id="@+id/filtro_artes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Artes"
+                    android:textColor="@color/white"
+                    android:background="@drawable/filtro_background"
+                    android:padding="@dimen/padding_medium"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:backgroundTint="@color/cont_tela" />
+
             </LinearLayout>
         </HorizontalScrollView>
 

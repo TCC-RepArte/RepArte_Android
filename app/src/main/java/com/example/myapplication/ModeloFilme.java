@@ -12,8 +12,9 @@ public class ModeloFilme implements Parcelable {
     private String dataLancamento;
     private double avaliacao;
     private int votos;
-    private String tipo; // "movie" ou "tv"
+    private String tipo; // "movie", "tv" ou "book"
     private String generos;
+    private String originalId; // ID original para livros do Google Books
 
     // Construtor
     public ModeloFilme(int id, String titulo, String posterPath, String dataLancamento, double avaliacao, String tipo) {
@@ -37,6 +38,7 @@ public class ModeloFilme implements Parcelable {
         votos = in.readInt();
         tipo = in.readString();
         generos = in.readString();
+        originalId = in.readString();
     }
 
     // Creator Parcelable
@@ -70,6 +72,7 @@ public class ModeloFilme implements Parcelable {
         dest.writeInt(votos);
         dest.writeString(tipo);
         dest.writeString(generos);
+        dest.writeString(originalId);
     }
 
     // Getters e Setters
@@ -153,6 +156,14 @@ public class ModeloFilme implements Parcelable {
         this.generos = generos;
     }
 
+    public String getOriginalId() {
+        return originalId;
+    }
+
+    public void setOriginalId(String originalId) {
+        this.originalId = originalId;
+    }
+
     // Método para obter o ano da data de lançamento
     public String getAno() {
         if (dataLancamento != null && dataLancamento.length() >= 4) {
@@ -167,6 +178,8 @@ public class ModeloFilme implements Parcelable {
             return "Filme";
         } else if ("tv".equals(tipo)) {
             return "Série";
+        } else if ("book".equals(tipo)) {
+            return "Livro";
         }
         return "Desconhecido";
     }

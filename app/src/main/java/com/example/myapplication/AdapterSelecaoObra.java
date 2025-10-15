@@ -56,7 +56,17 @@ public class AdapterSelecaoObra extends RecyclerView.Adapter<AdapterSelecaoObra.
         
         // Carregar poster
         if (obra.getPosterPath() != null && !obra.getPosterPath().isEmpty()) {
-            String fullPosterUrl = "https://image.tmdb.org/t/p/w200" + obra.getPosterPath();
+            String fullPosterUrl;
+            
+            // Verificar se é um livro do Google Books (URL completa) ou filme/série do TMDB (path relativo)
+            if (obra.getPosterPath().startsWith("http")) {
+                // É um livro do Google Books - usar URL diretamente
+                fullPosterUrl = obra.getPosterPath();
+            } else {
+                // É um filme/série do TMDB - construir URL completa
+                fullPosterUrl = "https://image.tmdb.org/t/p/w200" + obra.getPosterPath();
+            }
+            
             Glide.with(context)
                 .load(fullPosterUrl)
                 .transition(DrawableTransitionOptions.withCrossFade())

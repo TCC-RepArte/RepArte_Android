@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.myapplication.api.TMDBManager;
+import com.example.myapplication.api.GoogleBooksManager;
+import com.example.myapplication.api.MetManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +32,13 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
     private List<ModeloFilme> listaFilmes;
     
     // Filtros
-    private TextView filtroTodos, filtroFilmes, filtroSeries, filtroLivros;
+    private TextView filtroTodos, filtroFilmes, filtroSeries, filtroLivros, filtroArtes;
     private String filtroAtivo = "todos";
     
-    // API Manager
+    // API Managers
     private TMDBManager tmdbManager;
+    private GoogleBooksManager googleBooksManager;
+    private MetManager metManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +48,10 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
         // Inicializar views
         inicializarViews();
         
-        // Inicializar API Manager
+        // Inicializar API Managers
         tmdbManager = new TMDBManager();
+        googleBooksManager = new GoogleBooksManager();
+        metManager = MetManager.getInstance();
         
         // Configurar RecyclerView
         configurarRecyclerView();
@@ -82,6 +88,7 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
         filtroFilmes = findViewById(R.id.filtro_filmes);
         filtroSeries = findViewById(R.id.filtro_series);
         filtroLivros = findViewById(R.id.filtro_livros);
+        filtroArtes = findViewById(R.id.filtro_artes);
     }
 
     private void configurarRecyclerView() {
@@ -159,6 +166,13 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
                 selecionarFiltro("livros", filtroLivros);
             }
         });
+
+        filtroArtes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selecionarFiltro("artes", filtroArtes);
+            }
+        });
     }
 
     private void selecionarFiltro(String filtro, TextView filtroSelecionado) {
@@ -167,6 +181,7 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
         filtroFilmes.setBackgroundTintList(null);
         filtroSeries.setBackgroundTintList(null);
         filtroLivros.setBackgroundTintList(null);
+        filtroArtes.setBackgroundTintList(null);
 
         // Selecionar o filtro clicado com cor AMARELA
         filtroSelecionado.setBackgroundTintList(getResources().getColorStateList(R.color.amarelo_filtro));
@@ -179,9 +194,15 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
     }
 
     private void aplicarFiltro() {
-        // TODO: Implementar filtro real quando API estiver pronta
-        // Por enquanto, apenas simular
-        android.widget.Toast.makeText(this, "Filtro aplicado: " + filtroAtivo, android.widget.Toast.LENGTH_SHORT).show();
+        // Aplicar filtro nos resultados já carregados
+        String query = searchView.getQuery().toString();
+        if (query != null && !query.trim().isEmpty()) {
+            // Se há uma busca ativa, refazer a busca com o filtro selecionado
+            realizarBusca(query.trim());
+        } else {
+            // Se não há busca ativa, carregar obras populares com o filtro
+            carregarObrasPopulares();
+        }
     }
 
     private void inicializarFiltroPadrao() {
@@ -194,12 +215,17 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
         // Carregar filmes populares da API
         carregarFilmesPopulares();
         
-        // Configurar seção "Livros Fuvest" (mantém os exemplos)
-        configurarCliqueSecao(R.id.livro_1, "Dom Casmurro", "1899", "Livro", 9.0, 50000);
-        configurarCliqueSecao(R.id.livro_2, "Grande Sertão", "1956", "Livro", 8.9, 30000);
+        // Carregar livros populares da API Google Books
+        carregarLivrosPopulares();
         
         // Carregar séries populares da API
         carregarSeriesPopulares();
+    }
+    
+    private void carregarObrasPopulares() {
+        // Este método será usado quando não há busca ativa mas o usuário muda o filtro
+        // Por enquanto, apenas recarregar as seções
+        configurarSecoes();
     }
 
     private void configurarCliqueSecao(int id, String titulo, String ano, String tipo, double avaliacao, int votos) {
@@ -300,80 +326,216 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
                 });
                 break;
                 
-            default: // "todos" ou "livros"
-                // Buscar filmes e séries
-                tmdbManager.searchMovies(termo, new TMDBManager.SearchCallback() {
+            case "livros":
+                // Buscar apenas livros
+                googleBooksManager.searchBooks(termo, new GoogleBooksManager.SearchCallback() {
                     @Override
-                    public void onSuccess(List<ModeloFilme> filmes) {
-                        // Depois buscar séries
-                        tmdbManager.searchTVShows(termo, new TMDBManager.SearchCallback() {
-                            @Override
-                            public void onSuccess(List<ModeloFilme> series) {
-                                runOnUiThread(() -> {
-                                    mostrarLoading(false);
-                                    
-                                    // Combinar resultados
-                                    List<ModeloFilme> todosResultados = new ArrayList<>();
-                                    todosResultados.addAll(filmes);
-                                    todosResultados.addAll(series);
-                                    
-                                    if (todosResultados.isEmpty()) {
-                                        mostrarMensagemErro(true);
-                                        mensagemErro.setText("Nenhum resultado encontrado para: " + termo);
-                                    } else {
-                                        exibirResultados(todosResultados);
-                                    }
-                                });
-                            }
-                            
-                            @Override
-                            public void onError(String error) {
-                                runOnUiThread(() -> {
-                                    mostrarLoading(false);
-                                    // Se pelo menos filmes foram encontrados, mostrar eles
-                                    if (!filmes.isEmpty()) {
-                                        exibirResultados(filmes);
-                                    } else {
-                                        mostrarMensagemErro(true);
-                                        mensagemErro.setText("Erro na busca: " + error);
-                                        Toast.makeText(BuscaActivity.this, "Erro: " + error, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                    public void onSuccess(List<ModeloFilme> livros) {
+                        runOnUiThread(() -> {
+                            mostrarLoading(false);
+                            if (livros.isEmpty()) {
+                                mostrarMensagemErro(true);
+                                mensagemErro.setText("Nenhum livro encontrado para: " + termo);
+                            } else {
+                                exibirResultados(livros);
                             }
                         });
                     }
                     
                     @Override
                     public void onError(String error) {
-                        // Se filmes falharam, tentar só séries
-                        tmdbManager.searchTVShows(termo, new TMDBManager.SearchCallback() {
-                            @Override
-                            public void onSuccess(List<ModeloFilme> series) {
-                                runOnUiThread(() -> {
-                                    mostrarLoading(false);
-                                    if (series.isEmpty()) {
-                                        mostrarMensagemErro(true);
-                                        mensagemErro.setText("Nenhum resultado encontrado para: " + termo);
-                                    } else {
-                                        exibirResultados(series);
-                                    }
-                                });
-                            }
-                            
-                            @Override
-                            public void onError(String seriesError) {
-                                runOnUiThread(() -> {
-                                    mostrarLoading(false);
-                                    mostrarMensagemErro(true);
-                                    mensagemErro.setText("Erro na busca: " + error);
-                                    Toast.makeText(BuscaActivity.this, "Erro: " + error, Toast.LENGTH_SHORT).show();
-                                });
-                            }
+                        runOnUiThread(() -> {
+                            mostrarLoading(false);
+                            mostrarMensagemErro(true);
+                            mensagemErro.setText("Erro na busca de livros: " + error);
+                            Toast.makeText(BuscaActivity.this, "Erro: " + error, Toast.LENGTH_SHORT).show();
                         });
                     }
                 });
                 break;
+                
+            case "artes":
+                // Buscar apenas obras de arte
+                metManager.searchArtworks(termo, new MetManager.MetCallback<List<com.example.myapplication.model.MetArtwork>>() {
+                    @Override
+                    public void onSuccess(List<com.example.myapplication.model.MetArtwork> artworks) {
+                        runOnUiThread(() -> {
+                            mostrarLoading(false);
+                            if (artworks.isEmpty()) {
+                                mostrarMensagemErro(true);
+                                mensagemErro.setText("Nenhuma obra de arte encontrada para: " + termo);
+                            } else {
+                                // Converter MetArtwork para ModeloFilme
+                                List<ModeloFilme> obrasConvertidas = new ArrayList<>();
+                                for (com.example.myapplication.model.MetArtwork artwork : artworks) {
+                                    // Usar o construtor correto do ModeloFilme
+                                    ModeloFilme modelo = new ModeloFilme(
+                                        artwork.getObjectID(),
+                                        artwork.getTitle(),
+                                        artwork.getPrimaryImage(),
+                                        artwork.getObjectDate(),
+                                        artwork.getRating(),
+                                        "artwork"
+                                    );
+                                    modelo.setVotos(artwork.getRatingCount());
+                                    modelo.setOriginalId(String.valueOf(artwork.getObjectID()));
+                                    obrasConvertidas.add(modelo);
+                                }
+                                exibirResultados(obrasConvertidas);
+                            }
+                        });
+                    }
+                    
+                    @Override
+                    public void onError(String error) {
+                        runOnUiThread(() -> {
+                            mostrarLoading(false);
+                            mostrarMensagemErro(true);
+                            mensagemErro.setText("Erro na busca de obras de arte: " + error);
+                            Toast.makeText(BuscaActivity.this, "Erro: " + error, Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                });
+                break;
+                
+            default: // "todos"
+                // Buscar filmes, séries e livros
+                buscarTodosOsResultados(termo);
+                break;
         }
+    }
+    
+    private void buscarTodosOsResultados(String termo) {
+        // Contadores para controlar quantas buscas foram completadas
+        final int[] buscaCompletas = {0};
+        final int totalBuscas = 4; // filmes, séries, livros, artes
+        final List<ModeloFilme> todosResultados = new ArrayList<>();
+        
+        // Callback para combinar resultados
+        Runnable combinarResultados = () -> {
+            runOnUiThread(() -> {
+                mostrarLoading(false);
+                if (todosResultados.isEmpty()) {
+                    mostrarMensagemErro(true);
+                    mensagemErro.setText("Nenhum resultado encontrado para: " + termo);
+                } else {
+                    exibirResultados(todosResultados);
+                }
+            });
+        };
+        
+        // Buscar filmes
+        tmdbManager.searchMovies(termo, new TMDBManager.SearchCallback() {
+            @Override
+            public void onSuccess(List<ModeloFilme> filmes) {
+                synchronized (todosResultados) {
+                    todosResultados.addAll(filmes);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+            
+            @Override
+            public void onError(String error) {
+                synchronized (todosResultados) {
+                    android.util.Log.e("BuscaActivity", "Erro ao buscar filmes: " + error);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+        });
+        
+        // Buscar séries
+        tmdbManager.searchTVShows(termo, new TMDBManager.SearchCallback() {
+            @Override
+            public void onSuccess(List<ModeloFilme> series) {
+                synchronized (todosResultados) {
+                    todosResultados.addAll(series);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+            
+            @Override
+            public void onError(String error) {
+                synchronized (todosResultados) {
+                    android.util.Log.e("BuscaActivity", "Erro ao buscar séries: " + error);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+        });
+        
+        // Buscar livros
+        googleBooksManager.searchBooks(termo, new GoogleBooksManager.SearchCallback() {
+            @Override
+            public void onSuccess(List<ModeloFilme> livros) {
+                synchronized (todosResultados) {
+                    todosResultados.addAll(livros);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+            
+            @Override
+            public void onError(String error) {
+                synchronized (todosResultados) {
+                    android.util.Log.e("BuscaActivity", "Erro ao buscar livros: " + error);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+        });
+        
+        // Buscar obras de arte
+        metManager.searchArtworks(termo, new MetManager.MetCallback<List<com.example.myapplication.model.MetArtwork>>() {
+            @Override
+            public void onSuccess(List<com.example.myapplication.model.MetArtwork> artworks) {
+                synchronized (todosResultados) {
+                    // Converter MetArtwork para ModeloFilme
+                    for (com.example.myapplication.model.MetArtwork artwork : artworks) {
+                        ModeloFilme modelo = new ModeloFilme(
+                            artwork.getObjectID(),
+                            artwork.getTitle(),
+                            artwork.getPrimaryImage(),
+                            artwork.getObjectDate(),
+                            artwork.getRating(),
+                            "artwork"
+                        );
+                        modelo.setVotos(artwork.getRatingCount());
+                        modelo.setOriginalId(String.valueOf(artwork.getObjectID()));
+                        todosResultados.add(modelo);
+                    }
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+            
+            @Override
+            public void onError(String error) {
+                synchronized (todosResultados) {
+                    android.util.Log.e("BuscaActivity", "Erro ao buscar obras de arte: " + error);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+        });
     }
 
     private void esconderSecoes() {
@@ -462,10 +624,16 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
             intent.putExtra("filme_id", filme.getId());
             intent.putExtra("titulo", filme.getTitulo());
             intent.putExtra("ano", filme.getAno());
-            intent.putExtra("tipo", filme.getTipo()); // Usar tipo original (movie/tv)
+            intent.putExtra("tipo", filme.getTipo()); // Usar tipo original (movie/tv/book)
             intent.putExtra("avaliacao", filme.getAvaliacao());
             intent.putExtra("votos", filme.getVotos());
             intent.putExtra("poster_path", filme.getPosterPath());
+            
+            // Se for um livro, passar o ID original
+            if ("book".equals(filme.getTipo()) && filme.getOriginalId() != null) {
+                intent.putExtra("book_id", filme.getOriginalId());
+            }
+            
             startActivity(intent);
         } catch (Exception e) {
             Toast.makeText(this, "Erro ao abrir detalhes: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -517,6 +685,70 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
             }
         });
     }
+    
+    private void carregarLivrosPopulares() {
+        googleBooksManager.getPopularBooks(new GoogleBooksManager.PopularCallback() {
+            @Override
+            public void onSuccess(List<ModeloFilme> livros) {
+                runOnUiThread(() -> {
+                    if (livros.size() >= 2) {
+                        configurarLivroPopular(R.id.livro_1, livros.get(0));
+                        configurarLivroPopular(R.id.livro_2, livros.get(1));
+                    }
+                });
+            }
+            
+            @Override
+            public void onError(String error) {
+                android.util.Log.e("BuscaActivity", "Erro ao carregar livros populares: " + error);
+                // Em caso de erro, usar dados de exemplo
+                configurarCliqueSecao(R.id.livro_1, "Dom Casmurro", "1899", "Livro", 9.0, 50000);
+                configurarCliqueSecao(R.id.livro_2, "Grande Sertão: Veredas", "1956", "Livro", 8.9, 30000);
+            }
+        });
+    }
+    
+    private void configurarLivroPopular(int viewId, ModeloFilme livro) {
+        View view = findViewById(viewId);
+        if (view != null) {
+            // Atualizar título (primeiro TextView dentro do LinearLayout)
+            TextView txtTitulo = (TextView) ((LinearLayout) view).getChildAt(1);
+            if (txtTitulo != null) {
+                txtTitulo.setText(livro.getTitulo());
+            }
+            
+            // Atualizar imagem (primeiro ImageView dentro do LinearLayout)
+            ImageView imgCapa = (ImageView) ((LinearLayout) view).getChildAt(0);
+            if (imgCapa != null && livro.getPosterPath() != null) {
+                // Para livros do Google Books, usar a URL diretamente
+                Glide.with(this)
+                    .load(livro.getPosterPath())
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .placeholder(R.drawable.avatar)
+                    .error(R.drawable.avatar)
+                    .into(imgCapa);
+            }
+            
+            // Configurar clique
+            view.setOnClickListener(v -> {
+                Intent intent = new Intent(BuscaActivity.this, DetalhesFilmeActivity.class);
+                intent.putExtra("filme_id", livro.getId());
+                intent.putExtra("titulo", livro.getTitulo());
+                intent.putExtra("ano", livro.getAno());
+                intent.putExtra("tipo", livro.getTipo());
+                intent.putExtra("avaliacao", livro.getAvaliacao());
+                intent.putExtra("votos", livro.getVotos());
+                intent.putExtra("poster_path", livro.getPosterPath());
+                
+                // Se for um livro, passar o ID original
+                if ("book".equals(livro.getTipo()) && livro.getOriginalId() != null) {
+                    intent.putExtra("book_id", livro.getOriginalId());
+                }
+                
+                startActivity(intent);
+            });
+        }
+    }
 
     private void configurarFilmePopular(int viewId, ModeloFilme filme) {
         View view = findViewById(viewId);
@@ -549,6 +781,12 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
                 intent.putExtra("avaliacao", filme.getAvaliacao());
                 intent.putExtra("votos", filme.getVotos());
                 intent.putExtra("poster_path", filme.getPosterPath());
+                
+                // Se for um livro, passar o ID original
+                if ("book".equals(filme.getTipo()) && filme.getOriginalId() != null) {
+                    intent.putExtra("book_id", filme.getOriginalId());
+                }
+                
                 startActivity(intent);
             });
         }
@@ -585,6 +823,12 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
                 intent.putExtra("avaliacao", serie.getAvaliacao());
                 intent.putExtra("votos", serie.getVotos());
                 intent.putExtra("poster_path", serie.getPosterPath());
+                
+                // Se for um livro, passar o ID original
+                if ("book".equals(serie.getTipo()) && serie.getOriginalId() != null) {
+                    intent.putExtra("book_id", serie.getOriginalId());
+                }
+                
                 startActivity(intent);
             });
         }

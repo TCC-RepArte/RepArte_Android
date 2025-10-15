@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.api.TMDBManager;
+import com.example.myapplication.api.GoogleBooksManager;
+import com.example.myapplication.api.MetManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +27,13 @@ public class SelecaoObraActivity extends AppCompatActivity implements AdapterSel
     private List<ModeloFilme> listaObras;
     
     // Filtros
-    private TextView filtroTodos, filtroFilmes, filtroSeries, filtroLivros;
+    private TextView filtroTodos, filtroFilmes, filtroSeries, filtroLivros, filtroArtes;
     private String filtroAtivo = "todos";
     
-    // API Manager
+    // API Managers
     private TMDBManager tmdbManager;
+    private GoogleBooksManager googleBooksManager;
+    private MetManager metManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +43,10 @@ public class SelecaoObraActivity extends AppCompatActivity implements AdapterSel
         // Inicializar views
         inicializarViews();
         
-        // Inicializar API Manager
+        // Inicializar API Managers
         tmdbManager = new TMDBManager();
+        googleBooksManager = new GoogleBooksManager();
+        metManager = MetManager.getInstance();
         
         // Configurar RecyclerView
         configurarRecyclerView();
@@ -72,6 +78,7 @@ public class SelecaoObraActivity extends AppCompatActivity implements AdapterSel
         filtroFilmes = findViewById(R.id.filtro_filmes);
         filtroSeries = findViewById(R.id.filtro_series);
         filtroLivros = findViewById(R.id.filtro_livros);
+        filtroArtes = findViewById(R.id.filtro_artes);
     }
 
     private void configurarRecyclerView() {
@@ -148,6 +155,13 @@ public class SelecaoObraActivity extends AppCompatActivity implements AdapterSel
                 selecionarFiltro("livros", filtroLivros);
             }
         });
+
+        filtroArtes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selecionarFiltro("artes", filtroArtes);
+            }
+        });
     }
 
     private void selecionarFiltro(String filtro, TextView filtroSelecionado) {
@@ -156,6 +170,7 @@ public class SelecaoObraActivity extends AppCompatActivity implements AdapterSel
         filtroFilmes.setBackgroundTintList(null);
         filtroSeries.setBackgroundTintList(null);
         filtroLivros.setBackgroundTintList(null);
+        filtroArtes.setBackgroundTintList(null);
 
         // Selecionar o filtro clicado
         filtroSelecionado.setBackgroundTintList(getResources().getColorStateList(R.color.amarelo_filtro));
@@ -178,53 +193,134 @@ public class SelecaoObraActivity extends AppCompatActivity implements AdapterSel
     private void carregarObrasPopulares() {
         mostrarLoading(true);
         
+        // Contadores para controlar quantas buscas foram completadas
+        final int[] buscaCompletas = {0};
+        final int totalBuscas = 4; // filmes, séries, livros, artes
+        final List<ModeloFilme> todasObras = new ArrayList<>();
+        
+        // Callback para combinar resultados
+        Runnable combinarResultados = () -> {
+            runOnUiThread(() -> {
+                mostrarLoading(false);
+                if (todasObras.isEmpty()) {
+                    mostrarMensagemErro(true);
+                    mensagemErro.setText("Nenhuma obra popular encontrada");
+                } else {
+                    exibirResultados(todasObras);
+                }
+            });
+        };
+        
         // Carregar filmes populares
         tmdbManager.getPopularMovies(new TMDBManager.PopularCallback() {
             @Override
             public void onSuccess(List<ModeloFilme> filmes) {
-                // Depois carregar séries populares
-                tmdbManager.getPopularTVShows(new TMDBManager.PopularCallback() {
-                    @Override
-                    public void onSuccess(List<ModeloFilme> series) {
-                        runOnUiThread(() -> {
-                            mostrarLoading(false);
-                            
-                            // Combinar resultados
-                            List<ModeloFilme> todasObras = new ArrayList<>();
-                            todasObras.addAll(filmes);
-                            todasObras.addAll(series);
-                            
-                            if (todasObras.isEmpty()) {
-                                mostrarMensagemErro(true);
-                                mensagemErro.setText("Nenhuma obra popular encontrada");
-                            } else {
-                                exibirResultados(todasObras);
-                            }
-                        });
+                synchronized (todasObras) {
+                    todasObras.addAll(filmes);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
                     }
-                    
-                    @Override
-                    public void onError(String error) {
-                        runOnUiThread(() -> {
-                            mostrarLoading(false);
-                            if (!filmes.isEmpty()) {
-                                exibirResultados(filmes);
-                            } else {
-                                mostrarMensagemErro(true);
-                                mensagemErro.setText("Erro ao carregar obras: " + error);
-                            }
-                        });
-                    }
-                });
+                }
             }
             
             @Override
             public void onError(String error) {
-                runOnUiThread(() -> {
-                    mostrarLoading(false);
-                    mostrarMensagemErro(true);
-                    mensagemErro.setText("Erro ao carregar obras: " + error);
-                });
+                synchronized (todasObras) {
+                    android.util.Log.e("SelecaoObraActivity", "Erro ao carregar filmes populares: " + error);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+        });
+        
+        // Carregar séries populares
+        tmdbManager.getPopularTVShows(new TMDBManager.PopularCallback() {
+            @Override
+            public void onSuccess(List<ModeloFilme> series) {
+                synchronized (todasObras) {
+                    todasObras.addAll(series);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+            
+            @Override
+            public void onError(String error) {
+                synchronized (todasObras) {
+                    android.util.Log.e("SelecaoObraActivity", "Erro ao carregar séries populares: " + error);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+        });
+        
+        // Carregar livros populares
+        googleBooksManager.getPopularBooks(new GoogleBooksManager.PopularCallback() {
+            @Override
+            public void onSuccess(List<ModeloFilme> livros) {
+                synchronized (todasObras) {
+                    todasObras.addAll(livros);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+            
+            @Override
+            public void onError(String error) {
+                synchronized (todasObras) {
+                    android.util.Log.e("SelecaoObraActivity", "Erro ao carregar livros populares: " + error);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+        });
+        
+        // Carregar obras de arte em destaque
+        metManager.getHighlightedArtworks(new MetManager.MetCallback<List<com.example.myapplication.model.MetArtwork>>() {
+            @Override
+            public void onSuccess(List<com.example.myapplication.model.MetArtwork> artworks) {
+                synchronized (todasObras) {
+                    // Converter MetArtwork para ModeloFilme
+                    for (com.example.myapplication.model.MetArtwork artwork : artworks) {
+                        ModeloFilme modelo = new ModeloFilme(
+                            artwork.getObjectID(),
+                            artwork.getTitle(),
+                            artwork.getPrimaryImage(),
+                            artwork.getObjectDate(),
+                            artwork.getRating(),
+                            "artwork"
+                        );
+                        modelo.setVotos(artwork.getRatingCount());
+                        modelo.setOriginalId(String.valueOf(artwork.getObjectID()));
+                        todasObras.add(modelo);
+                    }
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+            
+            @Override
+            public void onError(String error) {
+                synchronized (todasObras) {
+                    android.util.Log.e("SelecaoObraActivity", "Erro ao carregar obras de arte populares: " + error);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
             }
         });
     }
@@ -286,74 +382,213 @@ public class SelecaoObraActivity extends AppCompatActivity implements AdapterSel
                 });
                 break;
                 
-            default: // "todos" ou "livros"
-                // Buscar filmes e séries
-                tmdbManager.searchMovies(termo, new TMDBManager.SearchCallback() {
+            case "livros":
+                // Buscar apenas livros
+                googleBooksManager.searchBooks(termo, new GoogleBooksManager.SearchCallback() {
                     @Override
-                    public void onSuccess(List<ModeloFilme> filmes) {
-                        tmdbManager.searchTVShows(termo, new TMDBManager.SearchCallback() {
-                            @Override
-                            public void onSuccess(List<ModeloFilme> series) {
-                                runOnUiThread(() -> {
-                                    mostrarLoading(false);
-                                    
-                                    List<ModeloFilme> todosResultados = new ArrayList<>();
-                                    todosResultados.addAll(filmes);
-                                    todosResultados.addAll(series);
-                                    
-                                    if (todosResultados.isEmpty()) {
-                                        mostrarMensagemErro(true);
-                                        mensagemErro.setText("Nenhum resultado encontrado para: " + termo);
-                                    } else {
-                                        exibirResultados(todosResultados);
-                                    }
-                                });
-                            }
-                            
-                            @Override
-                            public void onError(String error) {
-                                runOnUiThread(() -> {
-                                    mostrarLoading(false);
-                                    if (!filmes.isEmpty()) {
-                                        exibirResultados(filmes);
-                                    } else {
-                                        mostrarMensagemErro(true);
-                                        mensagemErro.setText("Erro na busca: " + error);
-                                    }
-                                });
+                    public void onSuccess(List<ModeloFilme> livros) {
+                        runOnUiThread(() -> {
+                            mostrarLoading(false);
+                            if (livros.isEmpty()) {
+                                mostrarMensagemErro(true);
+                                mensagemErro.setText("Nenhum livro encontrado para: " + termo);
+                            } else {
+                                exibirResultados(livros);
                             }
                         });
                     }
                     
                     @Override
                     public void onError(String error) {
-                        tmdbManager.searchTVShows(termo, new TMDBManager.SearchCallback() {
-                            @Override
-                            public void onSuccess(List<ModeloFilme> series) {
-                                runOnUiThread(() -> {
-                                    mostrarLoading(false);
-                                    if (series.isEmpty()) {
-                                        mostrarMensagemErro(true);
-                                        mensagemErro.setText("Nenhum resultado encontrado para: " + termo);
-                                    } else {
-                                        exibirResultados(series);
-                                    }
-                                });
-                            }
-                            
-                            @Override
-                            public void onError(String seriesError) {
-                                runOnUiThread(() -> {
-                                    mostrarLoading(false);
-                                    mostrarMensagemErro(true);
-                                    mensagemErro.setText("Erro na busca: " + error);
-                                });
-                            }
+                        runOnUiThread(() -> {
+                            mostrarLoading(false);
+                            mostrarMensagemErro(true);
+                            mensagemErro.setText("Erro na busca de livros: " + error);
                         });
                     }
                 });
                 break;
+                
+            case "artes":
+                // Buscar apenas obras de arte
+                metManager.searchArtworks(termo, new MetManager.MetCallback<List<com.example.myapplication.model.MetArtwork>>() {
+                    @Override
+                    public void onSuccess(List<com.example.myapplication.model.MetArtwork> artworks) {
+                        runOnUiThread(() -> {
+                            mostrarLoading(false);
+                            if (artworks.isEmpty()) {
+                                mostrarMensagemErro(true);
+                                mensagemErro.setText("Nenhuma obra de arte encontrada para: " + termo);
+                            } else {
+                                // Converter MetArtwork para ModeloFilme
+                                List<ModeloFilme> obrasConvertidas = new ArrayList<>();
+                                for (com.example.myapplication.model.MetArtwork artwork : artworks) {
+                                    ModeloFilme modelo = new ModeloFilme(
+                                        artwork.getObjectID(),
+                                        artwork.getTitle(),
+                                        artwork.getPrimaryImage(),
+                                        artwork.getObjectDate(),
+                                        artwork.getRating(),
+                                        "artwork"
+                                    );
+                                    modelo.setVotos(artwork.getRatingCount());
+                                    modelo.setOriginalId(String.valueOf(artwork.getObjectID()));
+                                    obrasConvertidas.add(modelo);
+                                }
+                                exibirResultados(obrasConvertidas);
+                            }
+                        });
+                    }
+                    
+                    @Override
+                    public void onError(String error) {
+                        runOnUiThread(() -> {
+                            mostrarLoading(false);
+                            mostrarMensagemErro(true);
+                            mensagemErro.setText("Erro na busca de obras de arte: " + error);
+                        });
+                    }
+                });
+                break;
+                
+            default: // "todos"
+                // Buscar filmes, séries e livros
+                buscarTodosOsResultados(termo);
+                break;
         }
+    }
+    
+    private void buscarTodosOsResultados(String termo) {
+        // Contadores para controlar quantas buscas foram completadas
+        final int[] buscaCompletas = {0};
+        final int totalBuscas = 4; // filmes, séries, livros, artes
+        final List<ModeloFilme> todosResultados = new ArrayList<>();
+        
+        // Callback para combinar resultados
+        Runnable combinarResultados = () -> {
+            runOnUiThread(() -> {
+                mostrarLoading(false);
+                if (todosResultados.isEmpty()) {
+                    mostrarMensagemErro(true);
+                    mensagemErro.setText("Nenhum resultado encontrado para: " + termo);
+                } else {
+                    exibirResultados(todosResultados);
+                }
+            });
+        };
+        
+        // Buscar filmes
+        tmdbManager.searchMovies(termo, new TMDBManager.SearchCallback() {
+            @Override
+            public void onSuccess(List<ModeloFilme> filmes) {
+                synchronized (todosResultados) {
+                    todosResultados.addAll(filmes);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+            
+            @Override
+            public void onError(String error) {
+                synchronized (todosResultados) {
+                    android.util.Log.e("SelecaoObraActivity", "Erro ao buscar filmes: " + error);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+        });
+        
+        // Buscar séries
+        tmdbManager.searchTVShows(termo, new TMDBManager.SearchCallback() {
+            @Override
+            public void onSuccess(List<ModeloFilme> series) {
+                synchronized (todosResultados) {
+                    todosResultados.addAll(series);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+            
+            @Override
+            public void onError(String error) {
+                synchronized (todosResultados) {
+                    android.util.Log.e("SelecaoObraActivity", "Erro ao buscar séries: " + error);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+        });
+        
+        // Buscar livros
+        googleBooksManager.searchBooks(termo, new GoogleBooksManager.SearchCallback() {
+            @Override
+            public void onSuccess(List<ModeloFilme> livros) {
+                synchronized (todosResultados) {
+                    todosResultados.addAll(livros);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+            
+            @Override
+            public void onError(String error) {
+                synchronized (todosResultados) {
+                    android.util.Log.e("SelecaoObraActivity", "Erro ao buscar livros: " + error);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+        });
+        
+        // Buscar obras de arte
+        metManager.searchArtworks(termo, new MetManager.MetCallback<List<com.example.myapplication.model.MetArtwork>>() {
+            @Override
+            public void onSuccess(List<com.example.myapplication.model.MetArtwork> artworks) {
+                synchronized (todosResultados) {
+                    // Converter MetArtwork para ModeloFilme
+                    for (com.example.myapplication.model.MetArtwork artwork : artworks) {
+                        ModeloFilme modelo = new ModeloFilme(
+                            artwork.getObjectID(),
+                            artwork.getTitle(),
+                            artwork.getPrimaryImage(),
+                            artwork.getObjectDate(),
+                            artwork.getRating(),
+                            "artwork"
+                        );
+                        modelo.setVotos(artwork.getRatingCount());
+                        modelo.setOriginalId(String.valueOf(artwork.getObjectID()));
+                        todosResultados.add(modelo);
+                    }
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+            
+            @Override
+            public void onError(String error) {
+                synchronized (todosResultados) {
+                    android.util.Log.e("SelecaoObraActivity", "Erro ao buscar obras de arte: " + error);
+                    buscaCompletas[0]++;
+                    if (buscaCompletas[0] == totalBuscas) {
+                        combinarResultados.run();
+                    }
+                }
+            }
+        });
     }
 
     private void exibirResultados(List<ModeloFilme> resultados) {

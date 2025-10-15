@@ -54,7 +54,17 @@ public class AdapterResultadosBusca extends RecyclerView.Adapter<AdapterResultad
         // Carregar imagem da capa usando Glide
         String posterPath = filme.getPosterPath();
         if (posterPath != null && !posterPath.isEmpty()) {
-            String fullPosterUrl = "https://image.tmdb.org/t/p/w500" + posterPath;
+            String fullPosterUrl;
+            
+            // Verificar se é um livro do Google Books (URL completa) ou filme/série do TMDB (path relativo)
+            if (posterPath.startsWith("http")) {
+                // É um livro do Google Books - usar URL diretamente
+                fullPosterUrl = posterPath;
+            } else {
+                // É um filme/série do TMDB - construir URL completa
+                fullPosterUrl = "https://image.tmdb.org/t/p/w500" + posterPath;
+            }
+            
             Glide.with(context)
                 .load(fullPosterUrl)
                 .transition(DrawableTransitionOptions.withCrossFade())

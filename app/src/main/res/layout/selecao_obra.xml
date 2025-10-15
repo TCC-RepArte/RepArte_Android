@@ -137,6 +137,21 @@
                 android:clickable="true"
                 android:focusable="true" />
 
+            <TextView
+                android:id="@+id/filtro_artes"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/tag_background"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="Artes"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:fontFamily="@font/roboto_medium"
+                android:clickable="true"
+                android:focusable="true" />
+
         </LinearLayout>
     </HorizontalScrollView>
 

@@ -137,14 +137,21 @@ public class Tela_post extends AppCompatActivity {
 
     private void atualizarBotaoObra() {
         if (obraSelecionada != null) {
-            // Carregar o poster da obra selecionada
+            // Carregar o poster/capa da obra selecionada (TMDB relativo ou URL completa de Livros/MET)
             if (obraSelecionada.getPosterPath() != null && !obraSelecionada.getPosterPath().isEmpty()) {
-                String fullPosterUrl = "https://image.tmdb.org/t/p/w200" + obraSelecionada.getPosterPath();
+                String posterPath = obraSelecionada.getPosterPath();
+                String fullPosterUrl = posterPath.startsWith("http")
+                    ? posterPath
+                    : "https://image.tmdb.org/t/p/w200" + posterPath;
+
+                android.util.Log.d("Tela_post", "Carregando imagem da obra selecionada: tipo=" + obraSelecionada.getTipo() + ", url=" + fullPosterUrl);
+
                 Glide.with(this)
                     .load(fullPosterUrl)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .placeholder(R.drawable.avatar)
                     .error(R.drawable.avatar)
+                    .override(80, 80) // garantir tamanho do botão
                     .into(btnAdc);
             } else {
                 // Se não tiver poster, usar imagem padrão
