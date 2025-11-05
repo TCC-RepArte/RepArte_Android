@@ -539,22 +539,66 @@ public class ApiService {
         String url = BASE_URL + "buscar_todas_postagens.php";
         Log.d(TAG, "=== BUSCANDO TODAS AS POSTAGENS ===");
         Log.d(TAG, "URL: " + url);
+        Log.d(TAG, "Iniciando requisição GET...");
 
         Ion.with(context)
                 .load("GET", url)
                 .setHeader("Accept", "application/json")
+                .setHeader("Connection", "close")
                 .setTimeout(30000)
+                .followRedirect(true)
                 .asString()
                 .setCallback(new FutureCallback<String>() {
                     @Override
                     public void onCompleted(Exception e, String result) {
+                        Log.d(TAG, "=== CALLBACK RECEBIDO ===");
+                        Log.d(TAG, "Tempo da requisição: " + System.currentTimeMillis());
+                        
                         if (e != null) {
                             Log.e(TAG, "Erro ao buscar postagens: ", e);
+                            Log.e(TAG, "Tipo de erro: " + e.getClass().getSimpleName());
+                            Log.e(TAG, "Mensagem: " + e.getMessage());
+                            if (e.getCause() != null) {
+                                Log.e(TAG, "Causa: " + e.getCause().getMessage());
+                            }
                             callback.onCompleted(e, null);
                             return;
                         }
 
-                        Log.d(TAG, "Postagens encontradas: " + result);
+                        if (result == null) {
+                            Log.e(TAG, "Resposta é NULL!");
+                            Log.e(TAG, "O servidor não retornou nenhum dado");
+                            callback.onCompleted(new Exception("Resposta nula do servidor"), null);
+                            return;
+                        }
+
+                        if (result.isEmpty()) {
+                            Log.w(TAG, "Resposta vazia do servidor (tamanho: 0)");
+                            Log.w(TAG, "Isso indica que o PHP pode estar retornando string vazia");
+                            Log.w(TAG, "Verifique se há postagens no banco de dados");
+                            Log.w(TAG, "Ou se há erros no arquivo PHP que não estão sendo reportados");
+                            callback.onCompleted(null, result);
+                            return;
+                        }
+
+                        // Verificar se a resposta parece ser HTML (erro do servidor)
+                        if (result.trim().startsWith("<")) {
+                            Log.e(TAG, "Resposta parece ser HTML ao invés de JSON!");
+                            Log.e(TAG, "Primeiros 200 caracteres: " + result.substring(0, Math.min(200, result.length())));
+                            callback.onCompleted(new Exception("Servidor retornou HTML ao invés de JSON"), null);
+                            return;
+                        }
+
+                        Log.d(TAG, "Resposta recebida (tamanho: " + result.length() + " caracteres)");
+                        Log.d(TAG, "Primeiros 500 caracteres: " + result.substring(0, Math.min(500, result.length())));
+                        
+                        // Verificar se começa com JSON válido
+                        String trimmed = result.trim();
+                        if (!trimmed.startsWith("{") && !trimmed.startsWith("[")) {
+                            Log.w(TAG, "Resposta não parece ser JSON válido (não começa com { ou [)");
+                            Log.w(TAG, "Primeiros caracteres: " + trimmed.substring(0, Math.min(50, trimmed.length())));
+                        }
+                        
                         callback.onCompleted(null, result);
                     }
                 });
@@ -566,17 +610,17 @@ public class ApiService {
             return;
         }
 
-        // TEMPORÁRIO: Usar arquivo de teste para debug
-        String url = BASE_URL + "teste_postagens.php";
-        Log.d(TAG, "=== BUSCANDO POSTAGENS DO USUÁRIO (TESTE) ===");
+        String url = BASE_URL + "buscar_postagens_usuario.php?user_id=" + userId;
+        Log.d(TAG, "=== BUSCANDO POSTAGENS DO USUÁRIO ===");
         Log.d(TAG, "URL: " + url);
         Log.d(TAG, "ID do Usuário: " + userId);
-        Log.d(TAG, "USANDO ARQUIVO DE TESTE PARA DEBUG!");
 
         Ion.with(context)
                 .load("GET", url)
                 .setHeader("Accept", "application/json")
+                .setHeader("Connection", "close")
                 .setTimeout(30000)
+                .followRedirect(true)
                 .asString()
                 .setCallback(new FutureCallback<String>() {
                     @Override

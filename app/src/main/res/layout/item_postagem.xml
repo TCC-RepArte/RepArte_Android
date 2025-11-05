@@ -1,206 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="@color/white">
+    android:minHeight="203dp"
+    android:layout_marginTop="24dp"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/div_teste1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <!-- View inferior (rodapé) -->
+    <View
+        android:id="@+id/view3"
+        android:layout_width="0dp"
+        android:layout_height="39dp"
+        android:background="@drawable/div_teste2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Foto do usuário -->
+
+    <!-- Nome do usuário -->
+
+    <ImageView
+        android:id="@+id/foto_usuario"
+        android:layout_width="56dp"
+        android:layout_height="74dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/border"
+        android:clickable="true"
+        android:contentDescription="Foto do usuário"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/user_white" />
+
+    <!-- Título da postagem (se necessário) -->
+
+    <TextView
+        android:id="@+id/nome_usuario"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:focusable="true"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Usuário"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/foto_usuario"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Cabeçalho da postagem com foto e nome do usuário -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
+    <TextView
+        android:id="@+id/texto_postagem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_medium"
+        android:maxLines="6"
+        android:text="Texto da postagem..."
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/view3"
+        app:layout_constraintEnd_toStartOf="@+id/poster_obra"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/foto_usuario"
+        app:layout_constraintVertical_bias="0.517" />
 
-            <ImageView
-                android:id="@+id/foto_usuario"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/avatar"
-                android:scaleType="centerCrop"
-                android:background="@drawable/border"
-                android:clickable="true"
-                android:focusable="true"
-                android:contentDescription="Foto do usuário" />
+    <TextView
+        android:id="@+id/titulo_postagem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/roboto_medium"
+        android:textStyle="bold"
+        android:text="Título"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/poster_obra"
+        app:layout_constraintTop_toBottomOf="@+id/nome_usuario" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="12dp">
+    <!-- Poster da obra -->
+    <ImageView
+        android:id="@+id/poster_obra"
+        android:layout_width="88dp"
+        android:layout_height="151dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="Poster da obra"
+        app:srcCompat="@drawable/user_white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/nome_usuario"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nome do Usuário"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:fontFamily="@font/roboto_medium" />
+    <!-- Título da obra (se necessário) -->
+    <TextView
+        android:id="@+id/titulo_obra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Obra"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/poster_obra"
+        app:layout_constraintTop_toBottomOf="@+id/poster_obra" />
 
-                <TextView
-                    android:id="@+id/data_criacao"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="há 2 horas"
-                    android:textSize="12sp"
-                    android:textColor="@color/gray"
-                    android:fontFamily="@font/roboto_light" />
+    <!-- Data de criação -->
+    <TextView
+        android:id="@+id/data_criacao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="há 2h"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        android:alpha="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/texto_postagem"
+        app:layout_constraintBottom_toTopOf="@+id/view3" />
 
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Título da postagem -->
-        <TextView
-            android:id="@+id/titulo_postagem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Título da Postagem"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="@font/roboto_medium" />
-
-        <!-- Texto da postagem -->
-        <TextView
-            android:id="@+id/texto_postagem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Texto da postagem aqui..."
-            android:textSize="14sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="16dp"
-            android:lineSpacingExtra="2dp"
-            android:fontFamily="@font/roboto_light" />
-
-        <!-- Seção da obra -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/div_teste1"
-            android:padding="12dp"
-            android:layout_marginBottom="16dp">
-
-            <ImageView
-                android:id="@+id/poster_obra"
-                android:layout_width="60dp"
-                android:layout_height="90dp"
-                android:src="@drawable/avatar"
-                android:scaleType="centerCrop"
-                android:background="@drawable/border"
-                android:clickable="true"
-                android:focusable="true"
-                android:contentDescription="Poster da obra" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="12dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sobre a obra:"
-                    android:textSize="12sp"
-                    android:textColor="@color/gray"
-                    android:layout_marginBottom="4dp"
-                    android:fontFamily="@font/roboto_light" />
-
-                <TextView
-                    android:id="@+id/titulo_obra"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Título da Obra"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:fontFamily="@font/roboto_medium" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Rodapé com curtidas e comentários -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginEnd="24dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/foto1"
-                    android:contentDescription="Curtidas" />
-
-                <TextView
-                    android:id="@+id/curtidas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textSize="14sp"
-                    android:textColor="@color/gray"
-                    android:layout_marginStart="6dp"
-                    android:fontFamily="@font/roboto_medium" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/foto2"
-                    android:contentDescription="Comentários" />
-
-                <TextView
-                    android:id="@+id/comentarios"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textSize="14sp"
-                    android:textColor="@color/gray"
-                    android:layout_marginStart="6dp"
-                    android:fontFamily="@font/roboto_medium" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

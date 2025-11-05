@@ -8,7 +8,95 @@
     android:background="@drawable/my_gradiant4"
     tools:context=".Login">
 
-    <ScrollView
+    <!-- Menu superior compacto flutuante (aparece ao scrollar para cima) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/menu_compacto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/my_gradiant4"
+        android:elevation="8dp"
+        android:visibility="gone"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Logo compacto -->
+        <LinearLayout
+            android:id="@+id/linearLayout_compacto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.5">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hammersmith_one"
+                android:text="Rep"
+                android:textColor="#FF5722"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hammersmith_one"
+                android:text="Arte"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/foto2" />
+        </LinearLayout>
+
+        <!-- Barra de pesquisa compacta -->
+        <EditText
+            android:id="@+id/pesquisar_compacto"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/search_bar"
+            android:hint="Pesquisar..."
+            android:textColorHint="#B9B0B0"
+            android:textColor="@color/white"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textSize="12sp"
+            android:drawableStart="@drawable/search_icon"
+            android:drawablePadding="6dp"
+            android:clickable="true"
+            android:focusable="false"
+            android:inputType="text"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout_compacto"
+            app:layout_constraintEnd_toStartOf="@+id/perfil_compacto"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- Perfil compacto -->
+        <ImageView
+            android:id="@+id/perfil_compacto"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:background="@drawable/border"
+            android:contentDescription="Perfil"
+            app:srcCompat="@drawable/user_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- ScrollView para conteúdo inicial (menu superior, trending, amigos) -->
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_content"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -435,7 +523,7 @@
         android:layout_marginEnd="35dp"
         android:layout_marginBottom="33dp"
         android:background="@color/linhas"
-        app:layout_constraintBottom_toTopOf="@+id/post1"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_postagens"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
@@ -443,7 +531,7 @@
         app:layout_constraintVertical_bias="0.92" />
 
     <!--div/container/view da primeira postagem-->
-
+<!--
     <View
         android:id="@+id/post1"
         android:layout_width="396dp"
@@ -546,25 +634,22 @@
         app:layout_constraintTop_toTopOf="@+id/post1"
         app:layout_constraintVertical_bias="0.095"
         app:srcCompat="@drawable/user_white" />
-
+-->
     <!-- RecyclerView para as postagens -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_postagens"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:background="@android:color/transparent"
+        android:nestedScrollingEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linha_view"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linha_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <!--menu inferior... elementos tbd, mas a base fica tipo assim: -->
     <LinearLayout

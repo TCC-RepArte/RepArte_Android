@@ -55,20 +55,20 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
         //id
         perfil = findViewById(R.id.perfil);
         pesquisar = findViewById(R.id.pesquisar);
-        vermais = findViewById(R.id.vermais1);
+        // vermais = findViewById(R.id.vermais1);
         home_img = findViewById(R.id.home_img);
         lapis_img = findViewById(R.id.lapis_img);
         sino_img = findViewById(R.id.sino_txt);
         
         // Debug: verificar se o botão foi encontrado
-        if (vermais == null) {
-            Log.e("Tela", "ERRO: Botão vermais1 não foi encontrado!");
-            Toast.makeText(this, "Erro: Botão não encontrado", Toast.LENGTH_LONG).show();
-        } else {
-            Log.d("Tela", "Botão vermais1 encontrado com sucesso!");
-            Log.d("Tela", "Botão é clicável: " + vermais.isClickable());
-            Log.d("Tela", "Botão é focado: " + vermais.isFocusable());
-        }
+      //  if (vermais == null) {
+        //    Log.e("Tela", "ERRO: Botão vermais1 não foi encontrado!");
+      //      Toast.makeText(this, "Erro: Botão não encontrado", Toast.LENGTH_LONG).show();
+      //  } else {
+      //      Log.d("Tela", "Botão vermais1 encontrado com sucesso!");
+     //       Log.d("Tela", "Botão é clicável: " + vermais.isClickable());
+      //      Log.d("Tela", "Botão é focado: " + vermais.isFocusable());
+     //   }
 
         // Anima os elementos da tela principal
         animateMainScreenElements(perfil, pesquisar);
@@ -83,12 +83,12 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
         inicializarRecyclerView();
 
         //evento botao ver mais
-        if (vermais != null) {
-            vermais.setOnClickListener(view -> {
-                Intent intent = new Intent(Tela.this, Postagem.class);
-                startActivity(intent);
-            });
-        }
+      //  if (vermais != null) {
+        //    vermais.setOnClickListener(view -> {
+         //       Intent intent = new Intent(Tela.this, Postagem.class);
+        //        startActivity(intent);
+          //  });
+    //    }
 
         // Seleção inicial: Home ativo (quadrado laranja, ícone branco)
         updateBottomMenuSelection(R.id.home_img);
@@ -97,7 +97,12 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
         if (home_img != null) {
             home_img.setOnClickListener(view -> {
                 updateBottomMenuSelection(R.id.home_img);
-                // Já estamos na home; manter na mesma tela
+                // Scroll para o topo da tela
+                androidx.core.widget.NestedScrollView scrollView = findViewById(R.id.scroll_content);
+                if (scrollView != null) {
+                    scrollView.smoothScrollTo(0, 0);
+                    recyclerViewPostagens.smoothScrollToPosition(0);
+                }
             });
         }
 
@@ -148,6 +153,7 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
             // Carregar todas as postagens para o feed principal
             carregarTodasPostagens();
 
+            // Carregar foto no perfil principal
             Ion.with(this)
                     .load(fotoUrl)
                     .withBitmap()
@@ -156,7 +162,6 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
                     .transform(new Transform() {
                         @Override
                         public Bitmap transform(Bitmap b) {
-
                             return ImageUtil.createCircleBitmap(b);
                         }
 
@@ -173,9 +178,35 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
                             Log.d("Perfil", "Imagem circular carregada com sucesso");
                         }
                     });
+            
+            // Carregar foto no menu compacto também
+            ImageView perfilCompacto = findViewById(R.id.perfil_compacto);
+            if (perfilCompacto != null) {
+                Ion.with(this)
+                        .load(fotoUrl)
+                        .withBitmap()
+                        .placeholder(R.drawable.user_white)
+                        .error(R.drawable.user_white)
+                        .transform(new Transform() {
+                            @Override
+                            public Bitmap transform(Bitmap b) {
+                                return ImageUtil.createCircleBitmap(b);
+                            }
+
+                            @Override
+                            public String key() {
+                                return "circleTransformProfileCompact";
+                            }
+                        })
+                        .intoImageView(perfilCompacto);
+            }
         } else {
             Log.e("Perfil", "User ID é nulo, não foi possível carregar a foto.");
             perfil.setImageResource(R.drawable.user_white);
+            ImageView perfilCompacto = findViewById(R.id.perfil_compacto);
+            if (perfilCompacto != null) {
+                perfilCompacto.setImageResource(R.drawable.user_white);
+            }
         }
     }
 
@@ -346,52 +377,181 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
         
         recyclerViewPostagens.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewPostagens.setAdapter(postagemAdapter);
+        
+        // Desabilitar scroll do RecyclerView para permitir scroll unificado no NestedScrollView
+        recyclerViewPostagens.setNestedScrollingEnabled(false);
+        
+        // Configurar scroll listener para controlar visibilidade do menu compacto
+        configurarScrollListener();
+    }
+    
+    private void configurarScrollListener() {
+        androidx.core.widget.NestedScrollView scrollView = findViewById(R.id.scroll_content);
+        if (scrollView != null) {
+            View menuCompacto = findViewById(R.id.menu_compacto);
+            View menuSuperior = findViewById(R.id.menu_superior);
+            View trendingTitle = findViewById(R.id.trending_title);
+            View friendsTitle = findViewById(R.id.friends_title);
+            EditText pesquisarCompacto = findViewById(R.id.pesquisar_compacto);
+            ImageView perfilCompacto = findViewById(R.id.perfil_compacto);
+            EditText pesquisar = findViewById(R.id.pesquisar);
+            
+            scrollView.setOnScrollChangeListener(new androidx.core.widget.NestedScrollView.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(androidx.core.widget.NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    // Calcular altura do menu superior completo
+                    int alturaMenuSuperior = menuSuperior != null ? menuSuperior.getHeight() : 0;
+                    EditText pesquisarView = findViewById(R.id.pesquisar);
+                    int alturaPesquisar = pesquisarView != null ? pesquisarView.getHeight() : 0;
+                    int alturaTrending = trendingTitle != null ? trendingTitle.getTop() : 0;
+                    int threshold = alturaMenuSuperior + alturaPesquisar + 100; // Threshold para mostrar menu compacto
+                    
+                    // Mostrar menu compacto quando scrollar para baixo além do threshold
+                    if (scrollY > threshold && menuCompacto != null) {
+                        if (menuCompacto.getVisibility() != View.VISIBLE) {
+                            menuCompacto.setVisibility(View.VISIBLE);
+                            menuCompacto.animate().alpha(1f).setDuration(200).start();
+                        }
+                    } else if (scrollY <= threshold && menuCompacto != null) {
+                        if (menuCompacto.getVisibility() == View.VISIBLE) {
+                            menuCompacto.animate().alpha(0f).setDuration(200).withEndAction(() -> {
+                                menuCompacto.setVisibility(View.GONE);
+                            }).start();
+                        }
+                    }
+                }
+            });
+            
+            // Configurar eventos do menu compacto
+            if (pesquisarCompacto != null) {
+                pesquisarCompacto.setOnClickListener(v -> {
+                    Intent intent = new Intent(Tela.this, BuscaActivity.class);
+                    startActivity(intent);
+                });
+            }
+            
+            if (perfilCompacto != null) {
+                perfilCompacto.setOnClickListener(v -> {
+                    Intent intent = new Intent(Tela.this, ConfActivity.class);
+                    startActivity(intent);
+                });
+            }
+        }
     }
     
     private void carregarTodasPostagens() {
+        Log.d("Tela", "=== INICIANDO CARREGAMENTO DE POSTAGENS ===");
         apiService.buscarTodasPostagens(new com.koushikdutta.async.future.FutureCallback<String>() {
             @Override
             public void onCompleted(Exception e, String result) {
+                Log.d("Tela", "=== CALLBACK RECEBIDO NO CARREGAMENTO ===");
+                Log.d("Tela", "Exception: " + (e != null ? e.getMessage() : "null"));
+                Log.d("Tela", "Result: " + (result != null ? "não nulo (tamanho: " + result.length() + ")" : "null"));
+                
+                // Criar variável final para usar na lambda
+                final String finalResult;
+                if (result == null || result.isEmpty()) {
+                    if (result == null) {
+                        Log.e("Tela", "Result é NULL!");
+                    } else {
+                        Log.w("Tela", "Resposta vazia do servidor");
+                        Log.w("Tela", "Isso indica um problema no servidor PHP - ele deveria retornar JSON válido");
+                        Log.w("Tela", "Aplicando fallback: retornando JSON vazio válido");
+                        Log.w("Tela", "IMPORTANTE: Corrija o arquivo buscar_todas_postagens.php no servidor!");
+                    }
+                    // Fallback: criar JSON vazio válido quando servidor não responde corretamente
+                    finalResult = "{\"success\":true,\"postagens\":[],\"total\":0}";
+                } else {
+                    finalResult = result;
+                }
+                
                 runOnUiThread(() -> {
                     if (e != null) {
                         Log.e("Tela", "Erro ao carregar postagens: " + e.getMessage());
-                        Toast.makeText(Tela.this, "Erro ao carregar postagens", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                        Toast.makeText(Tela.this, "Erro ao carregar postagens: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         return;
                     }
                     
-                    if (result != null && !result.isEmpty()) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(result);
-                            List<ModeloPostagem> novasPostagens = new ArrayList<>();
-                            
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject postagemJson = jsonArray.getJSONObject(i);
-                                ModeloPostagem postagem = new ModeloPostagem(
-                                    postagemJson.getString("id"),
-                                    postagemJson.getString("titulo"),
-                                    postagemJson.getString("texto"),
-                                    postagemJson.getString("id_usuario"),
-                                    postagemJson.getString("nome_usuario"),
-                                    postagemJson.getString("foto_usuario"),
-                                    postagemJson.getString("id_obra"),
-                                    postagemJson.getString("titulo_obra"),
-                                    postagemJson.getString("poster_obra"),
-                                    postagemJson.getString("data_criacao")
-                                );
-                                novasPostagens.add(postagem);
-                            }
-                            
-                            listaPostagens.clear();
-                            listaPostagens.addAll(novasPostagens);
-                            postagemAdapter.notifyDataSetChanged();
-                            
-                            Log.d("Tela", "Postagens carregadas: " + novasPostagens.size());
-                            
-                        } catch (Exception jsonEx) {
-                            Log.e("Tela", "Erro ao processar JSON das postagens: " + jsonEx.getMessage());
+                    if (finalResult == null || finalResult.isEmpty()) {
+                        Log.e("Tela", "Result é NULL ou vazio após fallback!");
+                        Toast.makeText(Tela.this, "Resposta nula do servidor", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    
+                    if (finalResult.equals("{\"success\":true,\"postagens\":[],\"total\":0}") && (result == null || result.isEmpty())) {
+                        Toast.makeText(Tela.this, "Servidor retornou resposta vazia. Verifique o PHP.", Toast.LENGTH_LONG).show();
+                    }
+                    
+                    Log.d("Tela", "Processando resposta JSON...");
+                    Log.d("Tela", "Resposta completa: " + finalResult);
+                    
+                    try {
+                        // O backend retorna um objeto JSON com a chave "postagens"
+                        JSONObject root = new JSONObject(finalResult);
+                        Log.d("Tela", "JSON root parseado com sucesso");
+                        
+                        // Verificar se a resposta foi bem-sucedida
+                        boolean success = root.optBoolean("success", false);
+                        Log.d("Tela", "Success: " + success);
+                        
+                        if (!success) {
+                            String error = root.optString("error", "Erro desconhecido");
+                            Log.e("Tela", "Erro no backend: " + error);
+                            Toast.makeText(Tela.this, "Erro: " + error, Toast.LENGTH_SHORT).show();
+                            return;
                         }
-                    } else {
-                        Log.d("Tela", "Nenhuma postagem encontrada");
+                        
+                        // Extrair o array de postagens
+                        JSONArray jsonArray = root.optJSONArray("postagens");
+                        if (jsonArray == null) {
+                            Log.e("Tela", "Campo 'postagens' não encontrado na resposta");
+                            // Log das chaves disponíveis
+                            java.util.Iterator<String> keys = root.keys();
+                            StringBuilder chaves = new StringBuilder();
+                            while (keys.hasNext()) {
+                                chaves.append(keys.next()).append(", ");
+                            }
+                            Log.e("Tela", "Chaves disponíveis: " + chaves.toString());
+                            Toast.makeText(Tela.this, "Formato de resposta inválido", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        
+                        Log.d("Tela", "Array de postagens encontrado com " + jsonArray.length() + " itens");
+                        List<ModeloPostagem> novasPostagens = new ArrayList<>();
+                        
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject postagemJson = jsonArray.getJSONObject(i);
+                            // Criar postagem apenas com os dados que vêm do PHP (conforme criar_postagens.php)
+                            ModeloPostagem postagem = new ModeloPostagem(
+                                postagemJson.getString("id"),
+                                postagemJson.getString("titulo"),
+                                postagemJson.getString("texto"),
+                                postagemJson.getString("id_usuario"),
+                                null, // nome_usuario - não vem mais do PHP, será buscado separadamente se necessário
+                                null, // foto_usuario - não vem mais do PHP, será buscado separadamente se necessário
+                                postagemJson.getString("id_obra"),
+                                null, // titulo_obra - não vem mais do PHP, será buscado separadamente se necessário
+                                null, // poster_obra - não vem mais do PHP, será buscado separadamente se necessário
+                                postagemJson.optString("data_post", postagemJson.optString("data_criacao", "")) // data_post ou data_criacao
+                            );
+                            novasPostagens.add(postagem);
+                        }
+                        
+                        listaPostagens.clear();
+                        listaPostagens.addAll(novasPostagens);
+                        postagemAdapter.notifyDataSetChanged();
+                        
+                        Log.d("Tela", "Postagens carregadas com sucesso: " + novasPostagens.size());
+                        if (novasPostagens.size() > 0) {
+                            Toast.makeText(Tela.this, "Carregadas " + novasPostagens.size() + " postagens", Toast.LENGTH_SHORT).show();
+                        }
+                        
+                    } catch (Exception jsonEx) {
+                        Log.e("Tela", "Erro ao processar JSON das postagens: " + jsonEx.getMessage());
+                        Log.e("Tela", "Resposta recebida: " + finalResult);
+                        jsonEx.printStackTrace();
+                        Toast.makeText(Tela.this, "Erro ao processar resposta: " + jsonEx.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -411,22 +571,40 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
                     
                     if (result != null && !result.isEmpty()) {
                         try {
-                            JSONArray jsonArray = new JSONArray(result);
+                            // O backend retorna um objeto JSON com a chave "postagens"
+                            JSONObject root = new JSONObject(result);
+                            
+                            // Verificar se a resposta foi bem-sucedida
+                            if (!root.optBoolean("success", false)) {
+                                String error = root.optString("error", "Erro desconhecido");
+                                Log.e("Tela", "Erro no backend: " + error);
+                                Toast.makeText(Tela.this, "Erro: " + error, Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            
+                            // Extrair o array de postagens
+                            JSONArray jsonArray = root.optJSONArray("postagens");
+                            if (jsonArray == null) {
+                                Log.e("Tela", "Campo 'postagens' não encontrado na resposta");
+                                return;
+                            }
+                            
                             List<ModeloPostagem> novasPostagens = new ArrayList<>();
                             
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject postagemJson = jsonArray.getJSONObject(i);
+                                // Criar postagem apenas com os dados que vêm do PHP (conforme criar_postagens.php)
                                 ModeloPostagem postagem = new ModeloPostagem(
                                     postagemJson.getString("id"),
                                     postagemJson.getString("titulo"),
                                     postagemJson.getString("texto"),
                                     postagemJson.getString("id_usuario"),
-                                    postagemJson.getString("nome_usuario"),
-                                    postagemJson.getString("foto_usuario"),
+                                    null, // nome_usuario - não vem mais do PHP, será buscado separadamente se necessário
+                                    null, // foto_usuario - não vem mais do PHP, será buscado separadamente se necessário
                                     postagemJson.getString("id_obra"),
-                                    postagemJson.getString("titulo_obra"),
-                                    postagemJson.getString("poster_obra"),
-                                    postagemJson.getString("data_criacao")
+                                    null, // titulo_obra - não vem mais do PHP, será buscado separadamente se necessário
+                                    null, // poster_obra - não vem mais do PHP, será buscado separadamente se necessário
+                                    postagemJson.optString("data_post", postagemJson.optString("data_criacao", "")) // data_post ou data_criacao
                                 );
                                 novasPostagens.add(postagem);
                             }
@@ -439,9 +617,11 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
                             
                         } catch (Exception jsonEx) {
                             Log.e("Tela", "Erro ao processar JSON das postagens: " + jsonEx.getMessage());
+                            Log.e("Tela", "Resposta recebida: " + result);
+                            jsonEx.printStackTrace();
                         }
                     } else {
-                        Log.d("Tela", "Nenhuma postagem encontrada");
+                        Log.d("Tela", "Resposta vazia do servidor");
                     }
                 });
             }
