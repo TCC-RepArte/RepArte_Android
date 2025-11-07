@@ -9,8 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.example.myapplication.api.ApiService;
 import com.koushikdutta.async.future.FutureCallback;
@@ -28,7 +28,7 @@ public class Alt_perfil extends AppCompatActivity {
     private EditText nomeEditText;
     private EditText descEditText;
     private Button salvarButton;
-    private ImageButton btnVoltar;
+    private LinearLayout btnVoltar;
     private Uri selectedImageUri;
     private ApiService apiService;
 
@@ -103,9 +103,10 @@ public class Alt_perfil extends AppCompatActivity {
         salvarButton.setOnClickListener(v -> salvarPerfil());
 
         btnVoltar.setOnClickListener(v -> {
-            Intent intent = new Intent(Alt_perfil.this, Tela.class);
+            Intent intent = new Intent(Alt_perfil.this, ConfActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            finish();
         });
 
 

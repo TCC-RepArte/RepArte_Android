@@ -38,6 +38,7 @@ public class ConfActivity extends AppCompatActivity {
         profile_role = findViewById(R.id.profile_role);
 
         // Preparar cliques dos itens
+        LinearLayout cardProfile = findViewById(R.id.card_profile);
         LinearLayout profileDetails = findViewById(R.id.option_profile_details);
         LinearLayout password = findViewById(R.id.option_password);
         LinearLayout notifications = findViewById(R.id.option_notifications);
@@ -46,10 +47,20 @@ public class ConfActivity extends AppCompatActivity {
         LinearLayout help = findViewById(R.id.option_help);
         LinearLayout deactivate = findViewById(R.id.option_deactivate);
 
-        profileDetails.setOnClickListener(new View.OnClickListener() {
+        // Card de perfil (primeiro card com foto, nome, etc) -> ExibirPerfil
+        cardProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ConfActivity.this, ExibirPerfil.class);
+                startActivity(intent);
+            }
+        });
+
+        // Detalhes do perfil -> Alt_perfil
+        profileDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ConfActivity.this, Alt_perfil.class);
                 startActivity(intent);
             }
         });
@@ -62,7 +73,9 @@ public class ConfActivity extends AppCompatActivity {
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navegação futura: Notificações
+                Intent intent = new Intent(ConfActivity.this, NotificacoesActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
         about.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +97,9 @@ public class ConfActivity extends AppCompatActivity {
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navegação futura: Ajuda/FAQ
+                Intent intent = new Intent(ConfActivity.this, AjudaFaqActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
         deactivate.setOnClickListener(new View.OnClickListener() {

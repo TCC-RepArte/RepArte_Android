@@ -31,14 +31,24 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageButton
+            <LinearLayout
                 android:id="@+id/btn_Voltar"
-                android:layout_width="80dp"
-                android:layout_height="90dp"
-                android:background="@android:color/transparent"
-                android:contentDescription="Voltar"
-                android:scaleType="centerInside"
-                android:src="@drawable/seta" />
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:background="@drawable/border"
+                android:backgroundTint="#2E1A47"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_arrow_back"
+                    android:contentDescription="Botão voltar"
+                    app:tint="@color/white" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <!-- Título Centralizado -->

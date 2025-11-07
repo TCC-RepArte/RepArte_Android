@@ -120,7 +120,8 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
         if (sino_img != null) {
             sino_img.setOnClickListener(view -> {
                 updateBottomMenuSelection(R.id.sino_txt);
-                Toast.makeText(Tela.this, "Notificações em breve", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Tela.this, NotificacoesActivity.class);
+                startActivity(intent);
                 overridePendingTransition(R.anim.fade_slide_in_right, R.anim.fade_slide_out_left);
             });
         }

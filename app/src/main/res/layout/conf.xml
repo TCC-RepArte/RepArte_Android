@@ -14,6 +14,7 @@
 
         <!-- Card de perfil -->
         <LinearLayout
+            android:id="@+id/card_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

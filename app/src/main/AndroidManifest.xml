@@ -97,6 +97,12 @@
         <activity
             android:name=".AcessibilidadeActivity"
             android:exported="true" /> <!-- Tela de acessibilidade -->
+        <activity
+            android:name=".NotificacoesActivity"
+            android:exported="true" /> <!-- Tela de notificações -->
+        <activity
+            android:name=".AjudaFaqActivity"
+            android:exported="true" /> <!-- Tela de Ajuda/FAQ -->
 
         <activity android:name=".ForgotRequestActivity" android:exported="true" />
         <activity android:name=".ForgotOtpActivity" android:exported="true" />

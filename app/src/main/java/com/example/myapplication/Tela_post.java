@@ -102,6 +102,16 @@ public class Tela_post extends AppCompatActivity {
                 finish();
             });
         }
+
+        // Evento do botão notificações (sino)
+        ImageView sinoImg = findViewById(R.id.sino_txt);
+        if (sinoImg != null) {
+            sinoImg.setOnClickListener(view -> {
+                Intent intent = new Intent(Tela_post.this, NotificacoesActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_slide_in_right, R.anim.fade_slide_out_left);
+            });
+        }
     }
 
     private void enviarPost(String titulo, String texto) {
