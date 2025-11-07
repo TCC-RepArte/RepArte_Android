@@ -7,7 +7,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button; // Para o botão Editar Perfil
-import android.widget.ImageButton; // Para o botão Voltar
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ImageView;
 import com.example.myapplication.api.ApiService;
@@ -17,16 +17,18 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.widget.NestedScrollView;
 
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.bitmap.Transform;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONArray;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -43,8 +45,11 @@ public class ExibirPerfil extends AppCompatActivity {
     private Button btnSalvar;
     private View indicatorView;
     private ConstraintLayout constraintLayout;
+    private ConstraintLayout cardContentLayout;
+    private ConstraintLayout profileScrollContainer;
+    private NestedScrollView scrollContent;
 
-    private ImageButton btnVoltar;
+    private LinearLayout btnVoltar;
     
     // Variáveis para postagens
     private RecyclerView recyclerViewPostagens;
@@ -53,6 +58,7 @@ public class ExibirPerfil extends AppCompatActivity {
     private String userIdAtual;
     private TextView exibirNome;
     private TextView exibirUser;
+    private TextView textViewBio;
 
 
     @Override
@@ -63,6 +69,9 @@ public class ExibirPerfil extends AppCompatActivity {
         apiService = new ApiService(this);
 
         constraintLayout = findViewById(R.id.main);
+        cardContentLayout = findViewById(R.id.card_content);
+        profileScrollContainer = findViewById(R.id.profile_scroll_container);
+        scrollContent = findViewById(R.id.scroll_content);
         textViewPostagem = findViewById(R.id.textViewPostagem);
         textViewComentarios = findViewById(R.id.textViewComentarios);
         textViewSobreMim = findViewById(R.id.textViewSobreMim);
@@ -71,6 +80,7 @@ public class ExibirPerfil extends AppCompatActivity {
         btnSalvar = findViewById(R.id.btnSalvar);
         exibirNome = findViewById(R.id.exibirNome);
         exibirUser = findViewById(R.id.exibirUser);
+        textViewBio = findViewById(R.id.textViewBio);
 
         btnVoltar = findViewById(R.id.btn_Voltar);
 
@@ -145,27 +155,39 @@ public class ExibirPerfil extends AppCompatActivity {
             Log.e(TAG, "Botão 'btnSalvar' não encontrado para configurar o OnClickListener.");
         }
 
-        btnVoltar.setOnClickListener(v -> {
-            // Aplica animação de clique
-            AppAnimationUtils.animateButtonClick(btnVoltar, () -> {
-                Intent intent = new Intent(ExibirPerfil.this, ConfActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        if (btnVoltar != null) {
+            btnVoltar.setOnClickListener(v -> {
+                // Aplica animação de clique
+                AppAnimationUtils.animateButtonClick(btnVoltar, () -> {
+                    Intent intent = new Intent(ExibirPerfil.this, ConfActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                });
             });
-        });
+        } else {
+            Log.w(TAG, "Botão 'btnVoltar' não encontrado!");
+        }
 
 
         // Configura o estado inicial e listeners
         if (textViewPostagem != null) {
-            if (indicatorView != null) {
-                updateIndicator(textViewPostagem);
-            }
+            // Aguarda o layout estar pronto antes de atualizar o indicador
+            textViewPostagem.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (indicatorView != null) {
+                        updateIndicator(textViewPostagem);
+                        updateTabColors(textViewPostagem);
+                    }
+                }
+            });
             textViewPostagem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Aplica animação de bounce para feedback visual
                     AppAnimationUtils.animateBounce(textViewPostagem);
                     updateIndicator(textViewPostagem);
+                    updateTabColors(textViewPostagem);
                     // Mostrar postagens do usuário
                     mostrarPostagensUsuario();
                 }
@@ -181,6 +203,7 @@ public class ExibirPerfil extends AppCompatActivity {
                     // Aplica animação de bounce para feedback visual
                     AppAnimationUtils.animateBounce(textViewComentarios);
                     updateIndicator(textViewComentarios);
+                    updateTabColors(textViewComentarios);
                     // TODO: Lógica para mostrar conteúdo de Comentários
                 }
             });
@@ -195,6 +218,7 @@ public class ExibirPerfil extends AppCompatActivity {
                     // Aplica animação de bounce para feedback visual
                     AppAnimationUtils.animateBounce(textViewSobreMim);
                     updateIndicator(textViewSobreMim);
+                    updateTabColors(textViewSobreMim);
                     // TODO: Lógica para mostrar conteúdo de Sobre Mim
                 }
             });
@@ -204,7 +228,8 @@ public class ExibirPerfil extends AppCompatActivity {
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            // Aplica padding apenas no topo para a sombra superior, sem padding no bottom
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
 
@@ -229,6 +254,12 @@ public class ExibirPerfil extends AppCompatActivity {
             
             recyclerViewPostagens.setLayoutManager(new LinearLayoutManager(this));
             recyclerViewPostagens.setAdapter(postagemAdapter);
+            
+            // Desabilitar scroll do RecyclerView para permitir scroll unificado no NestedScrollView
+            recyclerViewPostagens.setNestedScrollingEnabled(false);
+            
+            // Garantir que o RecyclerView seja transparente para mostrar o gradiente do container
+            recyclerViewPostagens.setBackgroundColor(android.graphics.Color.TRANSPARENT);
         }
     }
     
@@ -253,7 +284,45 @@ public class ExibirPerfil extends AppCompatActivity {
                         if (result != null && !result.isEmpty()) {
                             try {
                                 Log.d(TAG, "Tentando processar JSON da resposta...");
-                                JSONArray jsonArray = new JSONArray(result);
+                                
+                                JSONArray jsonArray = null;
+                                
+                                // Tenta primeiro como objeto JSON (formato com chave "postagens")
+                                try {
+                                    JSONObject root = new JSONObject(result);
+                                    
+                                    // Verifica se a resposta foi bem-sucedida
+                                    if (!root.optBoolean("success", true)) {
+                                        String error = root.optString("error", "Erro desconhecido");
+                                        Log.e(TAG, "Erro no backend: " + error);
+                                        Toast.makeText(ExibirPerfil.this, "Erro: " + error, Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    
+                                    // Extrai o array de postagens
+                                    jsonArray = root.optJSONArray("postagens");
+                                    if (jsonArray == null) {
+                                        // Se não tem chave "postagens", tenta como array direto
+                                        Log.d(TAG, "Campo 'postagens' não encontrado, tentando como array direto...");
+                                        jsonArray = new JSONArray(result);
+                                    }
+                                } catch (JSONException jsonEx) {
+                                    // Se falhar como objeto, tenta como array direto
+                                    Log.d(TAG, "Não é objeto JSON, tentando como array direto...");
+                                    try {
+                                        jsonArray = new JSONArray(result);
+                                    } catch (JSONException jsonEx2) {
+                                        Log.e(TAG, "Erro ao processar JSON: " + jsonEx2.getMessage());
+                                        Toast.makeText(ExibirPerfil.this, "Erro ao processar resposta do servidor", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                }
+                                
+                                if (jsonArray == null) {
+                                    Log.e(TAG, "Não foi possível processar a resposta como JSON");
+                                    return;
+                                }
+                                
                                 Log.d(TAG, "JSON processado com sucesso. Número de postagens: " + jsonArray.length());
                                 
                                 List<ModeloPostagem> novasPostagens = new ArrayList<>();
@@ -265,12 +334,12 @@ public class ExibirPerfil extends AppCompatActivity {
                                         postagemJson.getString("titulo"),
                                         postagemJson.getString("texto"),
                                         postagemJson.getString("id_usuario"),
-                                        postagemJson.getString("nome_usuario"),
-                                        postagemJson.getString("foto_usuario"),
+                                        postagemJson.optString("nome_usuario", null),
+                                        postagemJson.optString("foto_usuario", null),
                                         postagemJson.getString("id_obra"),
-                                        postagemJson.getString("titulo_obra"),
-                                        postagemJson.getString("poster_obra"),
-                                        postagemJson.getString("data_criacao")
+                                        postagemJson.optString("titulo_obra", null),
+                                        postagemJson.optString("poster_obra", null),
+                                        postagemJson.optString("data_criacao", postagemJson.optString("data_post", ""))
                                     );
                                     novasPostagens.add(postagem);
                                 }
@@ -285,17 +354,41 @@ public class ExibirPerfil extends AppCompatActivity {
                                     listaPostagens.addAll(novasPostagens);
                                     postagemAdapter.notifyDataSetChanged();
                                     
+                                    // Garantir que o background do gradiente seja mantido
+                                    if (constraintLayout != null) {
+                                        constraintLayout.setBackgroundResource(R.drawable.my_gradiant4);
+                                    }
+                                    if (scrollContent != null) {
+                                        scrollContent.setBackgroundResource(R.drawable.my_gradiant4);
+                                    }
+                                    if (profileScrollContainer != null) {
+                                        profileScrollContainer.setBackgroundResource(R.drawable.my_gradiant4);
+                                    }
+                                    if (recyclerViewPostagens != null) {
+                                        recyclerViewPostagens.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+                                    }
+                                    
                                     Log.d(TAG, "Postagens do usuário carregadas: " + novasPostagens.size());
                                     Log.d(TAG, "Adapter notificado da mudança");
+                                    
+                                    if (novasPostagens.size() == 0) {
+                                        Log.d(TAG, "Usuário não possui postagens ainda");
+                                    }
                                 } else {
                                     Log.e(TAG, "ERRO: Lista ou adapter são nulos!");
                                 }
                                 
                             } catch (Exception jsonEx) {
                                 Log.e(TAG, "Erro ao processar JSON das postagens: " + jsonEx.getMessage());
+                                jsonEx.printStackTrace();
+                                Toast.makeText(ExibirPerfil.this, "Erro ao processar postagens", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             Log.d(TAG, "Nenhuma postagem encontrada para o usuário");
+                            if (listaPostagens != null && postagemAdapter != null) {
+                                listaPostagens.clear();
+                                postagemAdapter.notifyDataSetChanged();
+                            }
                         }
                     });
                 }
@@ -354,50 +447,82 @@ public class ExibirPerfil extends AppCompatActivity {
 
     private void updateIndicator(TextView selectedTextView) {
         // Verificações de nulo para segurança
-        if (indicatorView == null || selectedTextView == null || constraintLayout == null) {
+        if (indicatorView == null || selectedTextView == null || cardContentLayout == null) {
             Log.w(TAG, "updateIndicator: Uma ou mais Views são nulas! Não é possível atualizar o indicador.");
             return;
         }
 
-        ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone(constraintLayout);
+        // Aguarda o layout estar medido antes de calcular posições
+        selectedTextView.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // Como o textView está dentro de um LinearLayout, calculamos a posição relativa
+                    View parent = (View) selectedTextView.getParent();
+                    if (parent == null) {
+                        Log.w(TAG, "updateIndicator: Parent do TextView é nulo!");
+                        return;
+                    }
 
-        // 1. Conectar o TOPO do 'indicatorView' à BASE do 'selectedTextView'
-        constraintSet.connect(
-                indicatorView.getId(),
-                ConstraintSet.TOP,
-                selectedTextView.getId(),
-                ConstraintSet.BOTTOM,
-                dpToPx(4) // Sua margem de 4dp
-        );
+                    // Calcula a posição do TextView dentro do LinearLayout
+                    int left = selectedTextView.getLeft();
+                    int width = selectedTextView.getWidth();
 
-        // 2. Alinhar o INÍCIO do 'indicatorView' com o INÍCIO do 'selectedTextView'
-        constraintSet.connect(
-                indicatorView.getId(),
-                ConstraintSet.START,
-                selectedTextView.getId(),
-                ConstraintSet.START
-        );
+                    // Usa ConstraintSet para posicionar o indicador abaixo do menu_abas
+                    // Em vez de clonar, vamos criar um novo ConstraintSet e apenas definir as constraints necessárias
+                    ConstraintSet constraintSet = new ConstraintSet();
+                    
+                    // Primeiro, clona o layout atual (agora que todos os elementos têm IDs)
+                    try {
+                        constraintSet.clone(cardContentLayout);
+                    } catch (Exception cloneEx) {
+                        Log.e(TAG, "Erro ao clonar ConstraintLayout: " + cloneEx.getMessage());
+                        // Se o clone falhar, tenta uma abordagem alternativa usando LayoutParams
+                        android.view.ViewGroup.MarginLayoutParams params = 
+                            (android.view.ViewGroup.MarginLayoutParams) indicatorView.getLayoutParams();
+                        if (params != null) {
+                            params.width = width;
+                            params.leftMargin = left;
+                            params.rightMargin = parent.getWidth() - left - width;
+                            indicatorView.setLayoutParams(params);
+                            indicatorView.setVisibility(View.VISIBLE);
+                            AppAnimationUtils.animateBounce(indicatorView);
+                            return;
+                        }
+                        return;
+                    }
 
-        // 3. Alinhar o FIM do 'indicatorView' com o FIM do 'selectedTextView'
-        constraintSet.connect(
-                indicatorView.getId(),
-                ConstraintSet.END,
-                selectedTextView.getId(),
-                ConstraintSet.END
-        );
+                    // Conecta o indicador ao menu_abas (LinearLayout) na parte inferior
+                    View menuAbas = findViewById(R.id.menu_abas);
+                    if (menuAbas != null) {
+                        constraintSet.connect(
+                                indicatorView.getId(),
+                                ConstraintSet.TOP,
+                                menuAbas.getId(),
+                                ConstraintSet.BOTTOM,
+                                0
+                        );
+                    }
 
-        // 4. Definir a LARGURA do 'indicatorView' para preencher o espaço entre suas constraints START e END
-        constraintSet.constrainWidth(
-                indicatorView.getId(),
-                ConstraintSet.MATCH_CONSTRAINT
-        );
+                    // Define a largura e posição horizontal usando margens calculadas
+                    constraintSet.constrainWidth(indicatorView.getId(), width);
+                    constraintSet.setMargin(indicatorView.getId(), ConstraintSet.START, left);
+                    constraintSet.setMargin(indicatorView.getId(), ConstraintSet.END, 
+                            parent.getWidth() - left - width);
 
-        // Aplica a animação com transição suave
-        constraintSet.applyTo(constraintLayout);
-        
-        // Adiciona uma animação de bounce no indicador para feedback visual
-        AppAnimationUtils.animateBounce(indicatorView);
+                    // Aplica as mudanças
+                    constraintSet.applyTo(cardContentLayout);
+                    
+                    // Torna o indicador visível
+                    indicatorView.setVisibility(View.VISIBLE);
+                    
+                    // Adiciona uma animação de bounce no indicador para feedback visual
+                    AppAnimationUtils.animateBounce(indicatorView);
+                } catch (Exception e) {
+                    Log.e(TAG, "Erro ao atualizar indicador: " + e.getMessage(), e);
+                }
+            }
+        });
     }
 
     // Função utilitária para converter dp em pixels
@@ -405,6 +530,30 @@ public class ExibirPerfil extends AppCompatActivity {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         // Usar displayMetrics.density é geralmente mais simples e recomendado
         return Math.round(dp * displayMetrics.density);
+    }
+
+    /**
+     * Atualiza as cores das abas quando uma é selecionada
+     */
+    private void updateTabColors(TextView selectedTab) {
+        int selectedColor = ContextCompat.getColor(this, R.color.white);
+        int unselectedColor = ContextCompat.getColor(this, R.color.linhas);
+        
+        if (textViewPostagem != null) {
+            textViewPostagem.setTextColor(
+                textViewPostagem == selectedTab ? selectedColor : unselectedColor
+            );
+        }
+        if (textViewComentarios != null) {
+            textViewComentarios.setTextColor(
+                textViewComentarios == selectedTab ? selectedColor : unselectedColor
+            );
+        }
+        if (textViewSobreMim != null) {
+            textViewSobreMim.setTextColor(
+                textViewSobreMim == selectedTab ? selectedColor : unselectedColor
+            );
+        }
     }
 
     private void loadUserProfileData() {
@@ -429,8 +578,17 @@ public class ExibirPerfil extends AppCompatActivity {
                     boolean success = json.optBoolean("success", false);
                     if (success) {
                         String nome = json.optString("nome", "");
+                        String descricao = json.optString("descricao", "");
                         if (exibirNome != null && nome != null && !nome.isEmpty()) {
                             exibirNome.setText(nome);
+                        }
+                        if (textViewBio != null) {
+                            if (descricao != null && !descricao.isEmpty()) {
+                                textViewBio.setText(descricao);
+                            } else {
+                                textViewBio.setText("Adicione uma descrição sobre você!");
+                                textViewBio.setAlpha(0.5f);
+                            }
                         }
                     } else {
                         Log.w("Perfil", "receber_perfil retornou sucesso=false: " + json.optString("message"));
