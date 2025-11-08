@@ -329,19 +329,26 @@ public class ExibirPerfil extends AppCompatActivity {
                                 
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject postagemJson = jsonArray.getJSONObject(i);
-                                    ModeloPostagem postagem = new ModeloPostagem(
-                                        postagemJson.getString("id"),
-                                        postagemJson.getString("titulo"),
-                                        postagemJson.getString("texto"),
-                                        postagemJson.getString("id_usuario"),
-                                        postagemJson.optString("nome_usuario", null),
-                                        postagemJson.optString("foto_usuario", null),
-                                        postagemJson.getString("id_obra"),
-                                        postagemJson.optString("titulo_obra", null),
-                                        postagemJson.optString("poster_obra", null),
-                                        postagemJson.optString("data_criacao", postagemJson.optString("data_post", ""))
-                                    );
-                                    novasPostagens.add(postagem);
+                                    String postagemIdUsuario = postagemJson.getString("id_usuario");
+                                    
+                                    // Filtrar apenas postagens do usuário atual
+                                    if (userIdAtual != null && userIdAtual.equals(postagemIdUsuario)) {
+                                        ModeloPostagem postagem = new ModeloPostagem(
+                                            postagemJson.getString("id"),
+                                            postagemJson.getString("titulo"),
+                                            postagemJson.getString("texto"),
+                                            postagemJson.getString("id_usuario"),
+                                            postagemJson.optString("nome_usuario", null),
+                                            postagemJson.optString("foto_usuario", null),
+                                            postagemJson.getString("id_obra"),
+                                            postagemJson.optString("titulo_obra", null),
+                                            postagemJson.optString("poster_obra", null),
+                                            postagemJson.optString("data_criacao", postagemJson.optString("data_post", ""))
+                                        );
+                                        novasPostagens.add(postagem);
+                                    } else {
+                                        Log.d(TAG, "Postagem filtrada - não pertence ao usuário atual. ID da postagem: " + postagemIdUsuario + ", ID do usuário atual: " + userIdAtual);
+                                    }
                                 }
                                 
                                 Log.d(TAG, "Verificando se lista e adapter estão disponíveis...");

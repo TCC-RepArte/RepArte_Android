@@ -632,8 +632,20 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
     // Implementação dos métodos da interface OnPostagemClickListener
     @Override
     public void onPostagemClick(ModeloPostagem postagem) {
-        // TODO: Abrir detalhes da postagem
-        Toast.makeText(this, "Postagem: " + postagem.getTitulo(), Toast.LENGTH_SHORT).show();
+        // Abrir tela de postagem completa com os dados
+        Intent intent = new Intent(Tela.this, Postagem.class);
+        intent.putExtra("postagem_id", postagem.getId());
+        intent.putExtra("postagem_titulo", postagem.getTitulo());
+        intent.putExtra("postagem_texto", postagem.getTexto());
+        intent.putExtra("postagem_id_usuario", postagem.getIdUsuario());
+        intent.putExtra("postagem_nome_usuario", postagem.getNomeUsuario());
+        intent.putExtra("postagem_id_obra", postagem.getIdObra());
+        intent.putExtra("postagem_titulo_obra", postagem.getTituloObra());
+        intent.putExtra("postagem_poster_obra", postagem.getPosterObra());
+        intent.putExtra("postagem_data_criacao", postagem.getDataCriacao());
+        intent.putExtra("postagem_curtidas", postagem.getCurtidas());
+        intent.putExtra("postagem_comentarios", postagem.getComentarios());
+        startActivity(intent);
     }
     
     @Override

@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintHeight_percent="0.4"
-        app:srcCompat="@drawable/sinners1" />
+        android:contentDescription="Banner da obra" />
 
     <ImageView
         android:id="@+id/btn_voltar_postagem"
@@ -89,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="Fulano"
+                    android:text="Usuário"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="Sinners (2025)"
+                    android:text="@usuario"
                     android:textColor="#B3FFFFFF"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -108,7 +108,7 @@
                 android:layout_width="56dp"
                 android:layout_height="80dp"
                 android:contentDescription="Poster da obra"
-                android:src="@drawable/sinners1" />
+                android:src="@drawable/user_white" />
         </LinearLayout>
 
         <Button
@@ -130,7 +130,7 @@
             android:fontFamily="@font/roboto_medium"
             android:lineSpacingExtra="1dp"
             android:lineSpacingMultiplier="1.1"
-            android:text="Ryan Coogler faz de Sinners uma ode trágica ao deep south, mergulhando na gênese da América..."
+            android:text=""
             android:textColor="@color/white"
             android:textSize="15sp" />
 
