@@ -11,38 +11,42 @@
         android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="24dp"
+        android:fontFamily="@font/hammersmith_one"
         android:text="Digite o código"
         android:textColor="#C9FD4F0A"
         android:textSize="34sp"
-        android:fontFamily="@font/hammersmith_one"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tv_sub"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_sub"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginEnd="82dp"
+        android:layout_marginBottom="4dp"
         android:text="Enviamos um código para o seu e-mail/usuário."
         android:textColor="#AEAEAE"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintBottom_toTopOf="@+id/et_codigo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
     <EditText
         android:id="@+id/et_codigo"
         android:layout_width="0dp"
         android:layout_height="58dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/container_dr"
         android:gravity="center"
         android:hint="Código de 6 dígitos"
@@ -51,36 +55,41 @@
         android:textColor="#FFFFFF"
         android:textColorHint="#AEAEAE"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/tv_sub"
+        app:layout_constraintBottom_toTopOf="@+id/btn_validar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tv_sub" />
 
     <Button
         android:id="@+id/btn_validar"
         android:layout_width="0dp"
         android:layout_height="62dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="#C9FD4F0A"
+        android:fontFamily="@font/poppins_bold"
         android:text="Validar código"
         android:textSize="16sp"
-        android:fontFamily="@font/poppins_bold"
-        android:backgroundTint="#C9FD4F0A"
-        app:layout_constraintTop_toBottomOf="@id/et_codigo"
+        app:layout_constraintBottom_toTopOf="@+id/tv_resend"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/et_codigo" />
 
     <TextView
         android:id="@+id/tv_resend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:layout_marginBottom="477dp"
         android:text="Reenviar código"
         android:textColor="#7280e4"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/btn_validar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/btn_validar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

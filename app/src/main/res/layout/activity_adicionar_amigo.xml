@@ -23,21 +23,21 @@
             android:id="@+id/btn_voltar"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/ic_arrow_back"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
+            android:contentDescription="Voltar"
             android:focusable="true"
-            android:contentDescription="Voltar" />
+            android:src="@drawable/ic_arrow_back" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="16dp"
+            android:layout_weight="1"
             android:fontFamily="@font/league_spartan_bold"
             android:text="Adicionar Amigos"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="26sp" />
 
     </LinearLayout>
 

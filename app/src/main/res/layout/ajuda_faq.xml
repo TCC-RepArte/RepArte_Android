@@ -25,29 +25,29 @@
                 android:id="@+id/btn_voltar"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:contentDescription="Voltar"
                 android:clickable="true"
+                android:contentDescription="Voltar"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/ic_arrow_back"
-                app:tint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:srcCompat="@drawable/ic_arrow_back"
+                app:tint="@color/white" />
 
             <TextView
                 android:id="@+id/titulo_ajuda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:fontFamily="@font/hammersmith_one"
                 android:text="Ajuda/FAQ"
                 android:textColor="@color/white"
-                android:textSize="25sp"
+                android:textSize="26sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/btn_voltar"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginStart="16dp" />
+                app:layout_constraintStart_toEndOf="@+id/btn_voltar"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -148,34 +148,34 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginTop="1dp"
                 android:gravity="center"
-                android:layout_marginTop="16dp">
+                android:orientation="horizontal">
 
                 <!-- Gmail -->
                 <ImageView
                     android:id="@+id/ic_gmail"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/ic_gmail"
-                    android:contentDescription="Enviar email"
+                    android:layout_marginEnd="24dp"
                     android:clickable="true"
+                    android:contentDescription="Enviar email"
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:padding="8dp"
-                    android:layout_marginEnd="24dp" />
+                    android:src="@drawable/ic_gmail" />
 
                 <!-- Instagram -->
                 <ImageView
                     android:id="@+id/ic_instagram"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/ic_instagram"
-                    android:contentDescription="Instagram"
                     android:clickable="true"
+                    android:contentDescription="Instagram"
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackgroundBorderless"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:src="@drawable/ic_instagram" />
 
             </LinearLayout>
 
@@ -185,6 +185,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/secao_contato" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
