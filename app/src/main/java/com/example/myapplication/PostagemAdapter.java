@@ -18,6 +18,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.myapplication.api.ApiService;
 import com.example.myapplication.api.TMDBManager;
+import com.example.myapplication.api.GoogleBooksManager;
+import com.example.myapplication.api.MetManager;
 import com.example.myapplication.model.TMDBMovieDetails;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.bitmap.Transform;
@@ -31,6 +33,8 @@ public class PostagemAdapter extends RecyclerView.Adapter<PostagemAdapter.Postag
     private OnPostagemClickListener listener;
     private ApiService apiService;
     private TMDBManager tmdbManager;
+    private GoogleBooksManager googleBooksManager;
+    private MetManager metManager;
 
     public interface OnPostagemClickListener {
         void onPostagemClick(ModeloPostagem postagem);
@@ -43,6 +47,8 @@ public class PostagemAdapter extends RecyclerView.Adapter<PostagemAdapter.Postag
         this.postagens = postagens;
         this.apiService = new ApiService(context);
         this.tmdbManager = new TMDBManager();
+        this.googleBooksManager = new GoogleBooksManager();
+        this.metManager = MetManager.getInstance();
     }
 
     public void setOnPostagemClickListener(OnPostagemClickListener listener) {
@@ -363,10 +369,10 @@ public class PostagemAdapter extends RecyclerView.Adapter<PostagemAdapter.Postag
             
             textoPostagem.setText(postagem.getTexto() != null ? postagem.getTexto() : "");
 
-            // Dados da obra - carregar banner/poster do filme
+            // Dados da obra - carregar banner/poster da obra
             String obraId = postagem.getIdObra();
             if (obraId != null && !obraId.isEmpty() && !obraId.equals("null") && !obraId.equals("0")) {
-                // Carregar poster/banner se houver URL
+                // Carregar poster/banner se houver URL direta
                 if (postagem.getPosterObra() != null && !postagem.getPosterObra().isEmpty() && !postagem.getPosterObra().equals("null")) {
                     String fullPosterUrl = postagem.getPosterObra().startsWith("http")
                         ? postagem.getPosterObra()
@@ -378,91 +384,15 @@ public class PostagemAdapter extends RecyclerView.Adapter<PostagemAdapter.Postag
                         .error(R.drawable.user_white)
                         .skipMemoryCache(false)
                         .into(posterObra);
-                } else {
-                    // Buscar dados da obra via TMDB se não vierem na postagem
-                    try {
-                        int tmdbId = Integer.parseInt(obraId);
-                        // Tentar buscar como filme primeiro
-                        tmdbManager.getMovieDetails(tmdbId, new TMDBManager.DetailsCallback() {
-                            @Override
-                            public void onSuccess(TMDBMovieDetails details) {
-                                new Handler(Looper.getMainLooper()).post(() -> {
-                                    if (details != null) {
-                                        String posterPath = details.getPosterPath();
-                                        String title = details.getTitle();
-                                        
-                                        if (posterPath != null && !posterPath.isEmpty()) {
-                                            String fullPosterUrl = "https://image.tmdb.org/t/p/w500" + posterPath;
-                                            Glide.with(context)
-                                                .load(fullPosterUrl)
-                                                .transition(DrawableTransitionOptions.withCrossFade())
-                                                .placeholder(R.drawable.user_white)
-                                                .error(R.drawable.user_white)
-                                                .skipMemoryCache(false)
-                                                .into(posterObra);
-                                        }
-                                        
-                                        if (title != null && !title.isEmpty() && tituloObra != null) {
-                                            tituloObra.setText(title);
-                                            tituloObra.setVisibility(View.VISIBLE);
-                                        }
-                                    }
-                                });
-                            }
-                            
-                            @Override
-                            public void onError(String error) {
-                                // Se falhar como filme, tentar como série
-                                tmdbManager.getTVShowDetails(tmdbId, new TMDBManager.DetailsCallback() {
-                                    @Override
-                                    public void onSuccess(TMDBMovieDetails details) {
-                                        new Handler(Looper.getMainLooper()).post(() -> {
-                                            if (details != null) {
-                                                String posterPath = details.getPosterPath();
-                                                String title = details.getTitle();
-                                                
-                                                if (posterPath != null && !posterPath.isEmpty()) {
-                                                    String fullPosterUrl = "https://image.tmdb.org/t/p/w500" + posterPath;
-                                                    Glide.with(context)
-                                                        .load(fullPosterUrl)
-                                                        .transition(DrawableTransitionOptions.withCrossFade())
-                                                        .placeholder(R.drawable.user_white)
-                                                        .error(R.drawable.user_white)
-                                                        .skipMemoryCache(false)
-                                                        .into(posterObra);
-                                                }
-                                                
-                                                if (title != null && !title.isEmpty() && tituloObra != null) {
-                                                    tituloObra.setText(title);
-                                                    tituloObra.setVisibility(View.VISIBLE);
-                                                }
-                                            }
-                                        });
-                                    }
-                                    
-                                    @Override
-                                    public void onError(String error2) {
-                                        new Handler(Looper.getMainLooper()).post(() -> {
-                                            posterObra.setImageResource(R.drawable.user_white);
-                                            if (tituloObra != null) {
-                                                tituloObra.setVisibility(View.GONE);
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        });
-                    } catch (NumberFormatException e) {
-                        posterObra.setImageResource(R.drawable.user_white);
-                        if (tituloObra != null) {
-                            tituloObra.setVisibility(View.GONE);
-                        }
+                    
+                    // Se tiver título da obra, usar
+                    if (tituloObra != null && postagem.getTituloObra() != null && !postagem.getTituloObra().isEmpty() && !postagem.getTituloObra().equals("null")) {
+                        tituloObra.setText(postagem.getTituloObra());
+                        tituloObra.setVisibility(View.VISIBLE);
                     }
-                }
-                
-                if (tituloObra != null && postagem.getTituloObra() != null && !postagem.getTituloObra().isEmpty() && !postagem.getTituloObra().equals("null")) {
-                    tituloObra.setText(postagem.getTituloObra());
-                    tituloObra.setVisibility(View.VISIBLE);
+                } else {
+                    // Buscar dados da obra - tentar múltiplas APIs
+                    buscarDadosObra(obraId, posterObra, tituloObra);
                 }
             } else {
                 posterObra.setImageResource(R.drawable.user_white);
@@ -522,6 +452,223 @@ public class PostagemAdapter extends RecyclerView.Adapter<PostagemAdapter.Postag
                 // Se falhar, retornar data original
             }
             return data;
+        }
+        
+        private void buscarDadosObra(String obraId, ImageView posterObra, TextView tituloObra) {
+            Log.d("PostagemAdapter", "=== BUSCANDO DADOS DA OBRA ===");
+            Log.d("PostagemAdapter", "ID da Obra: " + obraId);
+            
+            // Tentar buscar via TMDB primeiro (filmes/séries)
+            try {
+                int tmdbId = Integer.parseInt(obraId);
+                Log.d("PostagemAdapter", "ID é numérico: " + tmdbId);
+                
+                // IDs do TMDB geralmente são menores que 10 milhões
+                // IDs muito grandes (maior que 100 milhões) provavelmente são de livros/artes
+                // Vamos tentar TMDB apenas para IDs razoáveis
+                if (tmdbId > 100000000) {
+                    Log.d("PostagemAdapter", "ID muito grande (" + tmdbId + "), provavelmente é livro/arte. Tentando diretamente como arte.");
+                    // Tentar como arte primeiro (Metropolitan)
+                    buscarComoArte(tmdbId, posterObra, tituloObra);
+                    return;
+                }
+                
+                Log.d("PostagemAdapter", "Tentando buscar como filme no TMDB...");
+                // Tentar buscar como filme primeiro
+                tmdbManager.getMovieDetails(tmdbId, new TMDBManager.DetailsCallback() {
+                    @Override
+                    public void onSuccess(TMDBMovieDetails details) {
+                        Log.d("PostagemAdapter", "Sucesso! Encontrado filme: " + (details != null ? details.getTitle() : "null"));
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            if (details != null) {
+                                String posterPath = details.getPosterPath();
+                                String title = details.getTitle();
+                                
+                                if (posterPath != null && !posterPath.isEmpty()) {
+                                    String fullPosterUrl = "https://image.tmdb.org/t/p/w500" + posterPath;
+                                    Glide.with(context)
+                                        .load(fullPosterUrl)
+                                        .transition(DrawableTransitionOptions.withCrossFade())
+                                        .placeholder(R.drawable.user_white)
+                                        .error(R.drawable.user_white)
+                                        .skipMemoryCache(false)
+                                        .into(posterObra);
+                                }
+                                
+                                if (title != null && !title.isEmpty() && tituloObra != null) {
+                                    tituloObra.setText(title);
+                                    tituloObra.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
+                    }
+                    
+                    @Override
+                    public void onError(String error) {
+                        Log.d("PostagemAdapter", "Erro ao buscar filme: " + error + ". Tentando como série...");
+                        // Se falhar como filme, tentar como série
+                        tmdbManager.getTVShowDetails(tmdbId, new TMDBManager.DetailsCallback() {
+                            @Override
+                            public void onSuccess(TMDBMovieDetails details) {
+                                Log.d("PostagemAdapter", "Sucesso! Encontrada série: " + (details != null ? details.getTitle() : "null"));
+                                new Handler(Looper.getMainLooper()).post(() -> {
+                                    if (details != null) {
+                                        String posterPath = details.getPosterPath();
+                                        String title = details.getTitle();
+                                        
+                                        if (posterPath != null && !posterPath.isEmpty()) {
+                                            String fullPosterUrl = "https://image.tmdb.org/t/p/w500" + posterPath;
+                                            Glide.with(context)
+                                                .load(fullPosterUrl)
+                                                .transition(DrawableTransitionOptions.withCrossFade())
+                                                .placeholder(R.drawable.user_white)
+                                                .error(R.drawable.user_white)
+                                                .skipMemoryCache(false)
+                                                .into(posterObra);
+                                        }
+                                        
+                                        if (title != null && !title.isEmpty() && tituloObra != null) {
+                                            tituloObra.setText(title);
+                                            tituloObra.setVisibility(View.VISIBLE);
+                                        }
+                                    }
+                                });
+                            }
+                            
+                            @Override
+                            public void onError(String error2) {
+                                Log.d("PostagemAdapter", "Erro ao buscar série: " + error2 + ". Tentando como obra de arte (Metropolitan)...");
+                                // Se falhar como série, tentar como obra de arte (Metropolitan)
+                                buscarComoArte(tmdbId, posterObra, tituloObra);
+                            }
+                        });
+                    }
+                });
+            } catch (NumberFormatException e) {
+                Log.d("PostagemAdapter", "ID não é numérico: " + obraId + ". Tentando como livro (Google Books)...");
+                // Se não for número, pode ser ID de livro (String) ou tentar como arte
+                // Tentar buscar como livro primeiro (usando o ID como string)
+                buscarComoLivro(obraId, posterObra, tituloObra);
+            }
+        }
+        
+        private void buscarComoLivro(String bookId, ImageView posterObra, TextView tituloObra) {
+            // NOTA: Para livros, o ID salvo no banco é um número gerado a partir do hashCode do ID original
+            // Não podemos buscar diretamente usando esse ID numérico
+            // A solução ideal é que o PHP retorne o originalId quando buscar as postagens
+            Log.w("PostagemAdapter", "Tentando buscar livro com ID: " + bookId);
+            Log.w("PostagemAdapter", "ATENÇÃO: Se este ID é numérico (hashCode), não será possível buscar sem o originalId do PHP!");
+            
+            // Tentar buscar como livro do Google Books usando o ID como string
+            // Se o ID for numérico (hashCode), isso provavelmente falhará
+            googleBooksManager.getBookDetails(bookId, new GoogleBooksManager.BookDetailsCallback() {
+                @Override
+                public void onSuccess(com.example.myapplication.ModeloFilme livro) {
+                    Log.d("PostagemAdapter", "Sucesso! Encontrado livro: " + (livro != null ? livro.getTitulo() : "null"));
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        if (livro != null) {
+                            String posterPath = livro.getPosterPath();
+                            String title = livro.getTitulo();
+                            
+                            if (posterPath != null && !posterPath.isEmpty()) {
+                                // Para livros, a URL já vem completa do Google Books
+                                Glide.with(context)
+                                    .load(posterPath)
+                                    .transition(DrawableTransitionOptions.withCrossFade())
+                                    .placeholder(R.drawable.user_white)
+                                    .error(R.drawable.user_white)
+                                    .skipMemoryCache(false)
+                                    .into(posterObra);
+                            }
+                            
+                            if (title != null && !title.isEmpty() && tituloObra != null) {
+                                tituloObra.setText(title);
+                                tituloObra.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            // Se falhar como livro, tentar como arte
+                            Log.d("PostagemAdapter", "Livro retornado é null. Tentando como arte...");
+                            tentarComoArte(bookId, posterObra, tituloObra);
+                        }
+                    });
+                }
+                
+                @Override
+                public void onError(String error) {
+                    Log.w("PostagemAdapter", "Erro ao buscar livro no Google Books: " + error);
+                    Log.w("PostagemAdapter", "Isso é esperado se o ID for um hashCode numérico. Tentando como arte...");
+                    // Se falhar como livro, tentar como arte
+                    tentarComoArte(bookId, posterObra, tituloObra);
+                }
+            });
+        }
+        
+        private void tentarComoArte(String bookId, ImageView posterObra, TextView tituloObra) {
+            try {
+                int objectId = Integer.parseInt(bookId);
+                buscarComoArte(objectId, posterObra, tituloObra);
+            } catch (NumberFormatException e) {
+                // Se tudo falhar, usar imagem padrão
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    posterObra.setImageResource(R.drawable.user_white);
+                    if (tituloObra != null) {
+                        tituloObra.setVisibility(View.GONE);
+                    }
+                });
+            }
+        }
+        
+        private void buscarComoArte(int objectId, ImageView posterObra, TextView tituloObra) {
+            Log.d("PostagemAdapter", "Tentando buscar como obra de arte no Metropolitan Museum. ID: " + objectId);
+            // Tentar buscar como obra de arte do Metropolitan Museum
+            metManager.getArtworkById(objectId, new MetManager.MetCallback<com.example.myapplication.model.MetArtwork>() {
+                @Override
+                public void onSuccess(com.example.myapplication.model.MetArtwork artwork) {
+                    Log.d("PostagemAdapter", "Sucesso! Encontrada obra de arte: " + (artwork != null ? artwork.getTitle() : "null"));
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        if (artwork != null) {
+                            String primaryImage = artwork.getPrimaryImage();
+                            String title = artwork.getTitle();
+                            
+                            if (primaryImage != null && !primaryImage.isEmpty()) {
+                                // Para artes, a URL já vem completa do Metropolitan
+                                Glide.with(context)
+                                    .load(primaryImage)
+                                    .transition(DrawableTransitionOptions.withCrossFade())
+                                    .placeholder(R.drawable.user_white)
+                                    .error(R.drawable.user_white)
+                                    .skipMemoryCache(false)
+                                    .into(posterObra);
+                            }
+                            
+                            if (title != null && !title.isEmpty() && tituloObra != null) {
+                                tituloObra.setText(title);
+                                tituloObra.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            Log.w("PostagemAdapter", "Obra de arte retornada é null. Usando imagem padrão.");
+                            // Se tudo falhar, usar imagem padrão
+                            posterObra.setImageResource(R.drawable.user_white);
+                            if (tituloObra != null) {
+                                tituloObra.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+                }
+                
+                @Override
+                public void onError(String error) {
+                    Log.w("PostagemAdapter", "Erro ao buscar obra de arte no Metropolitan: " + error);
+                    Log.w("PostagemAdapter", "NOTA: Se este ID é de um livro, não é possível buscá-lo sem o originalId do PHP.");
+                    // Se tudo falhar, usar imagem padrão
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        posterObra.setImageResource(R.drawable.user_white);
+                        if (tituloObra != null) {
+                            tituloObra.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            });
         }
     }
 }

@@ -638,6 +638,12 @@ public class ApiService {
     }
 
     public void enviarPost(String titulo, String texto, int idObra, FutureCallback<String> callback) {
+        enviarPostCompleto(titulo, texto, idObra, null, null, null, null, callback);
+    }
+    
+    public void enviarPostCompleto(String titulo, String texto, int idObra, String tipoObra, 
+                                    String tituloObra, String posterObra, String originalIdObra, 
+                                    FutureCallback<String> callback) {
         String userId = context.getSharedPreferences("RepArte", Context.MODE_PRIVATE)
                 .getString("user_id", null);
 
@@ -652,9 +658,14 @@ public class ApiService {
         Log.d(TAG, "Título: " + titulo);
         Log.d(TAG, "Texto: " + texto);
         Log.d(TAG, "ID da Obra: " + idObra);
+        Log.d(TAG, "Tipo da Obra: " + tipoObra);
+        Log.d(TAG, "Título da Obra: " + tituloObra);
+        Log.d(TAG, "Poster da Obra: " + posterObra);
+        Log.d(TAG, "Original ID da Obra: " + originalIdObra);
         Log.d(TAG, "ID do Usuário: " + userId);
 
-        Ion.with(context)
+        // Construir a requisição encadeando os métodos diretamente
+        com.koushikdutta.ion.builder.Builders.Any.U request = Ion.with(context)
                 .load("POST", url)
                 .setHeader("Content-Type", "application/x-www-form-urlencoded")
                 .setHeader("Connection", "close")
@@ -662,8 +673,23 @@ public class ApiService {
                 .setBodyParameter("titulo", titulo)
                 .setBodyParameter("texto", texto)
                 .setBodyParameter("id_obra", String.valueOf(idObra))
-                .setBodyParameter("id_usuario", userId)
-                .asString()
+                .setBodyParameter("id_usuario", userId);
+        
+        // Adicionar parâmetros opcionais se fornecidos
+        if (tipoObra != null && !tipoObra.isEmpty()) {
+            request = request.setBodyParameter("tipo_obra", tipoObra);
+        }
+        if (tituloObra != null && !tituloObra.isEmpty()) {
+            request = request.setBodyParameter("titulo_obra", tituloObra);
+        }
+        if (posterObra != null && !posterObra.isEmpty()) {
+            request = request.setBodyParameter("poster_obra", posterObra);
+        }
+        if (originalIdObra != null && !originalIdObra.isEmpty()) {
+            request = request.setBodyParameter("original_id_obra", originalIdObra);
+        }
+        
+        request.asString()
                 .setCallback(new FutureCallback<String>() {
                     @Override
                     public void onCompleted(Exception e, String result) {

@@ -118,8 +118,16 @@ public class Tela_post extends AppCompatActivity {
         // Mostrar loading
         Toast.makeText(this, "Enviando post...", Toast.LENGTH_SHORT).show();
         
-        // Enviar post para o backend
-        apiService.enviarPost(titulo, texto, obraSelecionada.getId(), new FutureCallback<String>() {
+        // Obter informações da obra selecionada
+        String tipoObra = obraSelecionada != null ? obraSelecionada.getTipo() : null;
+        String tituloObra = obraSelecionada != null ? obraSelecionada.getTitulo() : null;
+        String posterObra = obraSelecionada != null ? obraSelecionada.getPosterPath() : null;
+        String originalIdObra = obraSelecionada != null ? obraSelecionada.getOriginalId() : null;
+        
+        // Enviar post para o backend com informações completas da obra
+        apiService.enviarPostCompleto(titulo, texto, obraSelecionada.getId(), tipoObra, 
+                                      tituloObra, posterObra, originalIdObra, 
+                                      new FutureCallback<String>() {
             @Override
             public void onCompleted(Exception e, String result) {
                 runOnUiThread(() -> {
