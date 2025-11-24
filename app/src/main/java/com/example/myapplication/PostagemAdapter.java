@@ -391,8 +391,10 @@ public class PostagemAdapter extends RecyclerView.Adapter<PostagemAdapter.Postag
                         tituloObra.setVisibility(View.VISIBLE);
                     }
                 } else {
-                    // Buscar dados da obra - tentar múltiplas APIs
-                    buscarDadosObra(obraId, posterObra, tituloObra);
+                    // Buscar dados da obra - usar tipoObra e originalIdObra se disponíveis
+                    String tipoObra = postagem.getTipoObra();
+                    String originalIdObra = postagem.getOriginalIdObra();
+                    buscarDadosObra(obraId, tipoObra, originalIdObra, posterObra, tituloObra);
                 }
             } else {
                 posterObra.setImageResource(R.drawable.user_white);
@@ -454,27 +456,137 @@ public class PostagemAdapter extends RecyclerView.Adapter<PostagemAdapter.Postag
             return data;
         }
         
-        private void buscarDadosObra(String obraId, ImageView posterObra, TextView tituloObra) {
+        private void buscarDadosObra(String obraId, String tipoObra, String originalIdObra, ImageView posterObra, TextView tituloObra) {
             Log.d("PostagemAdapter", "=== BUSCANDO DADOS DA OBRA ===");
             Log.d("PostagemAdapter", "ID da Obra: " + obraId);
+            Log.d("PostagemAdapter", "Tipo da Obra: " + tipoObra);
+            Log.d("PostagemAdapter", "Original ID da Obra: " + originalIdObra);
             
-            // Tentar buscar via TMDB primeiro (filmes/séries)
-            try {
-                int tmdbId = Integer.parseInt(obraId);
-                Log.d("PostagemAdapter", "ID é numérico: " + tmdbId);
+            // REGRA PRINCIPAL: Se tiver tipoObra definido, SEMPRE respeitar esse tipo
+            // NUNCA tentar outras APIs para evitar conteúdo incorreto
+            if (tipoObra != null && !tipoObra.isEmpty()) {
+                String tipoLower = tipoObra.toLowerCase().trim();
                 
-                // IDs do TMDB geralmente são menores que 10 milhões
-                // IDs muito grandes (maior que 100 milhões) provavelmente são de livros/artes
-                // Vamos tentar TMDB apenas para IDs razoáveis
-                if (tmdbId > 100000000) {
-                    Log.d("PostagemAdapter", "ID muito grande (" + tmdbId + "), provavelmente é livro/arte. Tentando diretamente como arte.");
-                    // Tentar como arte primeiro (Metropolitan)
-                    buscarComoArte(tmdbId, posterObra, tituloObra);
+                if ("book".equals(tipoLower)) {
+                    // É um livro - usar originalIdObra se disponível
+                    String livroId = (originalIdObra != null && !originalIdObra.isEmpty()) ? originalIdObra : obraId;
+                    Log.d("PostagemAdapter", "Tipo: BOOK - Buscando no Google Books com ID: " + livroId);
+                    buscarComoLivro(livroId, posterObra, tituloObra);
                     return;
                 }
                 
+                if ("art".equals(tipoLower) || "artwork".equals(tipoLower)) {
+                    // É uma obra de arte - buscar APENAS no Metropolitan
+                    try {
+                        int objectId = Integer.parseInt(obraId);
+                        Log.d("PostagemAdapter", "Tipo: ART - Buscando no Metropolitan com ID: " + objectId);
+                        buscarComoArteStrict(objectId, posterObra, tituloObra);
+                        return;
+                    } catch (NumberFormatException e) {
+                        Log.w("PostagemAdapter", "ID da arte não é numérico: " + obraId);
+                        usarImagemPadrao(posterObra, tituloObra);
+                        return;
+                    }
+                }
+                
+                if ("movie".equals(tipoLower)) {
+                    // É um filme - buscar APENAS no TMDB como filme
+                    try {
+                        int tmdbId = Integer.parseInt(obraId);
+                        Log.d("PostagemAdapter", "Tipo: MOVIE - Buscando no TMDB como filme com ID: " + tmdbId);
+                        buscarComoFilmeStrict(tmdbId, posterObra, tituloObra);
+                        return;
+                    } catch (NumberFormatException e) {
+                        Log.w("PostagemAdapter", "ID do filme não é numérico: " + obraId);
+                        usarImagemPadrao(posterObra, tituloObra);
+                        return;
+                    }
+                }
+                
+                if ("tv".equals(tipoLower)) {
+                    // É uma série - buscar APENAS no TMDB como série
+                    try {
+                        int tmdbId = Integer.parseInt(obraId);
+                        Log.d("PostagemAdapter", "Tipo: TV - Buscando no TMDB como série com ID: " + tmdbId);
+                        buscarComoSerieStrict(tmdbId, posterObra, tituloObra);
+                        return;
+                    } catch (NumberFormatException e) {
+                        Log.w("PostagemAdapter", "ID da série não é numérico: " + obraId);
+                        usarImagemPadrao(posterObra, tituloObra);
+                        return;
+                    }
+                }
+                
+                // Tipo desconhecido - usar imagem padrão
+                Log.w("PostagemAdapter", "Tipo desconhecido: " + tipoObra);
+                usarImagemPadrao(posterObra, tituloObra);
+                return;
+            }
+            
+            // Se não tiver tipoObra, usar lógica conservadora baseada no tamanho do ID
+            // PRIORIDADE: Não mostrar conteúdo errado, mesmo que signifique não mostrar nada
+            try {
+                int obraIdInt = Integer.parseInt(obraId);
+                Log.d("PostagemAdapter", "SEM tipoObra - ID numérico: " + obraIdInt);
+                
+                // IDs do TMDB: geralmente < 10.000.000
+                // IDs do Metropolitan: geralmente entre 50.000 e 500.000
+                // IDs muito grandes (> 100M): provavelmente hashCode de livro
+                
+                if (obraIdInt < 50000) {
+                    // ID pequeno - provavelmente TMDB
+                    Log.d("PostagemAdapter", "ID < 50k, tentando TMDB (filme → série)");
+                    buscarComoFilme(obraIdInt, posterObra, tituloObra, true);
+                } else if (obraIdInt >= 50000 && obraIdInt <= 1000000) {
+                    // ID na faixa do Metropolitan - tentar arte SEM fallback
+                    Log.d("PostagemAdapter", "ID 50k-1M, tentando Metropolitan (SEM fallback)");
+                    buscarComoArteStrict(obraIdInt, posterObra, tituloObra);
+                } else if (obraIdInt > 100000000) {
+                    // ID muito grande - provavelmente livro (hashCode)
+                    Log.d("PostagemAdapter", "ID > 100M, provavelmente livro - usando imagem padrão");
+                    usarImagemPadrao(posterObra, tituloObra);
+                } else {
+                    // ID médio (1M - 100M) - tentar arte, mas sem fallback
+                    Log.d("PostagemAdapter", "ID médio 1M-100M, tentando arte (SEM fallback)");
+                    buscarComoArteStrict(obraIdInt, posterObra, tituloObra);
+                }
+            } catch (NumberFormatException e) {
+                // ID não numérico - pode ser livro (string)
+                Log.d("PostagemAdapter", "ID não numérico, tentando Google Books");
+                buscarComoLivro(obraId, posterObra, tituloObra);
+            }
+        }
+        
+        private void usarImagemPadrao(ImageView posterObra, TextView tituloObra) {
+            new Handler(Looper.getMainLooper()).post(() -> {
+                posterObra.setImageResource(R.drawable.user_white);
+                if (tituloObra != null) {
+                    tituloObra.setVisibility(View.GONE);
+                }
+            });
+        }
+        
+        private void buscarComoFilmeStrict(int tmdbId, ImageView posterObra, TextView tituloObra) {
+            // Versão STRICT: não permite fallback para série
+            buscarComoFilme(tmdbId, posterObra, tituloObra, false);
+        }
+        
+        private void buscarComoSerieStrict(int tmdbId, ImageView posterObra, TextView tituloObra) {
+            // Versão STRICT: não permite fallback para filme
+            buscarComoSerie(tmdbId, posterObra, tituloObra, false);
+        }
+        
+        private void buscarComoArteStrict(int objectId, ImageView posterObra, TextView tituloObra) {
+            // Versão STRICT: não permite fallback para TMDB
+            buscarComoArteComFallback(objectId, posterObra, tituloObra, false);
+        }
+                
+        private void buscarComoFilme(int tmdbId, ImageView posterObra, TextView tituloObra) {
+            buscarComoFilme(tmdbId, posterObra, tituloObra, false);
+        }
+        
+        private void buscarComoFilme(int tmdbId, ImageView posterObra, TextView tituloObra, boolean allowTVFallback) {
                 Log.d("PostagemAdapter", "Tentando buscar como filme no TMDB...");
-                // Tentar buscar como filme primeiro
                 tmdbManager.getMovieDetails(tmdbId, new TMDBManager.DetailsCallback() {
                     @Override
                     public void onSuccess(TMDBMovieDetails details) {
@@ -505,8 +617,31 @@ public class PostagemAdapter extends RecyclerView.Adapter<PostagemAdapter.Postag
                     
                     @Override
                     public void onError(String error) {
-                        Log.d("PostagemAdapter", "Erro ao buscar filme: " + error + ". Tentando como série...");
-                        // Se falhar como filme, tentar como série
+                    Log.w("PostagemAdapter", "Erro ao buscar filme: " + error);
+                    
+                    // Apenas tentar série se permitido (mesma API TMDB)
+                    if (allowTVFallback) {
+                        Log.d("PostagemAdapter", "Fallback permitido. Tentando como série...");
+                        buscarComoSerie(tmdbId, posterObra, tituloObra, false); // Não permitir fallback adicional
+                    } else {
+                        Log.w("PostagemAdapter", "Fallback não permitido. Usando imagem padrão.");
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            posterObra.setImageResource(R.drawable.user_white);
+                            if (tituloObra != null) {
+                                tituloObra.setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        
+        private void buscarComoSerie(int tmdbId, ImageView posterObra, TextView tituloObra) {
+            buscarComoSerie(tmdbId, posterObra, tituloObra, false);
+        }
+        
+        private void buscarComoSerie(int tmdbId, ImageView posterObra, TextView tituloObra, boolean allowMovieFallback) {
+            Log.d("PostagemAdapter", "Tentando buscar como série no TMDB...");
                         tmdbManager.getTVShowDetails(tmdbId, new TMDBManager.DetailsCallback() {
                             @Override
                             public void onSuccess(TMDBMovieDetails details) {
@@ -536,31 +671,31 @@ public class PostagemAdapter extends RecyclerView.Adapter<PostagemAdapter.Postag
                             }
                             
                             @Override
-                            public void onError(String error2) {
-                                Log.d("PostagemAdapter", "Erro ao buscar série: " + error2 + ". Tentando como obra de arte (Metropolitan)...");
-                                // Se falhar como série, tentar como obra de arte (Metropolitan)
-                                buscarComoArte(tmdbId, posterObra, tituloObra);
+                public void onError(String error) {
+                    Log.w("PostagemAdapter", "Erro ao buscar série: " + error);
+                    
+                    // Apenas tentar filme se permitido (mesma API TMDB)
+                    if (allowMovieFallback) {
+                        Log.d("PostagemAdapter", "Fallback permitido. Tentando como filme...");
+                        buscarComoFilme(tmdbId, posterObra, tituloObra, false); // Não permitir fallback adicional
+                    } else {
+                        Log.w("PostagemAdapter", "Fallback não permitido. Usando imagem padrão.");
+                        // IMPORTANTE: NÃO tentar arte para evitar mostrar conteúdo incorreto
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            posterObra.setImageResource(R.drawable.user_white);
+                            if (tituloObra != null) {
+                                tituloObra.setVisibility(View.GONE);
                             }
                         });
                     }
-                });
-            } catch (NumberFormatException e) {
-                Log.d("PostagemAdapter", "ID não é numérico: " + obraId + ". Tentando como livro (Google Books)...");
-                // Se não for número, pode ser ID de livro (String) ou tentar como arte
-                // Tentar buscar como livro primeiro (usando o ID como string)
-                buscarComoLivro(obraId, posterObra, tituloObra);
-            }
+                }
+            });
         }
         
         private void buscarComoLivro(String bookId, ImageView posterObra, TextView tituloObra) {
-            // NOTA: Para livros, o ID salvo no banco é um número gerado a partir do hashCode do ID original
-            // Não podemos buscar diretamente usando esse ID numérico
-            // A solução ideal é que o PHP retorne o originalId quando buscar as postagens
-            Log.w("PostagemAdapter", "Tentando buscar livro com ID: " + bookId);
-            Log.w("PostagemAdapter", "ATENÇÃO: Se este ID é numérico (hashCode), não será possível buscar sem o originalId do PHP!");
+            Log.d("PostagemAdapter", "Tentando buscar livro no Google Books com ID: " + bookId);
             
-            // Tentar buscar como livro do Google Books usando o ID como string
-            // Se o ID for numérico (hashCode), isso provavelmente falhará
+            // Tentar buscar como livro do Google Books usando o ID
             googleBooksManager.getBookDetails(bookId, new GoogleBooksManager.BookDetailsCallback() {
                 @Override
                 public void onSuccess(com.example.myapplication.ModeloFilme livro) {
@@ -586,9 +721,12 @@ public class PostagemAdapter extends RecyclerView.Adapter<PostagemAdapter.Postag
                                 tituloObra.setVisibility(View.VISIBLE);
                             }
                         } else {
-                            // Se falhar como livro, tentar como arte
-                            Log.d("PostagemAdapter", "Livro retornado é null. Tentando como arte...");
-                            tentarComoArte(bookId, posterObra, tituloObra);
+                            // Se livro retornado é null, usar imagem padrão (não tentar outras APIs)
+                            Log.w("PostagemAdapter", "Livro retornado é null. Usando imagem padrão.");
+                            posterObra.setImageResource(R.drawable.user_white);
+                            if (tituloObra != null) {
+                                tituloObra.setVisibility(View.GONE);
+                            }
                         }
                     });
                 }
@@ -596,9 +734,14 @@ public class PostagemAdapter extends RecyclerView.Adapter<PostagemAdapter.Postag
                 @Override
                 public void onError(String error) {
                     Log.w("PostagemAdapter", "Erro ao buscar livro no Google Books: " + error);
-                    Log.w("PostagemAdapter", "Isso é esperado se o ID for um hashCode numérico. Tentando como arte...");
-                    // Se falhar como livro, tentar como arte
-                    tentarComoArte(bookId, posterObra, tituloObra);
+                    // IMPORTANTE: Se tipoObra é "book", NÃO tentar outras APIs para evitar conteúdo incorreto
+                    // Apenas usar imagem padrão
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        posterObra.setImageResource(R.drawable.user_white);
+                        if (tituloObra != null) {
+                            tituloObra.setVisibility(View.GONE);
+                        }
+                    });
                 }
             });
         }
@@ -619,6 +762,14 @@ public class PostagemAdapter extends RecyclerView.Adapter<PostagemAdapter.Postag
         }
         
         private void buscarComoArte(int objectId, ImageView posterObra, TextView tituloObra) {
+            buscarComoArteComFallback(objectId, posterObra, tituloObra, false);
+        }
+        
+        private void buscarComoArteComFallback(int objectId, ImageView posterObra, TextView tituloObra) {
+            buscarComoArteComFallback(objectId, posterObra, tituloObra, true);
+        }
+        
+        private void buscarComoArteComFallback(int objectId, ImageView posterObra, TextView tituloObra, boolean allowTMDbFallback) {
             Log.d("PostagemAdapter", "Tentando buscar como obra de arte no Metropolitan Museum. ID: " + objectId);
             // Tentar buscar como obra de arte do Metropolitan Museum
             metManager.getArtworkById(objectId, new MetManager.MetCallback<com.example.myapplication.model.MetArtwork>() {
@@ -659,14 +810,38 @@ public class PostagemAdapter extends RecyclerView.Adapter<PostagemAdapter.Postag
                 @Override
                 public void onError(String error) {
                     Log.w("PostagemAdapter", "Erro ao buscar obra de arte no Metropolitan: " + error);
-                    Log.w("PostagemAdapter", "NOTA: Se este ID é de um livro, não é possível buscá-lo sem o originalId do PHP.");
-                    // Se tudo falhar, usar imagem padrão
-                    new Handler(Looper.getMainLooper()).post(() -> {
-                        posterObra.setImageResource(R.drawable.user_white);
-                        if (tituloObra != null) {
-                            tituloObra.setVisibility(View.GONE);
-                        }
-                    });
+                    
+                    // IMPORTANTE: Se o ID está na faixa típica de arte (>= 50k) ou muito grande (>100M),
+                    // NÃO tentar TMDB para evitar buscar filme errado
+                    // IDs do Metropolitan Museum geralmente são >= 50.000
+                    // IDs do TMDB geralmente são < 50.000
+                    if (objectId >= 50000 || objectId > 100000000) {
+                        Log.w("PostagemAdapter", "ID está na faixa de arte (>= 50k ou > 100M). Não tentando TMDB para evitar filme incorreto.");
+                        // Se tudo falhar, usar imagem padrão
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            posterObra.setImageResource(R.drawable.user_white);
+                            if (tituloObra != null) {
+                                tituloObra.setVisibility(View.GONE);
+                            }
+                        });
+                        return;
+                    }
+                    
+                    // Apenas se allowTMDbFallback for true E o ID for realmente pequeno (< 50k), tentar TMDB
+                    // IDs < 50k são quase sempre do TMDB, não do Metropolitan
+                    if (allowTMDbFallback && objectId < 50000) {
+                        Log.d("PostagemAdapter", "ID pequeno (< 50k) e fallback permitido. Tentando como filme no TMDB...");
+                        buscarComoFilme(objectId, posterObra, tituloObra, true); // Permitir fallback para série
+                    } else {
+                        Log.w("PostagemAdapter", "Fallback para TMDB não permitido ou ID não é de filme. Usando imagem padrão.");
+                        // Se tudo falhar, usar imagem padrão
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            posterObra.setImageResource(R.drawable.user_white);
+                            if (tituloObra != null) {
+                                tituloObra.setVisibility(View.GONE);
+                            }
+                        });
+                    }
                 }
             });
         }

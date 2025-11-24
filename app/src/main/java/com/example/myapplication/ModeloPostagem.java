@@ -13,6 +13,8 @@ public class ModeloPostagem implements Parcelable {
     private String idObra;
     private String tituloObra;
     private String posterObra;
+    private String tipoObra; // "movie", "tv", "book" ou "art"
+    private String originalIdObra; // ID original para livros do Google Books
     private String dataCriacao;
     private int curtidas;
     private int comentarios;
@@ -23,6 +25,14 @@ public class ModeloPostagem implements Parcelable {
     public ModeloPostagem(String id, String titulo, String texto, String idUsuario, 
                          String nomeUsuario, String fotoUsuario, String idObra, 
                          String tituloObra, String posterObra, String dataCriacao) {
+        this(id, titulo, texto, idUsuario, nomeUsuario, fotoUsuario, idObra, 
+             tituloObra, posterObra, null, null, dataCriacao);
+    }
+    
+    public ModeloPostagem(String id, String titulo, String texto, String idUsuario, 
+                         String nomeUsuario, String fotoUsuario, String idObra, 
+                         String tituloObra, String posterObra, String tipoObra, 
+                         String originalIdObra, String dataCriacao) {
         this.id = id;
         this.titulo = titulo;
         this.texto = texto;
@@ -32,6 +42,8 @@ public class ModeloPostagem implements Parcelable {
         this.idObra = idObra;
         this.tituloObra = tituloObra;
         this.posterObra = posterObra;
+        this.tipoObra = tipoObra;
+        this.originalIdObra = originalIdObra;
         this.dataCriacao = dataCriacao;
         this.curtidas = 0;
         this.comentarios = 0;
@@ -47,6 +59,8 @@ public class ModeloPostagem implements Parcelable {
         idObra = in.readString();
         tituloObra = in.readString();
         posterObra = in.readString();
+        tipoObra = in.readString();
+        originalIdObra = in.readString();
         dataCriacao = in.readString();
         curtidas = in.readInt();
         comentarios = in.readInt();
@@ -75,6 +89,8 @@ public class ModeloPostagem implements Parcelable {
         dest.writeString(idObra);
         dest.writeString(tituloObra);
         dest.writeString(posterObra);
+        dest.writeString(tipoObra);
+        dest.writeString(originalIdObra);
         dest.writeString(dataCriacao);
         dest.writeInt(curtidas);
         dest.writeInt(comentarios);
@@ -112,6 +128,12 @@ public class ModeloPostagem implements Parcelable {
 
     public String getPosterObra() { return posterObra; }
     public void setPosterObra(String posterObra) { this.posterObra = posterObra; }
+
+    public String getTipoObra() { return tipoObra; }
+    public void setTipoObra(String tipoObra) { this.tipoObra = tipoObra; }
+
+    public String getOriginalIdObra() { return originalIdObra; }
+    public void setOriginalIdObra(String originalIdObra) { this.originalIdObra = originalIdObra; }
 
     public String getDataCriacao() { return dataCriacao; }
     public void setDataCriacao(String dataCriacao) { this.dataCriacao = dataCriacao; }

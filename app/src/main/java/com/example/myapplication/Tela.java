@@ -534,6 +534,8 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
                                 postagemJson.getString("id_obra"),
                                 null, // titulo_obra - não vem mais do PHP, será buscado separadamente se necessário
                                 null, // poster_obra - não vem mais do PHP, será buscado separadamente se necessário
+                                postagemJson.optString("tipo_obra", null), // tipo_obra - "movie", "tv", "book" ou "art"
+                                postagemJson.optString("original_id_obra", null), // original_id_obra - ID original para livros
                                 postagemJson.optString("data_post", postagemJson.optString("data_criacao", "")) // data_post ou data_criacao
                             );
                             novasPostagens.add(postagem);
@@ -605,6 +607,8 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
                                     postagemJson.getString("id_obra"),
                                     null, // titulo_obra - não vem mais do PHP, será buscado separadamente se necessário
                                     null, // poster_obra - não vem mais do PHP, será buscado separadamente se necessário
+                                    postagemJson.optString("tipo_obra", null), // tipo_obra - "movie", "tv", "book" ou "art"
+                                    postagemJson.optString("original_id_obra", null), // original_id_obra - ID original para livros
                                     postagemJson.optString("data_post", postagemJson.optString("data_criacao", "")) // data_post ou data_criacao
                                 );
                                 novasPostagens.add(postagem);
@@ -642,6 +646,8 @@ public class Tela extends AppCompatActivity implements PostagemAdapter.OnPostage
         intent.putExtra("postagem_id_obra", postagem.getIdObra());
         intent.putExtra("postagem_titulo_obra", postagem.getTituloObra());
         intent.putExtra("postagem_poster_obra", postagem.getPosterObra());
+        intent.putExtra("postagem_tipo_obra", postagem.getTipoObra());
+        intent.putExtra("postagem_original_id_obra", postagem.getOriginalIdObra());
         intent.putExtra("postagem_data_criacao", postagem.getDataCriacao());
         intent.putExtra("postagem_curtidas", postagem.getCurtidas());
         intent.putExtra("postagem_comentarios", postagem.getComentarios());

@@ -343,6 +343,8 @@ public class ExibirPerfil extends AppCompatActivity {
                                             postagemJson.getString("id_obra"),
                                             postagemJson.optString("titulo_obra", null),
                                             postagemJson.optString("poster_obra", null),
+                                            postagemJson.optString("tipo_obra", null), // tipo_obra - "movie", "tv", "book" ou "art"
+                                            postagemJson.optString("original_id_obra", null), // original_id_obra - ID original para livros
                                             postagemJson.optString("data_criacao", postagemJson.optString("data_post", ""))
                                         );
                                         novasPostagens.add(postagem);
