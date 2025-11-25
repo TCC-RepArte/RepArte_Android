@@ -16,8 +16,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.example.myapplication.ModeloFilme;
 import com.example.myapplication.api.ApiService;
+import com.example.myapplication.api.GoogleBooksManager;
+import com.example.myapplication.api.MetManager;
 import com.example.myapplication.api.TMDBManager;
+import com.example.myapplication.model.MetArtwork;
 import com.example.myapplication.model.TMDBMovieDetails;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.bitmap.Transform;
@@ -40,6 +44,12 @@ public class Postagem extends AppCompatActivity {
     private LinearLayout listaComentarios;
     private ApiService apiService;
     private TMDBManager tmdbManager;
+    private GoogleBooksManager googleBooksManager;
+    private MetManager metManager;
+    private Handler mainHandler;
+    private boolean posterObraPossuiFonte = false;
+    private boolean bannerObraPossuiFonte = false;
+    private String ultimoPosterUrlAplicado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +58,9 @@ public class Postagem extends AppCompatActivity {
 
         apiService = new ApiService(this);
         tmdbManager = new TMDBManager();
+        googleBooksManager = new GoogleBooksManager();
+        metManager = MetManager.getInstance();
+        mainHandler = new Handler(Looper.getMainLooper());
 
         // Inicializar views
         tela_bg = findViewById(R.id.tela_bg);
@@ -74,6 +87,8 @@ public class Postagem extends AppCompatActivity {
         String postagemIdObra = intent.getStringExtra("postagem_id_obra");
         String postagemTituloObra = intent.getStringExtra("postagem_titulo_obra");
         String postagemPosterObra = intent.getStringExtra("postagem_poster_obra");
+        String postagemTipoObra = intent.getStringExtra("postagem_tipo_obra");
+        String postagemOriginalIdObra = intent.getStringExtra("postagem_original_id_obra");
         String postagemDataCriacao = intent.getStringExtra("postagem_data_criacao");
 
         // Exibir dados da postagem
@@ -160,105 +175,7 @@ public class Postagem extends AppCompatActivity {
             }
         }
 
-        // Carregar banner e dados da obra
-        if (postagemIdObra != null && !postagemIdObra.isEmpty() && !postagemIdObra.equals("null") && !postagemIdObra.equals("0")) {
-            try {
-                int tmdbId = Integer.parseInt(postagemIdObra);
-                
-                // Buscar detalhes da obra para obter o banner
-                tmdbManager.getMovieDetails(tmdbId, new TMDBManager.DetailsCallback() {
-                    @Override
-                    public void onSuccess(TMDBMovieDetails details) {
-                        new Handler(Looper.getMainLooper()).post(() -> {
-                            if (details != null) {
-                                // Carregar banner
-                                String backdropPath = details.getBackdropPath();
-                                if (backdropPath != null && !backdropPath.isEmpty()) {
-                                    String fullBackdropUrl = "https://image.tmdb.org/t/p/original" + backdropPath;
-                                    Glide.with(Postagem.this)
-                                        .load(fullBackdropUrl)
-                                        .transition(DrawableTransitionOptions.withCrossFade())
-                                        .placeholder(R.drawable.user_white)
-                                        .error(R.drawable.user_white)
-                                        .into(bannerObra);
-                                }
-
-                                // Carregar poster
-                                String posterPath = details.getPosterPath();
-                                if (posterPath != null && !posterPath.isEmpty()) {
-                                    String fullPosterUrl = "https://image.tmdb.org/t/p/w500" + posterPath;
-                                    Glide.with(Postagem.this)
-                                        .load(fullPosterUrl)
-                                        .transition(DrawableTransitionOptions.withCrossFade())
-                                        .placeholder(R.drawable.user_white)
-                                        .error(R.drawable.user_white)
-                                        .into(imgObra);
-                                }
-
-                                // Não mostrar título da obra no txtObra, pois ele é usado para @usuario
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        // Tentar como série
-                        tmdbManager.getTVShowDetails(tmdbId, new TMDBManager.DetailsCallback() {
-                            @Override
-                            public void onSuccess(TMDBMovieDetails details) {
-                                new Handler(Looper.getMainLooper()).post(() -> {
-                                    if (details != null) {
-                                        String backdropPath = details.getBackdropPath();
-                                        if (backdropPath != null && !backdropPath.isEmpty()) {
-                                            String fullBackdropUrl = "https://image.tmdb.org/t/p/original" + backdropPath;
-                                            Glide.with(Postagem.this)
-                                                .load(fullBackdropUrl)
-                                                .transition(DrawableTransitionOptions.withCrossFade())
-                                                .placeholder(R.drawable.user_white)
-                                                .error(R.drawable.user_white)
-                                                .into(bannerObra);
-                                        }
-
-                                        String posterPath = details.getPosterPath();
-                                        if (posterPath != null && !posterPath.isEmpty()) {
-                                            String fullPosterUrl = "https://image.tmdb.org/t/p/w500" + posterPath;
-                                            Glide.with(Postagem.this)
-                                                .load(fullPosterUrl)
-                                                .transition(DrawableTransitionOptions.withCrossFade())
-                                                .placeholder(R.drawable.user_white)
-                                                .error(R.drawable.user_white)
-                                                .into(imgObra);
-                                        }
-
-                                        // Não mostrar título da obra no txtObra, pois ele é usado para @usuario
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public void onError(String error2) {
-                                Log.e("Postagem", "Erro ao carregar obra: " + error2);
-                            }
-                        });
-                    }
-                });
-            } catch (NumberFormatException e) {
-                Log.e("Postagem", "ID da obra inválido: " + postagemIdObra);
-            }
-        }
-
-        // Se tiver poster da obra vindo direto, usar
-        if (postagemPosterObra != null && !postagemPosterObra.isEmpty() && !postagemPosterObra.equals("null")) {
-            String fullPosterUrl = postagemPosterObra.startsWith("http")
-                ? postagemPosterObra
-                : "https://image.tmdb.org/t/p/w500" + postagemPosterObra;
-            Glide.with(this)
-                .load(fullPosterUrl)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .placeholder(R.drawable.user_white)
-                .error(R.drawable.user_white)
-                .into(imgObra);
-        }
+        carregarDadosDaObra(postagemIdObra, postagemPosterObra, postagemTituloObra, postagemTipoObra, postagemOriginalIdObra);
 
         // txtObra é usado para @usuario, não para título da obra
 
@@ -271,5 +188,271 @@ public class Postagem extends AppCompatActivity {
         btnLerMais.setOnClickListener(v -> {
             // Texto já está completo nesta tela
         });
+    }
+
+    private void carregarDadosDaObra(String obraId, String posterDireto, String tituloObra, String tipoObra, String originalIdObra) {
+        boolean aplicouPosterDireto = aplicarPosterDireto(posterDireto);
+
+        if (!isValorValido(obraId)) {
+            if (!aplicouPosterDireto) {
+                mostrarPlaceholderObraSeNecessario();
+                mostrarPlaceholderBannerSeNecessario();
+            } else if (!bannerObraPossuiFonte && ultimoPosterUrlAplicado != null) {
+                atualizarBanner(ultimoPosterUrlAplicado);
+            }
+            return;
+        }
+
+        if (!isValorValido(tipoObra)) {
+            if (!aplicouPosterDireto) {
+                mostrarPlaceholderObraSeNecessario();
+                mostrarPlaceholderBannerSeNecessario();
+            }
+            Log.d("Postagem", "Tipo da obra não informado. Evitando buscas aleatórias.");
+            return;
+        }
+
+        String tipo = tipoObra.trim().toLowerCase();
+        switch (tipo) {
+            case "movie":
+                carregarFilme(obraId);
+                break;
+            case "tv":
+                carregarSerie(obraId);
+                break;
+            case "book":
+                carregarLivro(isValorValido(originalIdObra) ? originalIdObra : obraId);
+                break;
+            case "art":
+            case "artwork":
+                carregarArte(obraId);
+                break;
+            default:
+                Log.d("Postagem", "Tipo de obra desconhecido: " + tipoObra + ". Não será feito fallback.");
+                if (!aplicouPosterDireto) {
+                    mostrarPlaceholderObraSeNecessario();
+                    mostrarPlaceholderBannerSeNecessario();
+                }
+                break;
+        }
+    }
+
+    private boolean aplicarPosterDireto(String posterDireto) {
+        if (!isValorValido(posterDireto)) {
+            return false;
+        }
+        String fullPosterUrl = posterDireto.startsWith("http")
+            ? posterDireto
+            : "https://image.tmdb.org/t/p/w500" + posterDireto;
+        atualizarPoster(fullPosterUrl);
+        if (!bannerObraPossuiFonte) {
+            atualizarBanner(fullPosterUrl);
+        }
+        return true;
+    }
+
+    private void carregarFilme(String obraId) {
+        try {
+            int tmdbId = Integer.parseInt(obraId);
+            tmdbManager.getMovieDetails(tmdbId, new TMDBManager.DetailsCallback() {
+                @Override
+                public void onSuccess(TMDBMovieDetails details) {
+                    mainHandler.post(() -> {
+                        if (details == null) {
+                            mostrarPlaceholderObraSeNecessario();
+                            mostrarPlaceholderBannerSeNecessario();
+                            return;
+                        }
+                        String posterPath = details.getPosterPath();
+                        if (isValorValido(posterPath)) {
+                            atualizarPoster("https://image.tmdb.org/t/p/w500" + posterPath);
+                        } else {
+                            mostrarPlaceholderObraSeNecessario();
+                        }
+
+                        String backdropPath = details.getBackdropPath();
+                        if (isValorValido(backdropPath)) {
+                            atualizarBanner("https://image.tmdb.org/t/p/original" + backdropPath);
+                        } else if (!bannerObraPossuiFonte && ultimoPosterUrlAplicado != null) {
+                            atualizarBanner(ultimoPosterUrlAplicado);
+                        } else {
+                            mostrarPlaceholderBannerSeNecessario();
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(String error) {
+                    Log.e("Postagem", "Erro ao carregar filme: " + error);
+                    mainHandler.post(() -> {
+                        mostrarPlaceholderObraSeNecessario();
+                        mostrarPlaceholderBannerSeNecessario();
+                    });
+                }
+            });
+        } catch (NumberFormatException e) {
+            Log.e("Postagem", "ID do filme inválido: " + obraId, e);
+            mostrarPlaceholderObraSeNecessario();
+            mostrarPlaceholderBannerSeNecessario();
+        }
+    }
+
+    private void carregarSerie(String obraId) {
+        try {
+            int tmdbId = Integer.parseInt(obraId);
+            tmdbManager.getTVShowDetails(tmdbId, new TMDBManager.DetailsCallback() {
+                @Override
+                public void onSuccess(TMDBMovieDetails details) {
+                    mainHandler.post(() -> {
+                        if (details == null) {
+                            mostrarPlaceholderObraSeNecessario();
+                            mostrarPlaceholderBannerSeNecessario();
+                            return;
+                        }
+                        String posterPath = details.getPosterPath();
+                        if (isValorValido(posterPath)) {
+                            atualizarPoster("https://image.tmdb.org/t/p/w500" + posterPath);
+                        } else {
+                            mostrarPlaceholderObraSeNecessario();
+                        }
+
+                        String backdropPath = details.getBackdropPath();
+                        if (isValorValido(backdropPath)) {
+                            atualizarBanner("https://image.tmdb.org/t/p/original" + backdropPath);
+                        } else if (!bannerObraPossuiFonte && ultimoPosterUrlAplicado != null) {
+                            atualizarBanner(ultimoPosterUrlAplicado);
+                        } else {
+                            mostrarPlaceholderBannerSeNecessario();
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(String error) {
+                    Log.e("Postagem", "Erro ao carregar série: " + error);
+                    mainHandler.post(() -> {
+                        mostrarPlaceholderObraSeNecessario();
+                        mostrarPlaceholderBannerSeNecessario();
+                    });
+                }
+            });
+        } catch (NumberFormatException e) {
+            Log.e("Postagem", "ID da série inválido: " + obraId, e);
+            mostrarPlaceholderObraSeNecessario();
+            mostrarPlaceholderBannerSeNecessario();
+        }
+    }
+
+    private void carregarLivro(String bookId) {
+        if (!isValorValido(bookId)) {
+            mostrarPlaceholderObraSeNecessario();
+            mostrarPlaceholderBannerSeNecessario();
+            return;
+        }
+
+        googleBooksManager.getBookDetails(bookId, new GoogleBooksManager.BookDetailsCallback() {
+            @Override
+            public void onSuccess(ModeloFilme livro) {
+                mainHandler.post(() -> {
+                    if (livro != null && isValorValido(livro.getPosterPath())) {
+                        atualizarPoster(livro.getPosterPath());
+                        atualizarBanner(livro.getPosterPath());
+                    } else {
+                        mostrarPlaceholderObraSeNecessario();
+                        mostrarPlaceholderBannerSeNecessario();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e("Postagem", "Erro ao carregar livro: " + error);
+                mainHandler.post(() -> {
+                    mostrarPlaceholderObraSeNecessario();
+                    mostrarPlaceholderBannerSeNecessario();
+                });
+            }
+        });
+    }
+
+    private void carregarArte(String obraId) {
+        try {
+            int objectId = Integer.parseInt(obraId);
+            metManager.getArtworkById(objectId, new MetManager.MetCallback<MetArtwork>() {
+                @Override
+                public void onSuccess(MetArtwork artwork) {
+                    mainHandler.post(() -> {
+                        if (artwork != null && isValorValido(artwork.getPrimaryImage())) {
+                            atualizarPoster(artwork.getPrimaryImage());
+                            atualizarBanner(artwork.getPrimaryImage());
+                        } else {
+                            mostrarPlaceholderObraSeNecessario();
+                            mostrarPlaceholderBannerSeNecessario();
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(String error) {
+                    Log.e("Postagem", "Erro ao carregar obra de arte: " + error);
+                    mainHandler.post(() -> {
+                        mostrarPlaceholderObraSeNecessario();
+                        mostrarPlaceholderBannerSeNecessario();
+                    });
+                }
+            });
+        } catch (NumberFormatException e) {
+            Log.e("Postagem", "ID da obra de arte inválido: " + obraId, e);
+            mostrarPlaceholderObraSeNecessario();
+            mostrarPlaceholderBannerSeNecessario();
+        }
+    }
+
+    private void atualizarPoster(String posterUrl) {
+        if (!isValorValido(posterUrl) || imgObra == null) {
+            return;
+        }
+        ultimoPosterUrlAplicado = posterUrl;
+        posterObraPossuiFonte = true;
+        Glide.with(this)
+            .load(posterUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .placeholder(R.drawable.user_white)
+            .error(R.drawable.user_white)
+            .into(imgObra);
+    }
+
+    private void atualizarBanner(String bannerUrl) {
+        if (!isValorValido(bannerUrl) || bannerObra == null) {
+            return;
+        }
+        bannerObraPossuiFonte = true;
+        Glide.with(this)
+            .load(bannerUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .placeholder(R.drawable.user_white)
+            .error(R.drawable.user_white)
+            .into(bannerObra);
+    }
+
+    private void mostrarPlaceholderObraSeNecessario() {
+        if (posterObraPossuiFonte || imgObra == null) {
+            return;
+        }
+        ultimoPosterUrlAplicado = null;
+        posterObraPossuiFonte = false;
+        imgObra.setImageResource(R.drawable.user_white);
+    }
+
+    private void mostrarPlaceholderBannerSeNecessario() {
+        if (bannerObraPossuiFonte || bannerObra == null) {
+            return;
+        }
+        bannerObraPossuiFonte = false;
+        bannerObra.setImageResource(R.drawable.user_white);
+    }
+
+    private boolean isValorValido(String valor) {
+        return valor != null && !valor.trim().isEmpty() && !"null".equalsIgnoreCase(valor.trim());
     }
 }
