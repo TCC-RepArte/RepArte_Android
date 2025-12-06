@@ -326,6 +326,22 @@ public class SelecaoObraActivity extends AppCompatActivity implements AdapterSel
     }
 
     private void realizarBusca(String termo) {
+        // Validar termo de busca
+        if (termo == null || termo.trim().isEmpty()) {
+            mostrarLoading(false);
+            mostrarMensagemErro(true);
+            mensagemErro.setText("Digite um termo para buscar");
+            return;
+        }
+        
+        String termoLimpo = termo.trim();
+        if (termoLimpo.length() < 2) {
+            mostrarLoading(false);
+            mostrarMensagemErro(true);
+            mensagemErro.setText("Digite pelo menos 2 caracteres para buscar");
+            return;
+        }
+        
         mostrarLoading(true);
         esconderMensagemErro();
         
@@ -445,7 +461,26 @@ public class SelecaoObraActivity extends AppCompatActivity implements AdapterSel
                         runOnUiThread(() -> {
                             mostrarLoading(false);
                             mostrarMensagemErro(true);
-                            mensagemErro.setText("Erro na busca de obras de arte: " + error);
+                            // Mensagens mais amigáveis baseadas no tipo de erro
+                            String mensagemErroFinal;
+                            if (error != null) {
+                                if (error.contains("Acesso negado") || error.contains("negado")) {
+                                    mensagemErroFinal = "Acesso temporariamente bloqueado. Aguarde alguns instantes e tente novamente.";
+                                } else if (error.contains("Muitas requisições")) {
+                                    mensagemErroFinal = "Muitas requisições. Aguarde alguns instantes e tente novamente.";
+                                } else if (error.contains("indisponível") || error.contains("servidor")) {
+                                    mensagemErroFinal = "Serviço temporariamente indisponível. Tente novamente mais tarde.";
+                                } else if (error.contains("conexão") || error.contains("internet")) {
+                                    mensagemErroFinal = "Erro de conexão. Verifique sua internet e tente novamente.";
+                                } else if (error.contains("Tempo de conexão")) {
+                                    mensagemErroFinal = "Tempo de conexão esgotado. Tente novamente.";
+                                } else {
+                                    mensagemErroFinal = "Erro ao buscar obras de arte: " + error;
+                                }
+                            } else {
+                                mensagemErroFinal = "Erro desconhecido ao buscar obras de arte";
+                            }
+                            mensagemErro.setText(mensagemErroFinal);
                         });
                     }
                 });
@@ -581,6 +616,7 @@ public class SelecaoObraActivity extends AppCompatActivity implements AdapterSel
             @Override
             public void onError(String error) {
                 synchronized (todosResultados) {
+                    // Log do erro mas não interromper a busca - continuar com outros resultados
                     android.util.Log.e("SelecaoObraActivity", "Erro ao buscar obras de arte: " + error);
                     buscaCompletas[0]++;
                     if (buscaCompletas[0] == totalBuscas) {

@@ -270,6 +270,22 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
     }
     
     private void realizarBuscaAPI(String termo) {
+        // Validar termo de busca
+        if (termo == null || termo.trim().isEmpty()) {
+            mostrarLoading(false);
+            mostrarMensagemErro(true);
+            mensagemErro.setText("Digite um termo para buscar");
+            return;
+        }
+        
+        String termoLimpo = termo.trim();
+        if (termoLimpo.length() < 2) {
+            mostrarLoading(false);
+            mostrarMensagemErro(true);
+            mensagemErro.setText("Digite pelo menos 2 caracteres para buscar");
+            return;
+        }
+        
         // Determinar tipo de busca baseado no filtro ativo
         switch (filtroAtivo) {
             case "filmes":
@@ -391,8 +407,27 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
                         runOnUiThread(() -> {
                             mostrarLoading(false);
                             mostrarMensagemErro(true);
-                            mensagemErro.setText("Erro na busca de obras de arte: " + error);
-                            Toast.makeText(BuscaActivity.this, "Erro: " + error, Toast.LENGTH_SHORT).show();
+                            // Mensagens mais amigáveis baseadas no tipo de erro
+                            String mensagemErroFinal;
+                            if (error != null) {
+                                if (error.contains("Acesso negado") || error.contains("negado")) {
+                                    mensagemErroFinal = "Acesso temporariamente bloqueado. Aguarde alguns instantes e tente novamente.";
+                                } else if (error.contains("Muitas requisições")) {
+                                    mensagemErroFinal = "Muitas requisições. Aguarde alguns instantes e tente novamente.";
+                                } else if (error.contains("indisponível") || error.contains("servidor")) {
+                                    mensagemErroFinal = "Serviço temporariamente indisponível. Tente novamente mais tarde.";
+                                } else if (error.contains("conexão") || error.contains("internet")) {
+                                    mensagemErroFinal = "Erro de conexão. Verifique sua internet e tente novamente.";
+                                } else if (error.contains("Tempo de conexão")) {
+                                    mensagemErroFinal = "Tempo de conexão esgotado. Tente novamente.";
+                                } else {
+                                    mensagemErroFinal = "Erro ao buscar obras de arte: " + error;
+                                }
+                            } else {
+                                mensagemErroFinal = "Erro desconhecido ao buscar obras de arte";
+                            }
+                            mensagemErro.setText(mensagemErroFinal);
+                            Toast.makeText(BuscaActivity.this, mensagemErroFinal, Toast.LENGTH_LONG).show();
                         });
                     }
                 });
@@ -528,6 +563,7 @@ public class BuscaActivity extends AppCompatActivity implements AdapterResultado
             @Override
             public void onError(String error) {
                 synchronized (todosResultados) {
+                    // Log do erro mas não interromper a busca - continuar com outros resultados
                     android.util.Log.e("BuscaActivity", "Erro ao buscar obras de arte: " + error);
                     buscaCompletas[0]++;
                     if (buscaCompletas[0] == totalBuscas) {
