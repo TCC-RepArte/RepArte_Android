@@ -336,9 +336,9 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:layout_marginEnd="@dimen/margin_medium"
                         android:src="@drawable/sair"
-                        app:tint="@color/orange"
-                        android:layout_marginEnd="@dimen/margin_medium" />
+                        app:tint="@color/orange" />
 
                     <TextView
                         android:layout_width="0dp"
