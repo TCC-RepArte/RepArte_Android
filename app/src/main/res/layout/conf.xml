@@ -322,7 +322,7 @@
 
                 <!-- Desativar conta -->
                 <LinearLayout
-                    android:id="@+id/option_deactivate"
+                    android:id="@+id/sair_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -336,7 +336,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/down_vote"
+                        android:src="@drawable/sair"
                         app:tint="@color/orange"
                         android:layout_marginEnd="@dimen/margin_medium" />
 
@@ -344,7 +344,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Desativar minha conta"
+                        android:text="Sair da minha conta"
                         android:textColor="@color/orange"
                         android:textSize="@dimen/text_medium"
                         android:fontFamily="@font/poppins_bold" />

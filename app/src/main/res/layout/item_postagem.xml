@@ -4,18 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="24dp"
+    android:layout_marginTop="16dp"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
     android:layout_marginBottom="16dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="#170d26">
+    app:cardCornerRadius="20dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="#1a0f2e"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:padding="20dp"
         android:background="@drawable/div_teste1">
 
         <!-- Container principal com todos os elementos -->
@@ -35,33 +36,36 @@
 
             <ImageView
                 android:id="@+id/foto_usuario"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:src="@drawable/user_white"
                 android:scaleType="centerCrop"
                 android:background="@drawable/border"
                 android:clickable="true"
                 android:focusable="true"
-                android:contentDescription="Foto do usuário" />
+                android:contentDescription="Foto do usuário"
+                android:elevation="2dp" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginStart="12dp">
+                android:layout_marginStart="16dp"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/nome_usuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nome do Usuário"
-                    android:textSize="16sp"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:clickable="true"
                     android:focusable="true"
-                    android:fontFamily="@font/roboto_medium" />
+                    android:fontFamily="@font/roboto_medium"
+                    android:letterSpacing="0.02" />
 
                 <TextView
                     android:id="@+id/usuario_arroba"
@@ -79,10 +83,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="há 2 horas"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     android:textColor="@color/white"
-                    android:alpha="0.7"
-                    android:fontFamily="@font/roboto_light" />
+                    android:alpha="0.65"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_marginTop="2dp" />
 
             </LinearLayout>
 
@@ -94,11 +99,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Título da Postagem"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
             android:fontFamily="@font/roboto_medium"
+            android:letterSpacing="0.01"
             android:visibility="gone" />
 
         <!-- Texto da postagem -->
@@ -107,13 +114,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Texto da postagem aqui..."
-            android:textSize="14sp"
+            android:textSize="15sp"
             android:textColor="@color/white"
-            android:layout_marginBottom="16dp"
-            android:lineSpacingExtra="2dp"
+            android:alpha="0.95"
+            android:layout_marginBottom="20dp"
+            android:lineSpacingExtra="4dp"
             android:maxLines="6"
             android:ellipsize="end"
-            android:fontFamily="@font/roboto_light" />
+            android:fontFamily="@font/roboto_light"
+            android:letterSpacing="0.01" />
 
         <!-- Seção da obra -->
         <LinearLayout
@@ -121,49 +130,55 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:background="@drawable/div_teste2"
-            android:padding="12dp"
-            android:layout_marginBottom="16dp">
+            android:padding="16dp"
+            android:layout_marginBottom="20dp">
 
             <ImageView
                 android:id="@+id/poster_obra"
-                android:layout_width="88dp"
-                android:layout_height="151dp"
+                android:layout_width="100dp"
+                android:layout_height="150dp"
                 android:src="@drawable/user_white"
                 android:scaleType="centerCrop"
                 android:background="@drawable/border"
                 android:clickable="true"
                 android:focusable="true"
-                android:contentDescription="Poster da obra" />
+                android:contentDescription="Poster da obra"
+                android:elevation="3dp"
+                android:foreground="?android:attr/selectableItemBackground" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="16dp"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sobre a obra:"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     android:textColor="@color/white"
-                    android:alpha="0.7"
-                    android:layout_marginBottom="4dp"
-                    android:fontFamily="@font/roboto_light" />
+                    android:alpha="0.6"
+                    android:layout_marginBottom="6dp"
+                    android:fontFamily="@font/roboto_light"
+                    android:letterSpacing="0.01" />
 
                 <TextView
                     android:id="@+id/titulo_obra"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Título da Obra"
-                    android:textSize="16sp"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:clickable="true"
                     android:focusable="true"
-                    android:fontFamily="@font/roboto_medium" />
+                    android:fontFamily="@font/roboto_medium"
+                    android:letterSpacing="0.01"
+                    android:maxLines="2"
+                    android:ellipsize="end" />
 
             </LinearLayout>
 
@@ -174,7 +189,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="4dp">
 
             <LinearLayout
                 android:id="@+id/like_container"
@@ -182,15 +199,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="32dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="4dp">
+                android:padding="8dp"
+                android:background="?android:attr/selectableItemBackground">
 
                 <ImageView
                     android:id="@+id/like_icon"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:src="@drawable/ic_thumb_up"
                     android:contentDescription="Curtidas"
                     app:tint="@color/white" />
@@ -200,10 +218,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textSize="14sp"
+                    android:textSize="15sp"
                     android:textColor="@color/white"
-                    android:alpha="0.7"
-                    android:layout_marginStart="6dp"
+                    android:alpha="0.9"
+                    android:layout_marginStart="8dp"
                     android:fontFamily="@font/roboto_medium" />
 
             </LinearLayout>
@@ -216,12 +234,13 @@
                 android:gravity="center_vertical"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="4dp">
+                android:padding="8dp"
+                android:background="?android:attr/selectableItemBackground">
 
                 <ImageView
                     android:id="@+id/dislike_icon"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:src="@drawable/ic_thumb_down"
                     android:contentDescription="Descurtidas"
                     app:tint="@color/white" />
@@ -231,10 +250,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textSize="14sp"
+                    android:textSize="15sp"
                     android:textColor="@color/white"
-                    android:alpha="0.7"
-                    android:layout_marginStart="6dp"
+                    android:alpha="0.9"
+                    android:layout_marginStart="8dp"
                     android:fontFamily="@font/roboto_medium" />
 
             </LinearLayout>
@@ -246,18 +265,19 @@
         <!-- Botão laranja no canto inferior direito -->
         <ImageButton
             android:id="@+id/btn_abrir_postagem"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
             android:background="@drawable/btn_abrir_postagem_bg"
             android:contentDescription="Abrir postagem completa"
-            android:elevation="8dp"
-            android:padding="12dp"
+            android:elevation="10dp"
+            android:padding="14dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_arrow_forward_light"
-            app:tint="@color/white" />
+            app:tint="@color/white"
+            android:foreground="?android:attr/selectableItemBackground" />
 
     </FrameLayout>
 

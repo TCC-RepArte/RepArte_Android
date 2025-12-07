@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.myapplication.api.ApiService;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,7 +44,7 @@ public class ConfActivity extends AppCompatActivity {
         LinearLayout about = findViewById(R.id.option_about);
         LinearLayout acessibilidade = findViewById(R.id.option_acessibilidade);
         LinearLayout help = findViewById(R.id.option_help);
-        LinearLayout deactivate = findViewById(R.id.option_deactivate);
+        LinearLayout deactivate = findViewById(R.id.sair_btn);
 
         // Card de perfil (primeiro card com foto, nome, etc) -> ExibirPerfil
         cardProfile.setOnClickListener(new View.OnClickListener() {
